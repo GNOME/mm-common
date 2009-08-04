@@ -1,0 +1,6 @@
+The mm-common module provides the build infrastructure and utilities
+shared among the GNOME C++ binding libraries.  It is only a required
+dependency for building the C++ bindings from the version control
+repository.  It is not required for building tarball releases.
+
+This module is part of the GNOME C++ bindings effort <http://www.gtkmm.org/>.

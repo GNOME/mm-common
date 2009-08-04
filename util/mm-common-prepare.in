@@ -1,0 +1,89 @@
+#! /bin/sh -e
+
+# Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
+#
+# This file is part of mm-common.
+#
+# mm-common is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published
+# by the Free Software Foundation, either version 2 of the License,
+# or (at your option) any later version.
+#
+# mm-common is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
+
+prefix="@prefix@"
+datarootdir="@datarootdir@"
+datadir="@datadir@"
+pkgdatadir="${datadir}/@PACKAGE_TARNAME@"
+
+progname=${0##/*}
+installcmd='ln -s'
+forceflag=
+srcdir=.
+
+for arg
+do
+  case $arg in
+  --help)
+    cat <<EOF
+Usage: $progname [OPTION]... [DIRECTORY]
+
+Prepare a C++ binding module to use mm-common.
+
+ -c, --copy          copy files rather than symlinking them
+ -f, --force         replace existing files
+     --help          display this help message
+     --version       print version information
+EOF
+    exit 0
+    ;;
+  --version)
+    echo "$progname @PACKAGE_VERSION@"
+    exit 0
+    ;;
+  -c|--copy)
+    installcmd=cp
+    ;;
+  -f|--force)
+    forceflag=' -f'
+    ;;
+  -cf|-fc)
+    installcmd=cp
+    forceflag=' -f'
+    ;;
+  -*)
+    echo "$progname: unrecognized option '$arg'" >&2
+    exit 1
+    ;;
+  ?*)
+    srcdir=$arg
+    ;;
+  esac
+done
+
+if test -f "$srcdir/configure.ac"; then :; else
+  echo "$progname: $srcdir/configure.ac not found" >&2
+  exit 1
+fi
+
+auxdir=`sed -n 's/^ *AC_CONFIG_AUX_DIR([[ ]*\([^]),$ ]*\).*/\1/p' "$srcdir/configure.ac"`
+auxdir=$srcdir${auxdir:+"/$auxdir"}
+
+echo "Build support directory: $auxdir"
+
+for file in "$pkgdatadir"/build/*.am
+do
+  basename=${file##*/}
+  if test " $forceflag" = ' -f' || test ! -f "$auxdir/$basename"; then
+    echo "$progname: Copying $basename to $auxdir"
+    $installcmd$forceflag "$file" "$auxdir/$basename"
+  fi
+done
+
+exit 0
