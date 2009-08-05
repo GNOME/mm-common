@@ -50,15 +50,26 @@ dist_noinst_SCRIPTS = autogen.sh
 
 MAINTAINERCLEANFILES = $(dist_doxygen_tags_DATA)
 
-curl_flags = --compressed --connect-timeout 300 -g -L -m 3600 --retry 5
-wget_flags = -T 300 -t 5
 libstdcxx_tag_url = http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libstdc++.tag
+
+download_curl = $(CURL) --compressed --connect-timeout 300 -g -L -m 3600 -R --retry 5 \
+		$(if $(wildcard $@),-z '$@') -o '$@'
+download_wget = $(WGET) -N -T 300 -t 5 -P tags
+
+# In maintainer mode, always check the tag file for updates.
+if MAINTAINER_MODE
+tagfile_phony = $(dist_doxygen_tags_DATA)
+else
+tagfile_phony =
+endif
+
+.PHONY: $(tagfile_phony)
 
 .DELETE_ON_ERROR:
 
-# Download the GNU libstdc++ Doxygen tag file from the GCC site
+# Download the GNU libstdc++ Doxygen tag file from the GCC site.
 tags/libstdc++.tag:
-	$(if $(CURL),$(CURL) $(curl_flags) -o '$@' '$(libstdcxx_tag_url)',$(if\
-	     $(WGET),$(WGET) $(wget_flags) -O '$@' '$(libstdcxx_tag_url)',exit 1))
+	$(if $(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
+	     $(WGET),$(download_wget) '$(libstdcxx_tag_url)',exit 1))
 
 include $(top_srcdir)/build/dist-changelog.am
