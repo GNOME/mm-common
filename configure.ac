@@ -16,13 +16,21 @@
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_INIT([mm-common], [0.1], [gtkmm-list@gnome.org], [mm-common])
-AC_PREREQ([2.62])
-
+AC_PREREQ([2.59])
 AC_CONFIG_SRCDIR([build/compile-binding.am])
 
 AM_INIT_AUTOMAKE([1.9 no-define nostdinc tar-ustar])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
-AC_CONFIG_FILES([Makefile util/mm-common-prepare])
+AC_CHECK_PROG([CURL], [curl], [curl])
+AC_CHECK_PROG([WGET], [wget], [wget])
+
+AS_IF([test "x$USE_MAINTAINER_MODE" != xno && test "x$CURL$WGET" = x],
+      [AC_MSG_FAILURE([[Either curl or wget is required to build mm-common]])])
+
+AC_CONFIG_FILES([Makefile
+                 tags/mm-common-libstdc++.pc
+                 tags/mm-common-libstdc++-uninstalled.pc
+                 util/mm-common-prepare])
 AC_OUTPUT
