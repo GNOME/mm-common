@@ -54,12 +54,11 @@ curl_flags = --compressed --connect-timeout 300 -g -L -m 3600 --retry 5
 wget_flags = -T 300 -t 5
 libstdcxx_tag_url = http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libstdc++.tag
 
+.DELETE_ON_ERROR:
+
 # Download the GNU libstdc++ Doxygen tag file from the GCC site
 tags/libstdc++.tag:
-	if test -n "$(CURL)"; then \
-	  $(CURL) $(curl_flags) -o '$@' '$(libstdcxx_tag_url)'; \
-	elif test -n "$(WGET)"; then \
-	  $(WGET) $(wget_flags) -O '$@' '$(libstdcxx_tag_url)'; \
-	fi
+	$(if $(CURL),$(CURL) $(curl_flags) -o '$@' '$(libstdcxx_tag_url)',$(if\
+	     $(WGET),$(WGET) $(wget_flags) -O '$@' '$(libstdcxx_tag_url)',exit 1))
 
 include $(top_srcdir)/build/dist-changelog.am

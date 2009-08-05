@@ -19,7 +19,7 @@ AC_INIT([mm-common], [0.1], [gtkmm-list@gnome.org], [mm-common])
 AC_PREREQ([2.59])
 AC_CONFIG_SRCDIR([build/compile-binding.am])
 
-AM_INIT_AUTOMAKE([1.9 no-define nostdinc tar-ustar])
+AM_INIT_AUTOMAKE([1.9 -Wno-portability no-define nostdinc tar-ustar])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
