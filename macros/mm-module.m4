@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090804
+#serial 20090806
 
 ## _MM_INIT_MODULE_VERSION(basename, BASENAME, [major], [minor], [micro])
 ##
@@ -39,7 +39,8 @@ _MM_INIT_MODULE_VERSION([$3], [$5], m4_bpatsubst([$2], [[^0123456789]+], [,]))[]
 ## _MM_INIT_MODULE_BASENAME(module-name, module-version, basename, api-version)
 ##
 m4_define([_MM_INIT_MODULE_BASENAME],
-          [_MM_INIT_MODULE_SUBST([$1], [$2], [$3], [$4], m4_quote(AS_TR_CPP([$3])))])
+          [_MM_INIT_MODULE_SUBST([$1], [$2], [$3], [$4],
+                                 m4_quote(AS_TR_CPP(m4_quote(m4_translit([$3], [+], [X])))))])
 
 ## MM_INIT_MODULE(module-name, module-version)
 ##
@@ -54,7 +55,7 @@ m4_define([_MM_INIT_MODULE_BASENAME],
 ##                <BASENAME>_MINOR_VERSION      <minor>
 ##                <BASENAME>_MICRO_VERSION      <micro>
 ##
-## Where:         <BASENAME>                    AS_TR_CPP(<basename>)
+## Where:         <BASENAME>                    AS_TR_CPP(<basename> ~ tr/+/X)
 ##                <basename>[-<api-version>]    <module-name>
 ##                <major>.<minor>.<micro>[.*]   <module-version>
 ##
