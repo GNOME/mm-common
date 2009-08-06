@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-# Pick up aclocal flags from the environment
+# Pick up aclocal flags from the environment.
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 
 bin_SCRIPTS = util/mm-common-prepare
@@ -50,26 +50,31 @@ dist_noinst_SCRIPTS = autogen.sh
 
 MAINTAINERCLEANFILES = $(dist_doxygen_tags_DATA)
 
+# Remote location of the GNU libstdc++ Doxygen tag file.
 libstdcxx_tag_url = http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libstdc++.tag
 
+# Commands for downloading a target from a remote location, taking care
+# not to download a file again if its time stamp has not changed.
 download_curl = $(CURL) --compressed --connect-timeout 300 -g -L -m 3600 -R --retry 5 \
 		$(if $(wildcard $@),-z '$@') -o '$@'
-download_wget = $(WGET) -N -T 300 -t 5 -P tags
+download_wget = $(WGET) -N -nd -T 300 -t 5 -P '$(@D)'
 
-# In maintainer mode, always check the tag file for updates.
+# If maintainer mode is enabled, always check the remote locations
+# of the tag files for updates when building the default target.
 if MAINTAINER_MODE
-tagfile_phony = $(dist_doxygen_tags_DATA)
+check_updates = $(if $(MAKECMDGOALS:all%=),,$(dist_doxygen_tags_DATA))
 else
-tagfile_phony =
+check_updates =
 endif
 
-.PHONY: $(tagfile_phony)
+.PHONY: $(check_updates)
 
+# Avoid shipping partially downloaded files.
 .DELETE_ON_ERROR:
 
-# Download the GNU libstdc++ Doxygen tag file from the GCC site.
+# Download the libstdc++ tag file from the GCC website.
 tags/libstdc++.tag:
 	$(if $(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
-	     $(WGET),$(download_wget) '$(libstdcxx_tag_url)',exit 1))
+	     $(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f '$@'))
 
 include $(top_srcdir)/build/dist-changelog.am
