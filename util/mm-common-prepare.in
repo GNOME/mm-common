@@ -22,7 +22,7 @@ datarootdir="@datarootdir@"
 datadir="@datadir@"
 pkgdatadir="${datadir}/@PACKAGE_TARNAME@"
 
-progname=${0##/*}
+progname="${0##*/}"
 installcmd='ln -s'
 forceflag=
 srcdir=.
@@ -79,7 +79,7 @@ echo "Build support directory: $auxdir"
 
 for file in "$pkgdatadir"/build/*.am
 do
-  basename=${file##*/}
+  basename="${file##*/}"
   if test " $forceflag" = ' -f' || test ! -f "$auxdir/$basename"; then
     echo "$progname: Copying $basename to $auxdir"
     $installcmd$forceflag "$file" "$auxdir/$basename"
