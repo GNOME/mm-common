@@ -62,7 +62,7 @@ download_wget = $(WGET) -N -nd -T 300 -t 5 -P '$(@D)'
 # If maintainer mode is enabled, always check the remote locations
 # of the tag files for updates when building the default target.
 if MAINTAINER_MODE
-check_updates = $(if $(MAKECMDGOALS:all%=),,$(dist_doxygen_tags_DATA))
+check_updates = $(if $(filter all%,$(or $(MAKECMDGOALS),all)),$(dist_doxygen_tags_DATA))
 else
 check_updates =
 endif
