@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090804
+#serial 20090807
 
 ## MM_ARG_ENABLE_DOCUMENTATION
 ##
@@ -89,6 +89,7 @@ m4_define([_MM_ARG_WITH_TAGFILE_DOC],
     mm_tagname="$2"
     mm_tagpath=$mm_tagname[]dnl
   ])
+  AS_CASE([$mm_tagpath], [[.[\\/]*|..[\\/]*]], [mm_tagpath=`pwd`/$mm_tagpath])
 m4_ifval([$3], [dnl
   AS_IF([test "x$mm_htmlrefdir" = x],
   [
@@ -116,7 +117,7 @@ m4_ifval([$3], [dnl
   test "x$DOXYGEN_TAGFILES" = x || DOXYGEN_TAGFILES="$DOXYGEN_TAGFILES "
   DOXYGEN_TAGFILES=$DOXYGEN_TAGFILES[\]"$mm_tagpath=$[mm_htmlref]m4_ifval([$3], [pub], [dir])[\]"
   test "x$DOCINSTALL_FLAGS" = x || DOCINSTALL_FLAGS="$DOCINSTALL_FLAGS "
-  DOCINSTALL_FLAGS=[$]DOCINSTALL_FLAGS"-l '$mm_tagname@$mm_htmlrefdir'"dnl
+  DOCINSTALL_FLAGS=$DOCINSTALL_FLAGS"-l '$mm_tagname@$mm_htmlrefdir'"dnl
 ])
 
 ## MM_ARG_WITH_TAGFILE_DOC(tagfilename, [module])
