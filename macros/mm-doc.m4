@@ -15,26 +15,17 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090807
+#serial 20090808
 
-## MM_ARG_ENABLE_DOCUMENTATION
+## _MM_ARG_ENABLE_DOCUMENTATION
 ##
-## Provide the --disable-documentation configure option.  By default,
-## the documentation will be included in the build.  If not explicitly
-## disabled, also check whether the necessary tools are installed, and
-## abort if any are missing.
+## Implementation of MM_ARG_ENABLE_DOCUMENTATION, pulled in indirectly
+## through AC_REQUIRE() to make sure it is expanded only once.
 ##
-## The tools checked for are Perl, dot, Doxygen and xsltproc.  The
-## substitution variables PERL, DOT, DOXYGEN and XSLTPROC are set to
-## the command paths, unless overridden in the user environment.
-##
-## If the package provides the --enable-maintainer-mode option, the
-## tools dot, Doxygen and xsltproc are mandatory only when maintainer
-## mode is enabled.  Perl is required for the installdox utility even
-## if not in maintainer mode.
-##
-AC_DEFUN([MM_ARG_ENABLE_DOCUMENTATION],
+m4_define([_MM_ARG_ENABLE_DOCUMENTATION],
 [dnl
+AC_PROVIDE([$0])[]dnl
+dnl
 AC_ARG_VAR([PERL], [path to Perl interpreter])[]dnl
 AC_ARG_VAR([DOT], [path to dot utility])[]dnl
 AC_ARG_VAR([DOXYGEN], [path to Doxygen utility])[]dnl
@@ -68,6 +59,28 @@ but the required tool $mm_prog could not be found.]])])
 AM_CONDITIONAL([ENABLE_DOCUMENTATION], [test "x$ENABLE_DOCUMENTATION" != xno])
 AC_SUBST([DOXYGEN_TAGFILES], [[]])
 AC_SUBST([DOCINSTALL_FLAGS], [[]])[]dnl
+])
+
+## MM_ARG_ENABLE_DOCUMENTATION
+##
+## Provide the --disable-documentation configure option.  By default,
+## the documentation will be included in the build.  If not explicitly
+## disabled, also check whether the necessary tools are installed, and
+## abort if any are missing.
+##
+## The tools checked for are Perl, dot, Doxygen and xsltproc.  The
+## substitution variables PERL, DOT, DOXYGEN and XSLTPROC are set to
+## the command paths, unless overridden in the user environment.
+##
+## If the package provides the --enable-maintainer-mode option, the
+## tools dot, Doxygen and xsltproc are mandatory only when maintainer
+## mode is enabled.  Perl is required for the installdox utility even
+## if not in maintainer mode.
+##
+AC_DEFUN([MM_ARG_ENABLE_DOCUMENTATION],
+[dnl
+AC_BEFORE([$0], [MM_ARG_WITH_TAGFILE_DOC])[]dnl
+AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
 ])
 
 ## _MM_ARG_WITH_TAGFILE_DOC(option-basename, tagfilename, [module])
@@ -152,7 +165,7 @@ AC_DEFUN([MM_ARG_WITH_TAGFILE_DOC],
 [dnl
 m4_assert([$# >= 1])[]dnl
 m4_ifval([$2], [AC_REQUIRE([PKG_PROG_PKG_CONFIG])])[]dnl
-AC_REQUIRE([MM_ARG_ENABLE_DOCUMENTATION])[]dnl
+AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
 dnl
 AS_IF([test "x$ENABLE_DOCUMENTATION" != xno], [_MM_ARG_WITH_TAGFILE_DOC(
   m4_quote(m4_bpatsubst([$1], [\([-+][0123456789]\|[+]*[._]\).*$])), [$1], [$2])])[]dnl
