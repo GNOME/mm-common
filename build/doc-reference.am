@@ -40,11 +40,11 @@ htmlref_patterns ?=		\
 	reference/html/*.png	\
 	reference/html/*.gif
 
-# Locations of utilities shipped with gmmproc.  Made overridable
+# Locations of utilities shipped with glibmm.  Made overridable
 # in case the installed utilities cannot be used for some reason.
-doc_postprocess     ?= $(GMMPROC_DIR)/doc-postprocess.pl
-doc_install         ?= $(GMMPROC_DIR)/doc-install.pl
-tagfile_to_devhelp2 ?= $(GMMPROC_DIR)/tagfile-to-devhelp2.xsl
+doc_postprocess     ?= $(PERL) -- "$(MMDOCTOOLDIR)/doc-postprocess.pl"
+doc_install         ?= $(PERL) -- "$(MMDOCTOOLDIR)/doc-install.pl"
+tagfile_to_devhelp2 ?= "$(MMDOCTOOLDIR)/tagfile-to-devhelp2.xsl"
 
 # Names of the main output files.
 doxytagfile = reference/$(book_name).tag
@@ -57,31 +57,21 @@ devhelpfile = reference/$(book_name).devhelp2
 vpath_srclist = $(patsubst $(srcdir)/%,%,$(wildcard $(addprefix $(srcdir)/,$(1))))
 vpath_listall = $(sort $(wildcard $(1)) $(if $(srcdir:.=),$(vpath_srclist)))
 
-# Function: $(call vpath_resolve,FILENAME ...)
-# For each FILENAME, test whether the file exists relative to the current
-# directory.  If the file exists, return the filename unchanged, otherwise
-# prepend $(srcdir)/ to the filename.
-vpath_srctest = $(foreach file,$(1),$(or $(wildcard $(file)),$(srcdir)/$(file)))
-vpath_resolve = $(if $(srcdir:.=),$(vpath_srctest),$(1))
-
 # Installation directories.
 libdocdir    = $(datarootdir)/doc/$(book_name)
 referencedir = $(libdocdir)/reference
 htmlrefdir   = $(referencedir)/html
 devhelpdir   = $(datadir)/devhelp/books/$(book_name)
 
-# List of files in the HTML reference documentation.
-htmlreffiles = $(call vpath_listall,$(htmlref_patterns))
-
 dist_reference_DATA = $(doxytagfile)
 dist_devhelp_DATA   = $(devhelpfile)
-dist_noinst_DATA    = $(htmlreffiles)
+dist_noinst_DATA    = $(call vpath_listall,$(htmlref_patterns))
 
 DISTCLEANFILES       = reference/doxygen.log
 MAINTAINERCLEANFILES = $(doxytagfile) $(devhelpfile) reference/html/*
 
 # The generic bit of the doc-install.pl command line.
-doc_install_cmd = $(PERL) -- $(doc_install) --verbose --mode=0644
+doc_install_cmd = $(doc_install) --verbose --mode=0644
 
 # The command and options used to install the files from the HTML reference
 # documentation.  The $(subst) magic translates external tag references from
@@ -94,6 +84,14 @@ htmlref_install = $(doc_install_cmd) $(subst @$(datarootdir)/doc/,@../../../,$(D
 # Automake recognizes the override and does not try to assign its own
 # default value.
 dist_devhelpDATA_INSTALL = $(doc_install_cmd) --book-base='$(htmlrefdir)' -T --
+
+# Helper variables to replicate each pattern with a $(srcdir)/ prefix.
+# Also add quoting to prevent the shell from expanding the patterns.
+htmlref_patterns_dup   = $(foreach file,$(htmlref_patterns),'$(file)' '$(srcdir)/$(file)')
+htmlref_patterns_vpath = $(if $(srcdir:.=),$(htmlref_patterns_dup),$(htmlref_patterns:%='%'))
+
+# Expand to a list of -name 'PATTERN' arguments for use with 'find'.
+htmlref_find_patterns  = $(patsubst %,-name '%' -o,$(notdir $(htmlref_patterns))) -false
 
 # The parameters to the Doxygen-to-Devhelp XSLT script
 dh_xsl_params =	--stringparam book_title '$(book_title)' \
@@ -108,17 +106,22 @@ doc_dependencies =
 endif
 
 # Install the HTML reference documentation files with just one invocation
-# of doc-install.pl to speed up the build process.
+# of doc-install.pl to speed up the build process.  Make use of the --glob
+# option, which tells it to perform filename globbing itself, like 'find'.
+# This helps to avoid excessively long command lines, as some platforms
+# have rather restrictive limits.
 install-data-local: reference/html/index.html
 	@$(NORMAL_INSTALL)
 	$(MKDIR_P) '$(DESTDIR)$(htmlrefdir)'
-	$(htmlref_install) -t '$(DESTDIR)$(htmlrefdir)' -- $(call vpath_resolve,$(htmlreffiles))
+	$(htmlref_install) -t '$(DESTDIR)$(htmlrefdir)' --glob -- $(htmlref_patterns_vpath)
 
-# Delete all files in the html installation directory, but avoid recursion
-# in order to limit the harm done if something goes horribly wrong.
+# Delete files from the html installation directory.  Avoid recursive
+# directory removal, and apply the same wildcard pattern as was used to
+# select files for installation.
 uninstall-local:
 	@$(NORMAL_UNINSTALL)
-	(cd '$(DESTDIR)$(htmlrefdir)' 2>/dev/null || exit 0; rm -f $(notdir $(htmlref_patterns)))
+	(cd '$(DESTDIR)$(htmlrefdir)' 2>/dev/null || exit 0; \
+	 find . -type f \( $(htmlref_find_patterns) \) -exec rm -f '{}' '+')
 	-test ! -r '$(DESTDIR)$(htmlrefdir)' || rmdir '$(DESTDIR)$(htmlrefdir)'
 
 # Regenerate the Doxygen configuration file automatically.
@@ -133,13 +136,13 @@ reference/html/%: | $(doxytagfile)
 # also functions as time stamp target for the documentation as a whole.
 $(doxytagfile): $(doc_dependencies) | reference/Doxyfile
 	-rm -f '$@'
-	-rm -f reference/html/*
+	-rm -fr reference/html
 	(echo '@INCLUDE =' reference/Doxyfile && echo 'INPUT =' $(doc_input)) | $(DOXYGEN) -
-	$(PERL) -- "$(doc_postprocess)" reference/html/*.html
+	$(doc_postprocess) 'reference/html/*.html'
 
 # Run XSL transformation to generate a Devhelp book from a Doxygen tag file.
 %.devhelp2: %.tag
-	$(XSLTPROC) $(dh_xsl_params) -o $@ "$(tagfile_to_devhelp2)" $<
+	$(XSLTPROC) $(dh_xsl_params) -o $@ $(tagfile_to_devhelp2) $<
 
 # Instruct GNU make to delete the targets of a rule after it failed, in
 # order to avoid the complication of handling that situation manually.
