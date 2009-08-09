@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of mm-common.
 ##
@@ -16,7 +16,8 @@
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Parameters:  binding_name, wrap_init_flags
-## Overrides:   codegen_srcdir, codegen_m4_srcdir, binding_outputdir
+## Overrides:   codegen_srcdir, codegen_m4_srcdir, binding_outputdir,
+##              gmmproc, gen_wrap_init, gmmproc_flags
 ## Files:       files_codegen_m4, files_defs, files_hg, files_ccg
 ## Output:      dist_noinst_DATA, gmmproc_dependencies, other_built_sources,
 ##              MAINTAINERCLEANFILES
@@ -51,9 +52,10 @@ MAINTAINERCLEANFILES = $(binding_stampdir)/*.stamp
 # Dependencies of the gmmproc code generator targets.
 gmmproc_dependencies = $(binding_relfiles_m4) $(files_defs)
 
-# Command lines to invoke the code generator tools.
-gmmproc_cmd = $(PERL) -- "$(GMMPROC_DIR)/gmmproc" -I $(codegen_m4_srcdir) --defs $(srcdir)
-gen_wrap_init_cmd = $(PERL) -- "$(GMMPROC_DIR)/generate_wrap_init.pl" $(wrap_init_flags)
+# Default command lines for running the code generators.
+gmmproc       ?= $(PERL) -- "$(GMMPROC_DIR)/gmmproc"
+gen_wrap_init ?= $(PERL) -- "$(GMMPROC_DIR)/generate_wrap_init.pl"
+gmmproc_flags ?= -I $(codegen_m4_srcdir) --defs $(srcdir)
 
 # Declare the built sources main targets.
 all-local: $(binding_stampfiles) $(other_built_sources)
@@ -64,12 +66,12 @@ $(binding_stampdir):
 
 # Generate the wrap_init.cc file using generate_wrap_init.pl.
 $(binding_outputdir)/wrap_init.cc: $(binding_relfiles_hg)
-	$(gen_wrap_init_cmd) $(binding_relfiles_hg) >$@
+	$(gen_wrap_init) $(wrap_init_flags) $(binding_relfiles_hg) >$@
 
 # Run the gmmproc code generator to produce the C++ binding code.
 $(binding_stampdir)/%.stamp: %.hg %.ccg $(gmmproc_dependencies) | $(binding_stampdir)
 	@: >$@
-	$(gmmproc_cmd) $(notdir $*) $(srcdir) $(binding_outputdir)
+	$(gmmproc) $(gmmproc_flags) $(notdir $*) $(srcdir) $(binding_outputdir)
 
 # Instruct GNU make to delete the targets of a rule after it failed, in
 # order to avoid the complication of handling that situation manually.
