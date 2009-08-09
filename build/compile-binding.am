@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of mm-common.
 ##
@@ -18,7 +18,7 @@
 ## Parameters:  lib_LTLIBRARIES
 ## Overrides:   binding_name, binding_basedir, binding_modulename
 ## Files:       files_built_cc, files_built_h, files_built_ph,
-##              files_extra_cc, files_extra_h
+##              files_extra_cc, files_extra_h, files_extra_ph
 ## Output:      binding_sources, binding_includes, binding_cppflags
 
 # The name of the binding module.  Usually identical to the name of the
@@ -49,7 +49,7 @@ binding_privatedir = $(binding_includedir)/private
 
 # List of installed header files.
 binding_include_HEADERS = $(files_built_h) $(files_extra_h)
-binding_private_HEADERS = $(files_built_ph)
+binding_private_HEADERS = $(files_built_ph) $(files_extra_ph)
 
 # Delete built sources on make maintainer-clean.
 binding_built_sources = $(files_built_cc) $(files_built_h) $(files_built_ph)
