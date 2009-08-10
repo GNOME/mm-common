@@ -76,16 +76,10 @@ test -f "$acfile" || {
   echo "$progname: error: $acfile not found" >&2
   exit 1
 }
-# Extract the macro arguments from configure.ac
-auxdir=
-doctooldir=
-trace=`${AUTOCONF:-autoconf} --trace='MM_CONFIG_DOCTOOL_DIR:doctooldir="$1"' \
-                             --trace='AC_CONFIG_AUX_DIR:auxdir="$1"' "$acfile"`
-case $trace in
-  auxdir=*|doctooldir=*)
-    eval "$trace"
-    ;;
-esac
+# Extract the directory macro arguments from configure.ac
+s='	 ' # tab+space
+auxdir=`sed -n "s/^[$s]*AC_CONFIG_AUX_DIR([[$s]*\\([^])\$,$s]*\\).*/\\1/p" "$acfile"`
+doctooldir=`sed -n "s/^[$s]*MM_CONFIG_DOCTOOL_DIR([[$s]*\\([^])\$,$s]*\\).*/\1/p" "$acfile"`
 
 auxdir="$srcdir${auxdir:+/}$auxdir"
 echo "$progname: putting auxiliary files in '$auxdir'."
