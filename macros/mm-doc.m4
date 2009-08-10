@@ -15,7 +15,61 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090808
+#serial 20090810
+
+## _MM_CONFIG_DOCTOOL_DIR
+##
+## Query pkg-config for the location of the documentation utilities
+## shared by the GNOME C++ bindings.  This is the code path invoked
+## from MM_CONFIG_DOCTOOL_DIR when called without a directory name.
+##
+m4_define([_MM_CONFIG_DOCTOOL_DIR],
+[dnl
+AC_PROVIDE([$0])[]dnl
+AC_REQUIRE([PKG_PROG_PKG_CONFIG])[]dnl
+dnl
+AC_MSG_CHECKING([location of documentation utilities])
+AS_IF([test -z "${$1+set}"],
+[
+  mm_doctooldir=`$PKG_CONFIG --variable doctooldir glibmm-2.4 2>&AS_MESSAGE_LOG_FD`
+  AS_IF([test "[$]?" -ne 0],
+        [AC_MSG_ERROR([[not found
+The required module glibmm could not be found on this system.  If you
+are running a binary distribution and the glibmm package is installed,
+make sure that any separate development package for glibmm is installed
+as well.  If you built glibmm yourself, it may be necessary to adjust
+the PKG_CONFIG_PATH environment variable for pkg-config to find it.
+]])])
+  AS_IF([test "x$mm_doctooldir" = x],
+        [AC_MSG_ERROR([[not found
+The glibmm module is available, but the installation of glibmm on this
+machine is missing the shared documentation utilities of the GNOME C++
+bindings.  It may be necessary to upgrade to a more recent release of
+glibmm in order to build $PACKAGE_NAME.
+]])])
+  MMDOCTOOLDIR=$mm_doctooldir[]dnl
+])
+AC_MSG_RESULT([$MMDOCTOOLDIR])[]dnl
+])
+
+## MM_CONFIG_DOCTOOL_DIR([directory])
+##
+## Define the location of the documentation utilities shared by the
+## GNOME C++ binding modules.  If the <directory> argument is given,
+## it should name a directory relative to the toplevel directory of
+## the source tree.
+##
+## The directory name is used by mm-common-prepare as the destination
+## for copying the required files into the source tree.  If you make
+## use of this feature in order to avoid a dependency on glibmm, make
+## sure to include the installed files in the distribution tarball of
+## your package.
+##
+AC_DEFUN([MM_CONFIG_DOCTOOL_DIR],
+[dnl
+m4_ifval([$1], [MMDOCTOOLDIR='${top_srcdir}/$1'], [AC_REQUIRE([_MM_CONFIG_DOCTOOL_DIR])])
+AC_SUBST([MMDOCTOOLDIR])[]dnl
+])
 
 ## _MM_ARG_ENABLE_DOCUMENTATION
 ##

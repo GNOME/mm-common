@@ -34,17 +34,18 @@ dist_aclocal_macro_DATA =		\
 	macros/mm-pkg.m4		\
 	macros/mm-warnings.m4
 
+doctooldir = $(pkgdatadir)/doctool
+dist_doctool_DATA =			\
+	util/doc-install.pl		\
+	util/doc-postprocess.pl		\
+	util/tagfile-to-devhelp2.xsl
+
 doxygen_tagsdir = $(pkgdatadir)/tags
 dist_doxygen_tags_DATA = tags/libstdc++.tag
 
 shared_pkgconfigdir = $(datadir)/pkgconfig
 nodist_shared_pkgconfig_DATA = tags/mm-common-libstdc++.pc
 noinst_DATA = tags/mm-common-libstdc++-uninstalled.pc
-
-dist_noinst_DATA =			\
-	util/doc-install.pl		\
-	util/doc-postprocess.pl		\
-	util/tagfile-to-devhelp2.xsl
 
 dist_noinst_SCRIPTS = autogen.sh
 
