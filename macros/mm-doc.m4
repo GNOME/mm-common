@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090810
+#serial 20090811
 
 ## _MM_CONFIG_DOCTOOL_DIR
 ##
@@ -29,7 +29,7 @@ AC_PROVIDE([$0])[]dnl
 AC_REQUIRE([PKG_PROG_PKG_CONFIG])[]dnl
 dnl
 AC_MSG_CHECKING([location of documentation utilities])
-AS_IF([test -z "${$1+set}"],
+AS_IF([test "x$MMDOCTOOLDIR" = x],
 [
   mm_doctooldir=`$PKG_CONFIG --variable doctooldir glibmm-2.4 2>&AS_MESSAGE_LOG_FD`
   AS_IF([test "[$]?" -ne 0],
@@ -68,7 +68,7 @@ AC_MSG_RESULT([$MMDOCTOOLDIR])[]dnl
 AC_DEFUN([MM_CONFIG_DOCTOOL_DIR],
 [dnl
 AC_REQUIRE([_MM_PRE_INIT])[]dnl
-m4_ifval([$1], [MMDOCTOOLDIR='${top_srcdir}/$1'], [AC_REQUIRE([_MM_CONFIG_DOCTOOL_DIR])])
+m4_ifval([$1], [MMDOCTOOLDIR='[$]{top_srcdir}/$1'], [AC_REQUIRE([_MM_CONFIG_DOCTOOL_DIR])])
 AC_SUBST([MMDOCTOOLDIR])[]dnl
 ])
 
@@ -136,6 +136,7 @@ AC_DEFUN([MM_ARG_ENABLE_DOCUMENTATION],
 [dnl
 AC_BEFORE([$0], [MM_ARG_WITH_TAGFILE_DOC])[]dnl
 AC_REQUIRE([_MM_PRE_INIT])[]dnl
+AC_REQUIRE([MM_CONFIG_DOCTOOL_DIR])[]dnl
 AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
 ])
 
@@ -221,6 +222,7 @@ AC_DEFUN([MM_ARG_WITH_TAGFILE_DOC],
 [dnl
 m4_assert([$# >= 1])[]dnl
 m4_ifval([$2], [AC_REQUIRE([PKG_PROG_PKG_CONFIG])])[]dnl
+AC_REQUIRE([MM_CONFIG_DOCTOOL_DIR])[]dnl
 AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
 dnl
 AS_IF([test "x$ENABLE_DOCUMENTATION" != xno], [_MM_ARG_WITH_TAGFILE_DOC(
