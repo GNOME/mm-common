@@ -182,12 +182,17 @@ m4_ifval([$3], [dnl
   AS_IF([test "x$USE_MAINTAINER_MODE" != xno && test ! -f "$mm_tagpath"],
         [AC_MSG_WARN([Doxygen tag file $2 not found])])
   AS_IF([test "x$mm_htmlrefdir" = x],
-        [AC_MSG_WARN([Location of external $1 documentation not set])])[]dnl
+        [AC_MSG_WARN([Location of external $1 documentation not set])],
+        [AS_IF([test "x$DOCINSTALL_FLAGS" = x],
+               [DOCINSTALL_FLAGS="-l '$mm_tagname@$mm_htmlrefdir'"],
+               [DOCINSTALL_FLAGS="$DOCINSTALL_FLAGS -l '$mm_tagname@$mm_htmlrefdir'"])])
 
-  test "x$DOXYGEN_TAGFILES" = x || DOXYGEN_TAGFILES="$DOXYGEN_TAGFILES "
-  DOXYGEN_TAGFILES=$DOXYGEN_TAGFILES[\]"$mm_tagpath=$[mm_htmlref]m4_ifval([$3], [pub], [dir])[\]"
-  test "x$DOCINSTALL_FLAGS" = x || DOCINSTALL_FLAGS="$DOCINSTALL_FLAGS "
-  DOCINSTALL_FLAGS=$DOCINSTALL_FLAGS"-l '$mm_tagname@$mm_htmlrefdir'"dnl
+  AS_IF([test "x$[mm_htmlref]m4_ifval([$3], [pub], [dir])" = x],
+        [mm_val=$mm_tagpath],
+        [mm_val="$mm_tagpath=$[mm_htmlref]m4_ifval([$3], [pub], [dir])"])
+  AS_IF([test "x$DOXYGEN_TAGFILES" = x],
+        [DOXYGEN_TAGFILES=[\]"$mm_val[\]"],
+        [DOXYGEN_TAGFILES="$DOXYGEN_TAGFILES "[\]"$mm_val[\]"])[]dnl
 ])
 
 ## MM_ARG_WITH_TAGFILE_DOC(tagfilename, [module])
