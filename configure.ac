@@ -15,11 +15,11 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([mm-common], [0.2], [gtkmm-list@gnome.org], [mm-common])
+AC_INIT([mm-common], [0.3], [gtkmm-list@gnome.org], [mm-common])
 AC_PREREQ([2.59])
 AC_CONFIG_SRCDIR([util/mm-common-prepare.in])
 
-AM_INIT_AUTOMAKE([1.9 -Wno-portability dist-bzip2 no-define std-options tar-ustar])
+AM_INIT_AUTOMAKE([1.9 -Wno-portability check-news dist-bzip2 no-define std-options])
 AM_MAINTAINER_MODE
 
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
