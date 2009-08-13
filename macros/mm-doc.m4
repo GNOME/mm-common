@@ -152,6 +152,7 @@ m4_define([_MM_ARG_WITH_TAGFILE_DOC],
     mm_htmlrefdir=`[expr "@$withval" : '.*@\(.*\)' 2>&]AS_MESSAGE_LOG_FD`
     mm_tagname=`[expr "/$withval" : '[^@]*[\\/]\([^\\/@]*\)@' 2>&]AS_MESSAGE_LOG_FD`
     mm_tagpath=`[expr "X$withval" : 'X\([^@]*\)@' 2>&]AS_MESSAGE_LOG_FD`
+    AS_CASE([$mm_htmlrefdir], [[*[\\/]]],, [[?*]], [mm_htmlrefdir=$mm_htmlrefdir/])
     test "x$mm_tagname" != x || mm_tagname="$2"
     test "x$mm_tagpath" != x || mm_tagpath=$mm_tagname[]dnl
   ], [
@@ -168,7 +169,9 @@ m4_ifval([$3], [dnl
   AS_CASE([$mm_htmlrefdir], [[http://*|https://*]], [mm_htmlrefpub=$mm_htmlrefdir],
   [
     mm_htmlrefpub=`$PKG_CONFIG --variable=htmlrefpub "$3" 2>&AS_MESSAGE_LOG_FD`
-    test "x$mm_htmlrefpub" != x || mm_htmlrefpub=$mm_htmlrefdir
+    AS_IF([test "x$mm_htmlrefpub" = x],
+          [mm_htmlrefpub=$mm_htmlrefdir],
+          [AS_CASE([$mm_htmlrefpub], [[*[\\/]]],, [[?*]], [mm_htmlrefpub=$mm_htmlrefpub/])])
     test "x$mm_htmlrefdir" != x || mm_htmlrefdir=$mm_htmlrefpub
   ])
   AS_CASE([$mm_tagpath], [[*[\\/]*]],,
