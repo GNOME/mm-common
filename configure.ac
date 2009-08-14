@@ -35,5 +35,6 @@ AS_IF([test "x$USE_MAINTAINER_MODE" != xno && test "x$CURL$WGET" = x],
 AC_CONFIG_FILES([Makefile
                  doctags/mm-common-libstdc++.pc
                  doctags/mm-common-libstdc++-uninstalled.pc
+                 macros/mm-common.m4
                  util/mm-common-prepare])
 AC_OUTPUT

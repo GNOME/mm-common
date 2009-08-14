@@ -28,6 +28,7 @@ dist_build_support_DATA =		\
 	build/generate-binding.am
 
 aclocal_macrodir = $(datadir)/aclocal
+aclocal_macro_DATA = macros/mm-common.m4
 dist_aclocal_macro_DATA =		\
 	macros/mm-doc.m4		\
 	macros/mm-module.m4		\

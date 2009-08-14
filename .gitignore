@@ -12,4 +12,5 @@
 /mm-common-*.tar.*
 /doctags/libstdc++.tag
 /doctags/mm-common-*.pc
+/macros/mm-common.m4
 /util/mm-common-prepare
