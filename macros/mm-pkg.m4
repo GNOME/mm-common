@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090804
+#serial 20090814
 
 ## MM_PKG_CONFIG_SUBST(variable, arguments, [action-if-found], [action-if-not-found])
 ##
@@ -28,6 +28,7 @@
 AC_DEFUN([MM_PKG_CONFIG_SUBST],
 [dnl
 m4_assert([$# >= 2])[]dnl
+AC_REQUIRE([_MM_PRE_INIT])[]dnl
 AC_REQUIRE([PKG_PROG_PKG_CONFIG])[]dnl
 AC_MSG_CHECKING([for $1])
 
