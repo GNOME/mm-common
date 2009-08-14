@@ -42,10 +42,12 @@ m4_define([_MM_INIT_MODULE_BASENAME],
           [_MM_INIT_MODULE_SUBST([$1], [$2], [$3], [$4],
                                  m4_quote(AS_TR_CPP(m4_quote(m4_translit([$3], [+], [X])))))])
 
-## MM_INIT_MODULE(module-name, module-version)
+## MM_INIT_MODULE(module-name, [module-version])
 ##
 ## Set up substitution variables and macro definitions for a module with
 ## the specified pkg-config <module-name> and <module-version> triplet.
+## If no <module-version> is specified, it defaults to the expansion of
+## AC_PACKAGE_VERSION.
 ##
 ## Substitutions: <BASENAME>_MODULE_NAME        <module-name>
 ##                <BASENAME>_VERSION            <module-version>
@@ -55,15 +57,16 @@ m4_define([_MM_INIT_MODULE_BASENAME],
 ##                <BASENAME>_MINOR_VERSION      <minor>
 ##                <BASENAME>_MICRO_VERSION      <micro>
 ##
-## Where:         <BASENAME>                    AS_TR_CPP(<basename> ~ tr/+/X)
+## Where:         <BASENAME>                    AS_TR_CPP(<basename> ~ t/+/X/)
 ##                <basename>[-<api-version>]    <module-name>
 ##                <major>.<minor>.<micro>[.*]   <module-version>
 ##
 AC_DEFUN([MM_INIT_MODULE],
 [dnl
-m4_assert([$# >= 2])[]dnl
+m4_assert([$# >= 1])[]dnl
 AC_REQUIRE([_MM_PRE_INIT])[]dnl
-_MM_INIT_MODULE_BASENAME([$1], [$2],
-                         m4_quote(m4_bpatsubst([$1], [-[.0123456789]+$])),
-                         m4_quote(m4_bregexp([$1], [-\([.0123456789]+\)$], [\1])))[]dnl
+_MM_INIT_MODULE_BASENAME([$1],
+                 m4_quote(m4_ifval([$2], [$2], m4_defn([AC_PACKAGE_VERSION]))),
+                 m4_quote(m4_bpatsubst([$1], [-[.0123456789]+$])),
+                 m4_quote(m4_bregexp([$1], [-\([.0123456789]+\)$], [\1])))[]dnl
 ])
