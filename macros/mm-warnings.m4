@@ -15,7 +15,17 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090804
+#serial 20090814
+
+m4_define([_MM_ARG_ENABLE_WARNINGS_OPTION],
+[dnl
+AC_PROVIDE([$0])[]dnl
+AC_ARG_ENABLE([warnings],
+              [AS_HELP_STRING([[--enable-warnings[=min|max|fatal|no]]],
+                              [set compiler pedantry level [default=min]])],
+              [mm_enable_warnings=$enableval],
+              [mm_enable_warnings=min])[]dnl
+])
 
 ## MM_ARG_ENABLE_WARNINGS(variable, min-flags, max-flags, [deprecation-prefixes])
 ##
@@ -32,63 +42,56 @@
 AC_DEFUN([MM_ARG_ENABLE_WARNINGS],
 [dnl
 m4_assert([$# >= 3])[]dnl
+AC_REQUIRE([_MM_PRE_INIT])[]dnl
+AC_REQUIRE([_MM_ARG_ENABLE_WARNINGS_OPTION])[]dnl
 dnl
-AC_ARG_ENABLE([warnings],
-              [AS_HELP_STRING([[--enable-warnings[=min|max|fatal|no]]],
-                              [set compiler pedantry level [default=min]])],
-              [mm_enable_warnings=$enableval],
-              [mm_enable_warnings=min])[]dnl
-
 AS_CASE([$ac_compile],
-        [*'$CXXFLAGS '*], [mm_lang='C++' mm_cc=$CXX mm_conftest=conftest.${ac_ext-cc}],
-        [*'$CFLAGS '*],   [mm_lang=C mm_cc=$CC mm_conftest=conftest.${ac_ext-c}],
-        [mm_lang=])[]dnl
-
-AS_IF([test "x$mm_lang" != x],
+        [[*'$CXXFLAGS '*]], [mm_lang='C++' mm_cc=$CXX mm_conftest="conftest.[$]{ac_ext-cc}"],
+        [[*'$CFLAGS '*]],   [mm_lang=C mm_cc=$CC mm_conftest="conftest.[$]{ac_ext-c}"],
+                            [AC_MSG_ERROR([[current language is neither C nor C++]])])
+dnl
+AC_MSG_CHECKING([which $mm_lang compiler warning flags to use])
+m4_ifval([$4], [mm_deprecation_flags=])
+mm_tested_flags=
+dnl
+AS_CASE([$mm_enable_warnings],
+        [no],    [mm_warning_flags=],
+        [max],   [mm_warning_flags="$3"],
+        [fatal], [mm_warning_flags="$3 -Werror"][m4_ifval([$4], [
+         for mm_prefix in $4
+         do
+           mm_deprecation_flags="[$]{mm_deprecation_flags}-D[$]{mm_prefix}[_DISABLE_DEPRECATED ]"
+         done])],
+        [mm_warning_flags="$2"])
+dnl
+AS_IF([test "x$mm_warning_flags" != x],
 [
-  AC_MSG_CHECKING([which $mm_lang compiler warning flags to use])
-  mm_deprecation_flags=
-  mm_tested_flags=
-
-  AS_CASE([$mm_enable_warnings],
-          [no],    [mm_warning_flags=],
-          [max],   [mm_warning_flags="$3"],
-          [fatal], [mm_warning_flags="$3 -Werror"][m4_ifval([$4], [
-           for mm_prefix in $4
-           do
-             mm_deprecation_flags="${mm_deprecation_flags}-D${mm_prefix}_DISABLE_DEPRECATED "
-           done])],
-          [mm_warning_flags="$2"])[]dnl
-
-  AS_IF([test "x$mm_warning_flags" != x],
-  [
-    # Keep in mind that the dummy source must be devoid of any
-    # problems that might cause diagnostics.
-    AC_LANG_CONFTEST([AC_LANG_SOURCE([[
+  # Keep in mind that the dummy source must be devoid of any
+  # problems that might cause diagnostics.
+  AC_LANG_CONFTEST([AC_LANG_SOURCE([[
 int main(int argc, char** argv) { return (argv != 0) ? argc : 0; }
 ]])])
-    for mm_flag in $mm_warning_flags
-    do
-      # Test whether the compiler accepts the flag.  GCC doesn't bail
-      # out when given an unsupported flag but prints a warning, so
-      # check the compiler output instead.
-      mm_cc_out=`$mm_cc $mm_tested_flags $mm_flag -c "$mm_conftest" 2>&1 || echo failed`
-      rm -f "conftest.${OBJEXT-o}"
+  for mm_flag in $mm_warning_flags
+  do
+    # Test whether the compiler accepts the flag.  Look at standard output,
+    # since GCC only shows a warning message if an option is not supported.
+    mm_cc_out=`$mm_cc $mm_tested_flags $mm_flag -c "$mm_conftest" 2>&1 || echo failed`
+    rm -f "conftest.${OBJEXT-o}"
 
-      AS_IF([test "x$mm_cc_out" = x],
-            [AS_IF([test "x$mm_tested_flags" = x],
-                   [mm_tested_flags=$mm_flag],
-                   [mm_tested_flags="$mm_tested_flags $mm_flag"])],
-            [cat <<_MMEOF >&AS_MESSAGE_LOG_FD
+    AS_IF([test "x$mm_cc_out" = x],
+          [AS_IF([test "x$mm_tested_flags" = x],
+                 [mm_tested_flags=$mm_flag],
+                 [mm_tested_flags="$mm_tested_flags $mm_flag"])],
+[cat <<_MMEOF >&AS_MESSAGE_LOG_FD
 $mm_cc: $mm_cc_out
-_MMEOF])
-    done
-    rm -f "$mm_conftest"
-  ])
-  mm_all_flags=$mm_deprecation_flags$mm_tested_flags
-  AC_SUBST([$1], [$mm_all_flags])[]dnl
-
-  test "x$mm_all_flags" != x || mm_all_flags=none
-  AC_MSG_RESULT([$mm_all_flags])[]dnl
-])[]dnl
+_MMEOF
+])
+  done
+  rm -f "$mm_conftest"
+])
+mm_all_flags=m4_ifval([$4], [$mm_deprecation_flags])$mm_tested_flags
+AC_SUBST([$1], [$mm_all_flags])
+dnl
+test "x$mm_all_flags" != x || mm_all_flags=none
+AC_MSG_RESULT([$mm_all_flags])[]dnl
 ])
