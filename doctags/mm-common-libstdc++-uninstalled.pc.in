@@ -1,4 +1,4 @@
-doxytagfile=${pc_top_builddir}/tags/libstdc++.tag
+doxytagfile=${pc_top_builddir}/doctags/libstdc++.tag
 htmlrefpub=http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen
 
 Name: mm-common-libstdc++

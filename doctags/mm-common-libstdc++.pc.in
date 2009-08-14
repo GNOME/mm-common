@@ -3,7 +3,7 @@ datarootdir=@datarootdir@
 datadir=@datadir@
 pkgdatadir=${datadir}/@PACKAGE_TARNAME@
 
-doxytagfile=${pkgdatadir}/tags/libstdc++.tag
+doxytagfile=${pkgdatadir}/doctags/libstdc++.tag
 htmlrefpub=http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen
 
 Name: mm-common-libstdc++

@@ -33,7 +33,7 @@ AS_IF([test "x$USE_MAINTAINER_MODE" != xno && test "x$CURL$WGET" = x],
       [AC_MSG_FAILURE([[Either curl or wget is required for building mm-common.]])])
 
 AC_CONFIG_FILES([Makefile
-                 tags/mm-common-libstdc++.pc
-                 tags/mm-common-libstdc++-uninstalled.pc
+                 doctags/mm-common-libstdc++.pc
+                 doctags/mm-common-libstdc++-uninstalled.pc
                  util/mm-common-prepare])
 AC_OUTPUT

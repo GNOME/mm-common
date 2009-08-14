@@ -40,16 +40,16 @@ dist_doctool_DATA =			\
 	util/doc-postprocess.pl		\
 	util/tagfile-to-devhelp2.xsl
 
-doxygen_tagsdir = $(pkgdatadir)/tags
-dist_doxygen_tags_DATA = tags/libstdc++.tag
+doctagsdir = $(pkgdatadir)/doctags
+dist_doctags_DATA = doctags/libstdc++.tag
 
 shared_pkgconfigdir = $(datadir)/pkgconfig
-nodist_shared_pkgconfig_DATA = tags/mm-common-libstdc++.pc
-noinst_DATA = tags/mm-common-libstdc++-uninstalled.pc
+nodist_shared_pkgconfig_DATA = doctags/mm-common-libstdc++.pc
+noinst_DATA = doctags/mm-common-libstdc++-uninstalled.pc
 
 dist_noinst_SCRIPTS = autogen.sh
 
-MAINTAINERCLEANFILES = $(dist_doxygen_tags_DATA)
+MAINTAINERCLEANFILES = $(dist_doctags_DATA)
 
 # Remote location of the GNU libstdc++ Doxygen tag file.
 libstdcxx_tag_url = http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libstdc++.tag
@@ -58,12 +58,12 @@ libstdcxx_tag_url = http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libst
 # not to download a file again if its time stamp has not changed.
 download_curl = $(CURL) --compressed --connect-timeout 300 -g -L -m 3600 -R --retry 5 \
 		$(if $(wildcard $@),-z '$@') -o '$@'
-download_wget = $(WGET) -N -nd -T 300 -t 5 -P '$(@D)'
+download_wget = $(WGET) -N -nd -T 300 -t 5 -P '$(dir $@)'
 
 # If maintainer mode is enabled, always check the remote locations
 # of the tag files for updates when building the default target.
 if MAINTAINER_MODE
-check_updates = $(if $(filter all%,$(or $(MAKECMDGOALS),all)),$(dist_doxygen_tags_DATA))
+check_updates = $(if $(filter all%,$(or $(MAKECMDGOALS),all)),$(dist_doctags_DATA))
 else
 check_updates =
 endif
@@ -74,7 +74,7 @@ endif
 .DELETE_ON_ERROR:
 
 # Download the libstdc++ tag file from the GCC website.
-tags/libstdc++.tag:
+doctags/libstdc++.tag:
 	$(if $(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
 	     $(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f '$@'))
 

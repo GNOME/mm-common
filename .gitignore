@@ -10,6 +10,6 @@
 /install-sh
 /missing
 /mm-common-*.tar.*
-/tags/libstdc++.tag
-/tags/mm-common-*.pc
+/doctags/libstdc++.tag
+/doctags/mm-common-*.pc
 /util/mm-common-prepare
