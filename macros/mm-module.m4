@@ -15,15 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090809
-
-## _MM_PRE_INIT
-##
-## Private pre-initialization macro for use with AC_REQUIRE().  For now,
-## all it does is register a forbidden token pattern with autom4te, so
-## that unexpanded macro calls in the output can be caught.
-##
-AC_DEFUN([_MM_PRE_INIT], [m4_pattern_forbid([^_?MM_])])
+#serial 20090814
 
 ## _MM_INIT_MODULE_VERSION(basename, BASENAME, [major], [minor], [micro])
 ##
