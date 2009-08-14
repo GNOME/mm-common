@@ -140,58 +140,63 @@ AC_REQUIRE([MM_CONFIG_DOCTOOL_DIR])[]dnl
 AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
 ])
 
-## _MM_ARG_WITH_TAGFILE_DOC(option-basename, tagfilename, [module])
+## _MM_ARG_WITH_TAGFILE_DOC(option-basename, pkg-variable, tagfilename, [module])
 ##
 m4_define([_MM_ARG_WITH_TAGFILE_DOC],
 [dnl
   AC_MSG_CHECKING([for $1 documentation])
   AC_ARG_WITH([$1-doc],
               [AS_HELP_STRING([[--with-$1-doc=[TAGFILE@]HTMLREFDIR]],
-                              [Link to external $1 documentation]m4_ifval([$3], [[ [auto]]]))],
+                              [Link to external $1 documentation]m4_ifval([$4], [[ [auto]]]))],
   [
     mm_htmlrefdir=`[expr "@$withval" : '.*@\(.*\)' 2>&]AS_MESSAGE_LOG_FD`
     mm_tagname=`[expr "/$withval" : '[^@]*[\\/]\([^\\/@]*\)@' 2>&]AS_MESSAGE_LOG_FD`
     mm_tagpath=`[expr "X$withval" : 'X\([^@]*\)@' 2>&]AS_MESSAGE_LOG_FD`
-    test "x$mm_tagname" != x || mm_tagname="$2"
+    test "x$mm_tagname" != x || mm_tagname="$3"
     test "x$mm_tagpath" != x || mm_tagpath=$mm_tagname[]dnl
   ], [
     mm_htmlrefdir=
-    mm_tagname="$2"
+    mm_tagname="$3"
     mm_tagpath=$mm_tagname[]dnl
   ])
+  # Prepend working direcory if the tag file path starts with ./ or ../
   AS_CASE([$mm_tagpath], [[.[\\/]*|..[\\/]*]], [mm_tagpath=`pwd`/$mm_tagpath])
-m4_ifval([$3], [dnl
+
+m4_ifval([$4], [dnl
+  # If no local directory was specified, get the default from the .pc file
   AS_IF([test "x$mm_htmlrefdir" = x],
   [
-    mm_htmlrefdir=`$PKG_CONFIG --variable=htmlrefdir "$3" 2>&AS_MESSAGE_LOG_FD`dnl
+    mm_htmlrefdir=`$PKG_CONFIG --variable=htmlrefdir "$4" 2>&AS_MESSAGE_LOG_FD`dnl
   ])
+  # If the user specified a Web URL, allow it to override the public location
   AS_CASE([$mm_htmlrefdir], [[http://*|https://*]], [mm_htmlrefpub=$mm_htmlrefdir],
   [
-    mm_htmlrefpub=`$PKG_CONFIG --variable=htmlrefpub "$3" 2>&AS_MESSAGE_LOG_FD`
+    mm_htmlrefpub=`$PKG_CONFIG --variable=htmlrefpub "$4" 2>&AS_MESSAGE_LOG_FD`
     test "x$mm_htmlrefpub" != x || mm_htmlrefpub=$mm_htmlrefdir
-    AS_CASE([$mm_htmlrefpub], [[*[\\/]]],, [[?*]], [mm_htmlrefpub=$mm_htmlrefpub/])
     test "x$mm_htmlrefdir" != x || mm_htmlrefdir=$mm_htmlrefpub
   ])
+  # The user-supplied tag-file name takes precedence if it includes the path
   AS_CASE([$mm_tagpath], [[*[\\/]*]],,
   [
-    mm_doxytagfile=`$PKG_CONFIG --variable=doxytagfile "$3" 2>&AS_MESSAGE_LOG_FD`
+    mm_doxytagfile=`$PKG_CONFIG --variable=doxytagfile "$4" 2>&AS_MESSAGE_LOG_FD`
     test "x$mm_doxytagfile" = x || mm_tagpath=$mm_doxytagfile
   ])
+  # Append a trailing slash to the location, if needed
+  AS_CASE([/$mm_htmlrefpub], [[*[\\/]]],, [mm_htmlrefpub=$mm_htmlrefpub/])
 ])[]dnl
-  AS_CASE([$mm_htmlrefdir], [[*[\\/]]],, [[?*]], [mm_htmlrefdir=$mm_htmlrefdir/])
+  AS_CASE([/$mm_htmlrefdir], [[*[\\/]]],, [mm_htmlrefdir=$mm_htmlrefdir/])
+
   AC_MSG_RESULT([$mm_tagpath@$mm_htmlrefdir])
 
   AS_IF([test "x$USE_MAINTAINER_MODE" != xno && test ! -f "$mm_tagpath"],
-        [AC_MSG_WARN([Doxygen tag file $2 not found])])
+        [AC_MSG_WARN([Doxygen tag file $3 not found])])
   AS_IF([test "x$mm_htmlrefdir" = x],
         [AC_MSG_WARN([Location of external $1 documentation not set])],
         [AS_IF([test "x$DOCINSTALL_FLAGS" = x],
                [DOCINSTALL_FLAGS="-l '$mm_tagname@$mm_htmlrefdir'"],
                [DOCINSTALL_FLAGS="$DOCINSTALL_FLAGS -l '$mm_tagname@$mm_htmlrefdir'"])])
 
-  AS_IF([test "x$[mm_htmlref]m4_ifval([$3], [pub], [dir])" = x],
-        [mm_val=$mm_tagpath],
-        [mm_val="$mm_tagpath=$[mm_htmlref]m4_ifval([$3], [pub], [dir])"])
+  AS_IF([test "x$mm_$2" = x], [mm_val=$mm_tagpath], [mm_val="$mm_tagpath=$mm_$2"])
   AS_IF([test "x$DOXYGEN_TAGFILES" = x],
         [DOXYGEN_TAGFILES=[\]"$mm_val[\]"],
         [DOXYGEN_TAGFILES="$DOXYGEN_TAGFILES "[\]"$mm_val[\]"])[]dnl
@@ -232,6 +237,7 @@ m4_ifval([$2], [AC_REQUIRE([PKG_PROG_PKG_CONFIG])])[]dnl
 AC_REQUIRE([MM_CONFIG_DOCTOOL_DIR])[]dnl
 AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
 dnl
-AS_IF([test "x$ENABLE_DOCUMENTATION" != xno], [_MM_ARG_WITH_TAGFILE_DOC(
-  m4_quote(m4_bpatsubst([$1], [\([-+][0123456789]\|[+]*[._]\).*$])), [$1], [$2])])[]dnl
+AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
+      [_MM_ARG_WITH_TAGFILE_DOC(m4_quote(m4_bpatsubst([$1], [\([-+][0123456789]\|[+]*[._]\).*$])),
+                                [htmlref]m4_ifval([$2], [[pub]], [[dir]]), [$1], [$2])])[]dnl
 ])
