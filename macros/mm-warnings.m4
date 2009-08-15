@@ -17,6 +17,11 @@
 
 #serial 20090814
 
+## _MM_ARG_ENABLE_WARNINGS_OPTION
+##
+## Implementation helper macro of MM_ARG_ENABLE_WARNINGS().  Pulled in
+## through AC_REQUIRE() so that it will only be expanded once.
+##
 m4_define([_MM_ARG_ENABLE_WARNINGS_OPTION],
 [dnl
 AC_PROVIDE([$0])[]dnl
@@ -51,13 +56,13 @@ AS_CASE([$ac_compile],
                             [AC_MSG_ERROR([[current language is neither C nor C++]])])
 dnl
 AC_MSG_CHECKING([which $mm_lang compiler warning flags to use])
-m4_ifval([$4], [mm_deprecation_flags=])
-mm_tested_flags=
+m4_ifval([$4], [mm_deprecation_flags=
+])mm_tested_flags=
 dnl
 AS_CASE([$mm_enable_warnings],
         [no],    [mm_warning_flags=],
         [max],   [mm_warning_flags="$3"],
-        [fatal], [mm_warning_flags="$3 -Werror"][m4_ifval([$4], [
+        [fatal], [mm_warning_flags="$3 -Werror"[]m4_ifval([$4], [
          for mm_prefix in $4
          do
            mm_deprecation_flags="[$]{mm_deprecation_flags}-D[$]{mm_prefix}[_DISABLE_DEPRECATED ]"
