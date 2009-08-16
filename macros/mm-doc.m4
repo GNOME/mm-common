@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090813
+#serial 20090816
 
 ## _MM_CONFIG_DOCTOOL_DIR
 ##
@@ -238,6 +238,6 @@ AC_REQUIRE([MM_CONFIG_DOCTOOL_DIR])[]dnl
 AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
 dnl
 AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
-      [_MM_ARG_WITH_TAGFILE_DOC(m4_quote(m4_bpatsubst([$1], [\([-+][0123456789]\|[+]*[._]\).*$])),
+      [_MM_ARG_WITH_TAGFILE_DOC(m4_quote(m4_bpatsubst([$1], [[+]*\([-+][0123456789]\|[._]\).*$])),
                                 [htmlref]m4_ifval([$2], [[pub]], [[dir]]), [$1], [$2])])[]dnl
 ])
