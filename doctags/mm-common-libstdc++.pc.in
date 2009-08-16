@@ -4,7 +4,7 @@ datadir=@datadir@
 pkgdatadir=${datadir}/@PACKAGE_TARNAME@
 
 doxytagfile=${pkgdatadir}/doctags/libstdc++.tag
-htmlrefpub=http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen
+htmlrefpub=http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/
 
 Name: mm-common-libstdc++
 Description: GNU libstdc++ metadata module

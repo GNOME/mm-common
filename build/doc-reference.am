@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of mm-common.
 ##
@@ -26,8 +26,8 @@
 pubdocbase ?= http://www.gtkmm.org/docs/
 
 # The URL of the module's online HTML reference documentation,
-# excluding the trailing slash.
-htmlrefpub ?= $(pubdocbase)$(book_name)/reference/html
+# preferably including the trailing slash for consistency.
+htmlrefpub ?= $(pubdocbase)$(book_name)/reference/html/
 
 # The title of the generated Devhelp book.
 book_title ?= $(PACKAGE_NAME) Reference Manual
@@ -83,7 +83,7 @@ htmlref_install = $(doc_install_cmd) $(subst @$(datarootdir)/doc/,@../../../,$(D
 # Note that this is not a documented feature as far as I'm aware, but
 # Automake recognizes the override and does not try to assign its own
 # default value.
-dist_devhelpDATA_INSTALL = $(doc_install_cmd) --book-base='$(htmlrefdir)' -T --
+dist_devhelpDATA_INSTALL = $(doc_install_cmd) --book-base='$(htmlrefdir)/' -T --
 
 # Helper variables to replicate each pattern with a $(srcdir)/ prefix.
 # Also add quoting to prevent the shell from expanding the patterns.
