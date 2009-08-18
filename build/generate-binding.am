@@ -53,7 +53,7 @@ MAINTAINERCLEANFILES = $(binding_stampdir)/*.stamp
 gmmproc_dependencies = $(binding_relfiles_m4) $(files_defs)
 
 # Default command lines for running the code generators.
-gmmproc       ?= $(PERL) -- "$(GMMPROC_DIR)/gmmproc"
+gmmproc       ?= $(PERL) -I"$(GMMPROC_DIR)/pm" -- "$(GMMPROC_DIR)/gmmproc"
 gen_wrap_init ?= $(PERL) -- "$(GMMPROC_DIR)/generate_wrap_init.pl"
 gmmproc_flags ?= -I $(codegen_m4_srcdir) --defs $(srcdir)
 
