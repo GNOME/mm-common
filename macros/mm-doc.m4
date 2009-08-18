@@ -181,10 +181,10 @@ m4_ifval([$4], [dnl
     mm_doxytagfile=`$PKG_CONFIG --variable=doxytagfile "$4" 2>&AS_MESSAGE_LOG_FD`
     test "x$mm_doxytagfile" = x || mm_tagpath=$mm_doxytagfile
   ])
-  # Append a trailing slash to the location, if needed
-  AS_CASE([/$mm_htmlrefpub], [[*[\\/]]],, [mm_htmlrefpub=$mm_htmlrefpub/])
+  # Remove any trailing slashes from the location
+  mm_htmlrefpub=`[expr "X$mm_htmlrefpub" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD`
 ])[]dnl
-  AS_CASE([/$mm_htmlrefdir], [[*[\\/]]],, [mm_htmlrefdir=$mm_htmlrefdir/])
+  mm_htmlrefdir=`[expr "X$mm_htmlrefdir" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD`
 
   AC_MSG_RESULT([$mm_tagpath@$mm_htmlrefdir])
 
@@ -193,8 +193,8 @@ m4_ifval([$4], [dnl
   AS_IF([test "x$mm_htmlrefdir" = x],
         [AC_MSG_WARN([Location of external $1 documentation not set])],
         [AS_IF([test "x$DOCINSTALL_FLAGS" = x],
-               [DOCINSTALL_FLAGS="-l '$mm_tagname@$mm_htmlrefdir'"],
-               [DOCINSTALL_FLAGS="$DOCINSTALL_FLAGS -l '$mm_tagname@$mm_htmlrefdir'"])])
+               [DOCINSTALL_FLAGS="-l '$mm_tagname@$mm_htmlrefdir/'"],
+               [DOCINSTALL_FLAGS="$DOCINSTALL_FLAGS -l '$mm_tagname@$mm_htmlrefdir/'"])])
 
   AS_IF([test "x$mm_$2" = x], [mm_val=$mm_tagpath], [mm_val="$mm_tagpath=$mm_$2"])
   AS_IF([test "x$DOXYGEN_TAGFILES" = x],

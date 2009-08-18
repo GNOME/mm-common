@@ -25,8 +25,8 @@
 # is located, including the trailing slash.
 pubdocbase ?= http://www.gtkmm.org/docs/
 
-# The URL of the module's online HTML reference documentation,
-# preferably including the trailing slash for consistency.
+# The URL of the module's online HTML reference documentation, which
+# may or may not end in a trailing slash.
 htmlrefpub ?= $(pubdocbase)$(book_name)/reference/html/
 
 # The title of the generated Devhelp book.
@@ -83,7 +83,7 @@ htmlref_install = $(doc_install_cmd) $(subst @$(datarootdir)/doc/,@../../../,$(D
 # Note that this is not a documented feature as far as I'm aware, but
 # Automake recognizes the override and does not try to assign its own
 # default value.
-dist_devhelpDATA_INSTALL = $(doc_install_cmd) --book-base='$(htmlrefdir)/' -T --
+dist_devhelpDATA_INSTALL = $(doc_install_cmd) --book-base='$(htmlrefdir:/=)' -T --
 
 # Helper variables to replicate each pattern with a $(srcdir)/ prefix.
 # Also add quoting to prevent the shell from expanding the patterns.
@@ -96,7 +96,7 @@ htmlref_find_patterns  = $(patsubst %,-name '%' -o,$(notdir $(htmlref_patterns))
 # The parameters to the Doxygen-to-Devhelp XSLT script
 dh_xsl_params =	--stringparam book_title '$(book_title)' \
 		--stringparam book_name '$(book_name)' \
-		--stringparam book_base '$(htmlrefpub)'
+		--stringparam book_base '$(htmlrefpub:/=)'
 
 # Regenerate the documentation automatically only in maintainer mode.
 if MAINTAINER_MODE
