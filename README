@@ -8,7 +8,7 @@ building tarball releases, unless configured to use maintainer-mode.
 
 Release archives of mm-common include the Doxygen tag file for the
 GNU C++ Library reference documentation.  It is covered by the same
-licence as the source code is was extracted from.  More information
+licence as the source code it was extracted from.  More information
 is available at <http://gcc.gnu.org/onlinedocs/libstdc++/>.
 
 mm-common overview
@@ -24,7 +24,7 @@ mm-common-prepare
 The mm-common-prepare shell script is installed in ${bindir} and must be
 invoked from the bootstrap script of a binding module in order to set up
 necessary support files in the project's source tree.  It should be run
-before any of Autotools own setup utilities.  The classic command line
+before any of Autotools' own setup utilities.  The classic command line
 options such as --copy and --force can be used to adjust the behavior of
 mm-common-prepare.  A typical autogen.sh would look like this:
 
@@ -41,7 +41,7 @@ Do not forget to set:
   ACLOCAL_AMFLAGS = -I build ${ACLOCAL_FLAGS}
 
 in your project's top-level Makefile.am.  "build" should be changed to the
-name of the Autoconf M4 macro subdirectory of your project source tree.
+name of the Autoconf M4 macro subdirectory of your project's source tree.
 Also note that mm-common-prepare inspects the project's configure.ac file
 for the AC_CONFIG_AUX_DIR([...]) argument.  This is explained in further
 detail below in the section on Automake include files.
@@ -127,7 +127,7 @@ These are two Perl scripts and one XSL transformation which assist with
 the task of generating and installing the Doxygen reference documentation.
 At least doc-install.pl is also required for tarball builds.  To avoid
 copying these files into all binding modules, they are also distributed
-and installed by the glibmm module.  Those binding modules which cannot
+and installed with the glibmm module.  Those binding modules which cannot
 depend on glibmm must call MM_CONFIG_DOCTOOL_DIR([...]) in configure.ac
 to indicate to mm-common-prepare that it should copy the documentation
 utilities into the project's source tree.  Otherwise the files installed
