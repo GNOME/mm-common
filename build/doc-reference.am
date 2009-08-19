@@ -73,11 +73,17 @@ MAINTAINERCLEANFILES = $(doxytagfile) $(devhelpfile) reference/html/*
 # The generic bit of the doc-install.pl command line.
 doc_install_cmd = $(doc_install) --verbose --mode=0644
 
+# Set $(mm_space) to a single space character
+mm_empty =
+mm_space = $(mm_empty) $(mm_empty)
+
 # The command and options used to install the files from the HTML reference
 # documentation.  The $(subst) magic translates external tag references from
 # absolute to relative paths if the destination is on the local file system
 # and installed under the same prefix as the package being built.
-htmlref_install = $(doc_install_cmd) $(subst @$(datarootdir)/doc/,@../../../,$(DOCINSTALL_FLAGS))
+docdir_base_uri = $(patsubst /%,file:///%,$(subst $(mm_space),%20,$(subst \,/,$(datarootdir))))/doc
+htmlref_relinst = $(subst @$(docdir_base_uri)/,@../../../,$(DOCINSTALL_FLAGS))
+htmlref_install = $(doc_install_cmd) $(htmlref_relinst)
 
 # Override the file installation program for dist_devhelp_DATA files.
 # Note that this is not a documented feature as far as I'm aware, but

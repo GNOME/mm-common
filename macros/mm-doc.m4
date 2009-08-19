@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090818
+#serial 20090819
 
 ## _MM_CONFIG_DOCTOOL_DIR
 ##
@@ -181,10 +181,12 @@ m4_ifval([$4], [dnl
     mm_doxytagfile=`$PKG_CONFIG --variable=doxytagfile "$4" 2>&AS_MESSAGE_LOG_FD`
     test "x$mm_doxytagfile" = x || mm_tagpath=$mm_doxytagfile
   ])
-  # Remove any trailing slashes from the location
-  mm_htmlrefpub=`[expr "X$mm_htmlrefpub" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD`
+  # Remove trailing slashes and translate to URI
+  mm_htmlrefpub=`[expr "X$mm_htmlrefpub" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD |\
+                 [sed 's,[\\],/,g;s, ,%20,g;s,^/,file:///,' 2>&]AS_MESSAGE_LOG_FD`
 ])[]dnl
-  mm_htmlrefdir=`[expr "X$mm_htmlrefdir" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD`
+  mm_htmlrefdir=`[expr "X$mm_htmlrefdir" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD |\
+                 [sed 's,[\\],/,g;s, ,%20,g;s,^/,file:///,' 2>&]AS_MESSAGE_LOG_FD`
 
   AC_MSG_RESULT([$mm_tagpath@$mm_htmlrefdir])
 
