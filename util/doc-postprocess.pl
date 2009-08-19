@@ -1,6 +1,6 @@
 package main;
 
-# Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+# Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 #
 # This file is part of mm-common.
 #
@@ -20,21 +20,59 @@ package main;
 use strict;
 use warnings;
 use bytes;
+use File::Spec;
+use Getopt::Long qw(:config no_getopt_compat no_ignore_case require_order bundling);
+
+sub path_basename ($)
+{
+  my ($path) = @_;
+  my $basename = File::Spec->splitpath($path);
+
+  return $basename;
+}
+
+sub exit_help ()
+{
+  my $script_name = path_basename($0) || 'doc-postprocess.pl';
+
+  print <<"EOF";
+Usage: perl $script_name [OPTION]... [PATTERN]...
+
+Post-process the Doxygen-generated HTML files matching PATTERN.
+
+Options:
+  -?, --help                        display this help and exit
+EOF
+  exit;
+}
+
+sub error (@)
+{
+  my $script_name = path_basename($0);
+  $script_name =~ s/\.[^.]*$//s if (defined $script_name);
+
+  print STDERR ($script_name || 'doc-postprocess', ': ', @_, "\n");
+  exit 1;
+}
+
+GetOptions('help|?' => \&exit_help)
+  or exit 2;
 
 foreach my $filename (map(glob, @ARGV))
 {
-  my @outbuf = ();
+  my @buf;
   my $file;
 
-  open($file, '<', $filename);
+  open($file, '<', $filename) and (@buf = <$file>) and close($file)
+    or error('Failed to read ', path_basename($filename), ': ', $!);
 
-  while (<$file>)
+  foreach (@buf)
   {
     if (/<a class="el"/)
     {
       # return value
-      s/ &amp;&nbsp;/&amp;&#160;/;
-      s/ \*&nbsp;/*&#160;/;
+      s/ &amp;&nbsp; */&amp;&#160;/;
+      s/ \*&nbsp; */*&#160;/;
 
       # parameters
       s/ &amp;/&amp;/g;
@@ -48,15 +86,15 @@ foreach my $filename (map(glob, @ARGV))
     elsif (/<td class="md(?:name)?"/)
     {
       # left parenthesis
-      s/\(&nbsp;/(/;
+      s/\(&nbsp; */(/;
 
       # return value
       s/ &amp; /&amp; /g;
       s/ \* /* /g;
 
       # parameters
-      s/ &amp;&nbsp;/&amp;&#160;/g;
-      s/ \*&nbsp;/*&#160;/g;
+      s/ &amp;&nbsp; */&amp;&#160;/g;
+      s/ \*&nbsp; */*&#160;/g;
 
       # templates
       s/\btemplate&lt;/template &lt;/;
@@ -66,16 +104,17 @@ foreach my $filename (map(glob, @ARGV))
       # template decls
       s/^(<h\d>|)template&lt;/$1template &lt;/;
     }
-    s/&nbsp;/&#160;/g;
 
-    push(@outbuf, $_);
+    s/&copy;/&#169;/g;
+    s/&mdash;/&#8212;/g;
+    s/&ndash;/&#8211;/g;
+    s/ *&nbsp; */&#160;/g;
+    s/(?<=\S)\s{2,}/ /g;
   }
-  close($file);
 
   # write the whole buffer back
-  open($file, '>', $filename);
-  print $file ($_) foreach (@outbuf);
-  close($file);
+  open($file, '>', $filename) and print $file (@buf) and close($file)
+    or error('Failed to write ', path_basename($filename), ': ', $!);
 }
 
 exit;
