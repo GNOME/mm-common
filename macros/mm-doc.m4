@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090816
+#serial 20090818
 
 ## _MM_CONFIG_DOCTOOL_DIR
 ##
