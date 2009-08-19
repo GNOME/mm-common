@@ -95,23 +95,29 @@ AC_ARG_ENABLE([documentation],
               [AS_HELP_STRING([--disable-documentation],
                               [do not build or install the documentation])],
               [ENABLE_DOCUMENTATION=$enableval],
-              [ENABLE_DOCUMENTATION=yes])
+              [ENABLE_DOCUMENTATION=auto])
 AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
 [
+  mm_msg=
   AS_IF([test "x$PERL" = xperl],
-        [AC_MSG_FAILURE([[Perl is required for installing the documentation.]])])
-
-  AS_IF([test "x$USE_MAINTAINER_MODE" != xno],
+        [mm_msg='Perl is required for installing the documentation.'],
+        [test "x$USE_MAINTAINER_MODE" != xno],
   [
     for mm_prog in "$DOT" "$DOXYGEN" "$XSLTPROC"
     do
-      AS_CASE([$mm_prog], [[dot|doxygen|xsltproc]],
-              [AC_MSG_FAILURE([[The documentation will be built in this configuration,
-but the required tool $mm_prog could not be found.]])])
+      AS_CASE([$mm_prog], [[dot|doxygen|xsltproc]], [dnl
+mm_msg='The reference documentation cannot be generated
+because the required tool '$mm_prog' could not be found.'
+break])
     done
-  ])[]dnl
+  ])
+  AS_IF([test "x$mm_msg" = x],
+        [ENABLE_DOCUMENTATION=yes],
+        [test "x$ENABLE_DOCUMENTATION" = xyes],
+        [AC_MSG_FAILURE([[$mm_msg]])],
+        [AC_MSG_WARN([[$mm_msg]])])[]dnl
 ])
-AM_CONDITIONAL([ENABLE_DOCUMENTATION], [test "x$ENABLE_DOCUMENTATION" != xno])
+AM_CONDITIONAL([ENABLE_DOCUMENTATION], [test "x$ENABLE_DOCUMENTATION" = xyes])
 AC_SUBST([DOXYGEN_TAGFILES], [[]])
 AC_SUBST([DOCINSTALL_FLAGS], [[]])[]dnl
 ])
