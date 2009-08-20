@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of mm-common.
 ##
@@ -15,24 +15,35 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090814
+#serial 20090820
 
 ## _MM_INIT_MODULE_VERSION(basename, BASENAME, [major], [minor], [micro])
 ##
 m4_define([_MM_INIT_MODULE_VERSION],
 [dnl
-m4_ifval([$3], [AC_DEFINE([$2][_MAJOR_VERSION], [$3], [Major version number of $1.])])[]dnl
-m4_ifval([$4], [AC_DEFINE([$2][_MINOR_VERSION], [$4], [Minor version number of $1.])])[]dnl
-m4_ifval([$5], [AC_DEFINE([$2][_MICRO_VERSION], [$5], [Micro version number of $1.])])[]dnl
+m4_ifval([$3],
+[AC_SUBST([$2][_MAJOR_VERSION], [$3])
+AC_DEFINE([$2][_MAJOR_VERSION], [$3], [Major version number of $1.])
+])[]dnl
+m4_ifval([$4],
+[AC_SUBST([$2][_MINOR_VERSION], [$4])
+AC_DEFINE([$2][_MINOR_VERSION], [$4], [Minor version number of $1.])
+])[]dnl
+m4_ifval([$5],
+[AC_SUBST([$2][_MICRO_VERSION], [$5])
+AC_DEFINE([$2][_MICRO_VERSION], [$5], [Micro version number of $1.])
+])[]dnl
 ])
 
 ## _MM_INIT_MODULE_SUBST(module-name, module-version, basename, api-version, BASENAME)
 ##
 m4_define([_MM_INIT_MODULE_SUBST],
 [dnl
-AC_SUBST([$5][_MODULE_NAME], [$1])[]dnl
-AC_SUBST([$5][_VERSION], [$2])[]dnl
-m4_ifval([$4], [AC_SUBST([$5][_API_VERSION], [$4])])[]dnl
+AC_SUBST([$5][_MODULE_NAME], ['$1'])
+AC_SUBST([$5][_VERSION], ['$2'])
+m4_ifval([$4],
+[AC_SUBST([$5][_API_VERSION], ['$4'])
+])[]dnl
 _MM_INIT_MODULE_VERSION([$3], [$5], m4_bpatsubst([$2], [[^0123456789]+], [,]))[]dnl
 ])
 
@@ -52,12 +63,15 @@ m4_define([_MM_INIT_MODULE_BASENAME],
 ## Substitutions: <BASENAME>_MODULE_NAME        <module-name>
 ##                <BASENAME>_VERSION            <module-version>
 ##                <BASENAME>_API_VERSION        <api-version>
-##
-## Defines:       <BASENAME>_MAJOR_VERSION      <major>
+##                <BASENAME>_MAJOR_VERSION      <major>
 ##                <BASENAME>_MINOR_VERSION      <minor>
 ##                <BASENAME>_MICRO_VERSION      <micro>
 ##
-## Where:         <BASENAME>                    AS_TR_CPP(<basename> ~ t/+/X/)
+## Macro defines: <BASENAME>_MAJOR_VERSION      <major>
+##                <BASENAME>_MINOR_VERSION      <minor>
+##                <BASENAME>_MICRO_VERSION      <micro>
+##
+## Where:         <BASENAME>                    AS_TR_CPP(<basename> =~ tr/+/X/)
 ##                <basename>[-<api-version>]    <module-name>
 ##                <major>.<minor>.<micro>[.*]   <module-version>
 ##
