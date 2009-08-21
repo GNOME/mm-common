@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of mm-common.
 ##
@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090819
+#serial 20090821
 
 ## _MM_CONFIG_DOCTOOL_DIR
 ##
@@ -81,12 +81,10 @@ m4_define([_MM_ARG_ENABLE_DOCUMENTATION],
 [dnl
 AC_PROVIDE([$0])[]dnl
 dnl
-AC_ARG_VAR([PERL], [path to Perl interpreter])[]dnl
 AC_ARG_VAR([DOT], [path to dot utility])[]dnl
 AC_ARG_VAR([DOXYGEN], [path to Doxygen utility])[]dnl
 AC_ARG_VAR([XSLTPROC], [path to xsltproc utility])[]dnl
 dnl
-AC_PATH_PROG([PERL], [perl], [perl])
 AC_PATH_PROG([DOT], [dot], [dot])
 AC_PATH_PROG([DOXYGEN], [doxygen], [doxygen])
 AC_PATH_PROG([XSLTPROC], [xsltproc], [xsltproc])
@@ -142,6 +140,7 @@ AC_DEFUN([MM_ARG_ENABLE_DOCUMENTATION],
 [dnl
 AC_BEFORE([$0], [MM_ARG_WITH_TAGFILE_DOC])[]dnl
 AC_REQUIRE([_MM_PRE_INIT])[]dnl
+AC_REQUIRE([MM_PATH_PERL])[]dnl
 AC_REQUIRE([MM_CONFIG_DOCTOOL_DIR])[]dnl
 AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
 ])
