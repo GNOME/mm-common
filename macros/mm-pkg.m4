@@ -61,7 +61,6 @@ AS_IF([$PERL -e 'require v$1; exit 0;' >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD]
 ##
 AC_DEFUN([MM_CHECK_PERL],
 [dnl
-m4_assert([$# >= 2])[]dnl
 AC_REQUIRE([_MM_PRE_INIT])[]dnl
 AC_REQUIRE([_MM_PATH_PERL])[]dnl
 _MM_CHECK_PERL(m4_ifval([$1], [[$1]], [[5.6.0]]), [$2], [$3])[]dnl
