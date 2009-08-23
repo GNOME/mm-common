@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090821
+#serial 20090822
 
 ## _MM_CONFIG_DOCTOOL_DIR
 ##
@@ -31,7 +31,7 @@ dnl
 AC_MSG_CHECKING([location of documentation utilities])
 AS_IF([test "x$MMDOCTOOLDIR" = x],
 [
-  mm_doctooldir=`$PKG_CONFIG --variable doctooldir glibmm-2.4 2>&AS_MESSAGE_LOG_FD`
+  MMDOCTOOLDIR=`$PKG_CONFIG --variable=doctooldir glibmm-2.4 2>&AS_MESSAGE_LOG_FD`
   AS_IF([test "[$]?" -ne 0],
         [AC_MSG_ERROR([[not found
 The required module glibmm could not be found on this system.  If you
@@ -40,14 +40,13 @@ make sure that any separate development package for glibmm is installed
 as well.  If you built glibmm yourself, it may be necessary to adjust
 the PKG_CONFIG_PATH environment variable for pkg-config to find it.
 ]])])
-  AS_IF([test "x$mm_doctooldir" = x],
+  AS_IF([test "x$MMDOCTOOLDIR" = x],
         [AC_MSG_ERROR([[not found
 The glibmm module is available, but the installation of glibmm on this
 machine is missing the shared documentation utilities of the GNOME C++
 bindings.  It may be necessary to upgrade to a more recent release of
 glibmm in order to build $PACKAGE_NAME.
 ]])])
-  MMDOCTOOLDIR=$mm_doctooldir[]dnl
 ])
 AC_MSG_RESULT([$MMDOCTOOLDIR])[]dnl
 ])
@@ -96,28 +95,35 @@ AC_ARG_ENABLE([documentation],
               [ENABLE_DOCUMENTATION=auto])
 AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
 [
-  mm_msg=
-  AS_IF([test "x$PERL" = xperl],
-        [mm_msg='Perl is required for installing the documentation.'],
+  mm_err=
+  AS_IF([test "x$PERL" = xperl], [mm_err='Perl is required for installing the documentation.'],
         [test "x$USE_MAINTAINER_MODE" != xno],
   [
-    for mm_prog in "$DOT" "$DOXYGEN" "$XSLTPROC"
-    do
-      AS_CASE([$mm_prog], [[dot|doxygen|xsltproc]], [dnl
-mm_msg='The reference documentation cannot be generated
-because the required tool '$mm_prog' could not be found.'
-break])
-    done
+    test "x$DOT" != xdot || mm_err=' dot'
+    test "x$DOXYGEN" != xdoxygen || mm_err="$mm_err doxygen"
+    test "x$XSLTPROC" != xxsltproc || mm_err="$mm_err xsltproc"
+    test -z "$mm_err" || mm_err='The documentation cannot be generated because
+not all of the required tools are available:'$mm_err
   ])
-  AS_IF([test "x$mm_msg" = x],
-        [ENABLE_DOCUMENTATION=yes],
-        [test "x$ENABLE_DOCUMENTATION" = xyes],
-        [AC_MSG_FAILURE([[$mm_msg]])],
-        [AC_MSG_WARN([[$mm_msg]])])[]dnl
+  AS_IF([test -z "$mm_err"], [ENABLE_DOCUMENTATION=yes],
+        [test "x$ENABLE_DOCUMENTATION" = xyes], [AC_MSG_FAILURE([[$mm_err]])],
+        [ENABLE_DOCUMENTATION=no; AC_MSG_WARN([[$mm_err]])])
 ])
 AM_CONDITIONAL([ENABLE_DOCUMENTATION], [test "x$ENABLE_DOCUMENTATION" = xyes])
 AC_SUBST([DOXYGEN_TAGFILES], [[]])
 AC_SUBST([DOCINSTALL_FLAGS], [[]])[]dnl
+])
+
+## _MM_TR_URI(shell-expression)
+##
+## Internal macro that expands to a reusable shell construct which
+## functions as a poor man's filesystem path to URI translator.
+## The input <shell-expression> is expanded within double quotes.
+##
+m4_define([_MM_TR_URI],
+[dnl
+[`expr "X$1" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD[ |]dnl
+[ sed 's|[\\]|/|g;s| |%20|g;s|^/|file:///|;s|^.:/|file:///&|' 2>&]AS_MESSAGE_LOG_FD[`]dnl
 ])
 
 ## MM_ARG_ENABLE_DOCUMENTATION
@@ -140,8 +146,8 @@ AC_DEFUN([MM_ARG_ENABLE_DOCUMENTATION],
 [dnl
 AC_BEFORE([$0], [MM_ARG_WITH_TAGFILE_DOC])[]dnl
 AC_REQUIRE([_MM_PRE_INIT])[]dnl
-AC_REQUIRE([MM_PATH_PERL])[]dnl
 AC_REQUIRE([MM_CONFIG_DOCTOOL_DIR])[]dnl
+AC_REQUIRE([MM_PATH_PERL])[]dnl
 AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
 ])
 
@@ -187,11 +193,9 @@ m4_ifval([$4], [dnl
     test "x$mm_doxytagfile" = x || mm_tagpath=$mm_doxytagfile
   ])
   # Remove trailing slashes and translate to URI
-  mm_htmlrefpub=`[expr "X$mm_htmlrefpub" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD |\
-                 [sed 's,[\\],/,g;s, ,%20,g;s,^/,file:///,' 2>&]AS_MESSAGE_LOG_FD`
+  mm_htmlrefpub=_MM_TR_URI([$mm_htmlrefpub])
 ])[]dnl
-  mm_htmlrefdir=`[expr "X$mm_htmlrefdir" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD |\
-                 [sed 's,[\\],/,g;s, ,%20,g;s,^/,file:///,' 2>&]AS_MESSAGE_LOG_FD`
+  mm_htmlrefdir=_MM_TR_URI([$mm_htmlrefdir])
 
   AC_MSG_RESULT([$mm_tagpath@$mm_htmlrefdir])
 
