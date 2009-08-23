@@ -15,7 +15,40 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090821
+#serial 20090822
+
+## _MM_CHECK_GNU_MAKE
+##
+## Implementation of MM_CHECK_GNU_MAKE.
+##
+m4_define([_MM_CHECK_GNU_MAKE],
+[dnl
+AC_PROVIDE([$0])[]dnl
+AC_MSG_CHECKING([whether [$]{MAKE-make} supports GNU make features])
+cat >conftest.make <<'_MMEOF'
+override reverse = [$](2)[$](subst ,, )[$](1)
+override result := [$](word 2,[$](call reverse,success,failure))
+all: ; test '[$](result)' = success
+.PHONY: all
+_MMEOF
+AS_IF([[$]{MAKE-make} -f conftest.make >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD],
+      [mm_gnu_make=yes], [mm_gnu_make=no])
+rm -f conftest.make
+AC_MSG_RESULT([$mm_gnu_make])
+AS_IF([test "x$mm_gnu_make" != xyes],
+      [AC_MSG_FAILURE([[The GNU make program is required to build $PACKAGE_NAME.]])])[]dnl
+])
+
+## MM_CHECK_GNU_MAKE
+##
+## Check whether the installed make program supports GNU make features.
+## If the test fails, display an error message and abort.
+##
+AC_DEFUN([MM_CHECK_GNU_MAKE],
+[dnl
+AC_REQUIRE([_MM_PRE_INIT])[]dnl
+AC_REQUIRE([_MM_CHECK_GNU_MAKE])[]dnl
+])
 
 ## _MM_PATH_PERL
 ##
@@ -46,9 +79,9 @@ AC_REQUIRE([_MM_PATH_PERL])[]dnl
 ##
 m4_define([_MM_CHECK_PERL],
 [dnl
-AS_IF([$PERL -e 'require v$1; exit 0;' >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD],
+AS_IF([$PERL -e "require v$1; exit 0;" >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD],
       [$2], m4_ifval([$2$3], [[$3]],
-            [[AC_MSG_FAILURE([[At least Perl ]$1[ is required to build $PACKAGE.]])]]))[]dnl
+            [[AC_MSG_FAILURE([[At least Perl ]$1[ is required to build $PACKAGE_NAME.]])]]))[]dnl
 ])
 
 ## MM_CHECK_PERL([min-version], [action-if-found], [action-if-not-found])
