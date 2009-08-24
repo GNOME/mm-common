@@ -55,7 +55,12 @@ into aclocal.m4, these macro files are required only in maintainer-mode.
 For this reason, they are not copied into the source tree of a project by
 mm-common-prepare.  If mm-common is installed to a different prefix than
 Automake, it may be necessary to adjust ACLOCAL_FLAGS accordingly so that
-aclocal can find the M4 files.
+aclocal can find the M4 files:
+
+  export ACLOCAL_FLAGS='-I ${mm_common_prefix}/share/aclocal'
+
+This step is not necessary when using jhbuild, as it takes care of setting
+up the environment for using the locally built modules.
 
 macros/mm-common.m4: (generated from macros/mm-common.m4.in)
   Provides MM_PREREQ() for requiring a minimum version of mm-common, and
@@ -86,7 +91,9 @@ macros/mm-module.m4:
 
 macros/mm-pkg.m4:
   The helper macro MM_PKG_CONFIG_SUBST, which simplifies the retrieval of
-  specific configuration values from pkg-config.
+  specific configuration values from pkg-config.  Checks for particular
+  utility programs are also defined here, such as MM_CHECK_GNU_MAKE and
+  MM_CHECK_PERL.
 
 macros/mm-dietlib.m4:
   Implements Autoconf macros which provide options intended to reduce the
