@@ -1,3 +1,11 @@
+mm-common 0.6.1 "Librarian" (2009-08-25)
+
+	We're on library.gnome.org now, yay!
+
+	* The only change in this release is the new default location
+	  of the public reference documentation, which is now hosted
+	  on library.gnome.org.
+
 mm-common 0.6 "Slash" (2009-08-24)
 
 	To slash or not to slash? This release is all about slashes.
