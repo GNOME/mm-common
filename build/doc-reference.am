@@ -23,11 +23,11 @@
 
 # The base URL where the online documentation for C++ binding modules
 # is located, including the trailing slash.
-pubdocbase ?= http://www.gtkmm.org/docs/
+pubdocbase ?= http://library.gnome.org/devel/
 
 # The URL of the module's online HTML reference documentation, which
 # may or may not end in a trailing slash.
-htmlrefpub ?= $(pubdocbase)$(book_name)/reference/html/
+htmlrefpub ?= $(pubdocbase)$(PACKAGE_TARNAME)/unstable/
 
 # The title of the generated Devhelp book.
 book_title ?= $(PACKAGE_NAME) Reference Manual
