@@ -1,0 +1,245 @@
+/* GNOME C++ bindings Doxygen style */
+
+html {
+  background: #FFFFFF;
+  color: #000000;
+  margin: 0;
+  padding: 1em;
+}
+
+body {
+  font-family: sans-serif;
+  font-size: 90%;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  margin: 0;
+  padding: 0.4ex;
+  font-size: 130%;
+  text-align: center;
+}
+
+div h1 {
+  font-size: 150%;
+}
+
+div h2 {
+  font-size: 120%;
+}
+
+div h3 {
+  font-size: 100%;
+}
+
+caption {
+  font-weight: bold;
+}
+
+div.qindex {
+  width: 100%;
+  line-height: 140%;
+  background-color: #E8EEF2;
+  border: 1px solid #84B0C7;
+  text-align: center;
+  margin: 2px;
+  padding: 2px;
+}
+
+a {
+  color: #153788;
+  font-size: 90%;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.contents a:visited {
+  color: #1B77C5;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a.qindex {
+  font-weight: bold;
+}
+
+a.el {
+  font-weight: bold;
+}
+
+dl.el {
+  margin-left: -1cm;
+}
+
+.fragment {
+  font-family: monospace, fixed;
+  font-size: 90%;
+}
+
+pre.fragment {
+  border: 1px solid #AAAAFF;
+  background-color: #EEEEFF;
+  padding: 0.5em;
+  margin: 4px 8px 4px 2px;
+}
+
+div.ah {
+  background-color: #000000;
+  font-weight: bold;
+  color: #FFFFFF;
+  margin-bottom: 3px;
+  margin-top: 3px
+}
+
+table {
+  font-size: 90%;
+}
+
+.indexkey {
+  font-weight: bold;
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  margin: 2px 0px 2px 0;
+  padding: 2px 10px;
+}
+
+.indexvalue {
+  background-color: #E8EEF2;
+  border: 1px solid #CCCCCC;
+  padding: 2px 10px;
+  margin: 2px 0px;
+}
+
+.memlist {
+  background-color: #F0F0F0;
+}
+
+span.keyword {
+  color: #008000;
+}
+
+span.keywordtype {
+  color: #604020;
+}
+
+span.keywordflow {
+  color: #E08000;
+}
+
+span.comment {
+  color: #800000;
+}
+
+span.preprocessor {
+  color: #806020;
+}
+
+span.stringliteral {
+  color: #002080;
+}
+
+span.charliteral {
+  color: #008080;
+}
+
+.tiny {
+  font-size: 75%;
+}
+
+hr {
+  height: 0;
+  border: none;
+  border-top: 1px solid #666666;
+}
+
+/* @group Member Descriptions */
+
+.mdescLeft, .mdescRight, .memItemLeft, .memItemRight,
+.memTemplItemLeft, .memTemplItemRight, .memTemplParams {
+  background-color: #FAFAFA;
+  border: none;
+  margin: 4px;
+  padding: 1px 0 0 8px;
+}
+
+.mdescLeft, .mdescRight {
+  padding: 0px 8px 4px 8px;
+  color: #555555;
+}
+
+.memItemLeft, .memItemRight, .memTemplParams {
+  border-top: 1px solid #CCCCCC;
+}
+
+.memTemplParams {
+  color: #606060;
+}
+
+.memtemplate {
+  color: #606060;
+  font-size: 80%;
+  font-weight: normal;
+  margin-left: 3px;
+}
+
+.memnav {
+  background-color: #E8EEF2;
+  border: 1px solid #84B0C7;
+  text-align: center;
+  margin: 2px;
+  margin-right: 15px;
+  padding: 2px;
+}
+
+.memitem {
+  padding: 0;
+}
+
+.memname {
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.memproto, .memdoc {
+  border: 1px solid #84B0C7;
+}
+
+.memproto {
+  padding: 0;
+  background-color: #D5E1E8;
+  font-weight: bold;
+  -webkit-border-top-left-radius: 8px;
+  -webkit-border-top-right-radius: 8px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+}
+
+.memdoc {
+  padding: 2px 5px;
+  background-color: #EEF3F5;
+  border-top-width: 0;
+  -webkit-border-bottom-left-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+  -moz-border-radius-bottomleft: 8px;
+  -moz-border-radius-bottomright: 8px;
+}
+
+.paramkey {
+  text-align: right;
+}
+
+.paramtype {
+  white-space: nowrap;
+}
+
+.paramname {
+  color: #602020;
+  white-space: nowrap;
+}
+
+.paramname em {
+  font-style: normal;
+}

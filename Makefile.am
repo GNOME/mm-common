@@ -40,6 +40,7 @@ doctooldir = $(pkgdatadir)/doctool
 dist_doctool_DATA =			\
 	util/doc-install.pl		\
 	util/doc-postprocess.pl		\
+	util/doxygen.css		\
 	util/tagfile-to-devhelp2.xsl
 
 doctagsdir = $(pkgdatadir)/doctags
