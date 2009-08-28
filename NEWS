@@ -1,3 +1,11 @@
+mm-common 0.7 "Stylish" (2009-08-28)
+
+	Document with style, using the new shared Doxygen style sheet.
+
+	* A common style sheet for the C++ bindings documentation has
+	  been added, in order to improve and unify the appearance of
+	  the generated reference documentation.
+
 mm-common 0.6.1 "Librarian" (2009-08-25)
 
 	We're on library.gnome.org now, yay!
