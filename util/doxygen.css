@@ -1,28 +1,24 @@
 /* GNOME C++ bindings Doxygen style */
 
-html {
+html, body {
   background: #FFFFFF;
-  color: #000000;
+  color: #222222;
   margin: 0;
-  padding: 1em;
 }
 
 body {
-  font-family: sans-serif;
-  font-size: 90%;
-  margin: 0;
-  padding: 0;
+  font: normal 80%/130% sans-serif;
+  padding: 1.5em;
+  min-width: 28em;
+}
+
+table {
+  font-size: inherit;
 }
 
 h1 {
-  margin: 0;
-  padding: 0.4ex;
-  font-size: 130%;
-  text-align: center;
-}
-
-div h1 {
   font-size: 150%;
+  text-align: center;
 }
 
 div h2 {
@@ -49,7 +45,6 @@ div.qindex {
 
 a {
   color: #153788;
-  font-size: 90%;
   font-weight: normal;
   text-decoration: none;
 }
@@ -74,7 +69,7 @@ dl.el {
   margin-left: -1cm;
 }
 
-.fragment {
+code, .fragment {
   font-family: monospace, fixed;
   font-size: 90%;
 }
@@ -92,10 +87,6 @@ div.ah {
   color: #FFFFFF;
   margin-bottom: 3px;
   margin-top: 3px
-}
-
-table {
-  font-size: 90%;
 }
 
 .indexkey {
@@ -154,8 +145,6 @@ hr {
   border: none;
   border-top: 1px solid #666666;
 }
-
-/* @group Member Descriptions */
 
 .mdescLeft, .mdescRight, .memItemLeft, .memItemRight,
 .memTemplItemLeft, .memTemplItemRight, .memTemplParams {
