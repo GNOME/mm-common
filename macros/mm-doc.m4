@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090822
+#serial 20090828
 
 ## _MM_CONFIG_DOCTOOL_DIR
 ##
@@ -39,13 +39,6 @@ are running a binary distribution and the glibmm package is installed,
 make sure that any separate development package for glibmm is installed
 as well.  If you built glibmm yourself, it may be necessary to adjust
 the PKG_CONFIG_PATH environment variable for pkg-config to find it.
-]])])
-  AS_IF([test "x$MMDOCTOOLDIR" = x],
-        [AC_MSG_ERROR([[not found
-The glibmm module is available, but the installation of glibmm on this
-machine is missing the shared documentation utilities of the GNOME C++
-bindings.  It may be necessary to upgrade to a more recent release of
-glibmm in order to build $PACKAGE_NAME.
 ]])])
 ])
 AC_MSG_RESULT([$MMDOCTOOLDIR])[]dnl
@@ -97,7 +90,12 @@ AC_ARG_ENABLE([documentation],
 AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
 [
   mm_err=
-  AS_IF([test "x$PERL" = xperl], [mm_err='Perl is required for installing the documentation.'],
+  AS_IF([test "x$MMDOCTOOLDIR" = x], [mm_err='dnl
+The glibmm module is available, but the installation of glibmm on this
+machine is missing the shared documentation utilities of the GNOME C++
+bindings.  It may be necessary to upgrade to a more recent release of
+glibmm in order to build '$PACKAGE_NAME' and install the documentation.'],
+        [test "x$PERL" = xperl], [mm_err='Perl is required for installing the documentation.'],
         [test "x$USE_MAINTAINER_MODE" != xno],
   [
     test "x$DOT" != xdot || mm_err=' dot'
@@ -113,18 +111,6 @@ not all of the required tools are available:'$mm_err
 AM_CONDITIONAL([ENABLE_DOCUMENTATION], [test "x$ENABLE_DOCUMENTATION" = xyes])
 AC_SUBST([DOXYGEN_TAGFILES], [[]])
 AC_SUBST([DOCINSTALL_FLAGS], [[]])[]dnl
-])
-
-## _MM_TR_URI(shell-expression)
-##
-## Internal macro that expands to a reusable shell construct which
-## functions as a poor man's filesystem path to URI translator.
-## The input <shell-expression> is expanded within double quotes.
-##
-m4_define([_MM_TR_URI],
-[dnl
-[`expr "X$1" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD[ |]dnl
-[ sed 's|[\\]|/|g;s| |%20|g;s|^/|file:///|;s|^.:/|file:///&|' 2>&]AS_MESSAGE_LOG_FD[`]dnl
 ])
 
 ## MM_ARG_ENABLE_DOCUMENTATION
@@ -150,6 +136,18 @@ AC_REQUIRE([_MM_PRE_INIT])[]dnl
 AC_REQUIRE([MM_CONFIG_DOCTOOL_DIR])[]dnl
 AC_REQUIRE([MM_PATH_PERL])[]dnl
 AC_REQUIRE([_MM_ARG_ENABLE_DOCUMENTATION])[]dnl
+])
+
+## _MM_TR_URI(shell-expression)
+##
+## Internal macro that expands to a reusable shell construct which
+## functions as a poor man's filesystem path to URI translator.
+## The input <shell-expression> is expanded within double quotes.
+##
+m4_define([_MM_TR_URI],
+[dnl
+[`expr "X$1" : 'X\(.*[^\\/]\)[\\/]*' 2>&]AS_MESSAGE_LOG_FD[ |]dnl
+[ sed 's|[\\]|/|g;s| |%20|g;s|^/|file:///|;s|^.:/|file:///&|' 2>&]AS_MESSAGE_LOG_FD[`]dnl
 ])
 
 ## _MM_ARG_WITH_TAGFILE_DOC(option-basename, pkg-variable, tagfilename, [module])
