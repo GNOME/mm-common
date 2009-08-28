@@ -1,3 +1,11 @@
+mm-common 0.7.1 "Lenience" (2009-08-28)
+
+	Be a bit less unfashionably draconian.
+
+	* It is no longer a hard error to build a package based on
+	  mm-common on a system with an older installation of glibmm
+	  which lacks the shared documentation utilities.
+
 mm-common 0.7 "Stylish" (2009-08-28)
 
 	Document with style, using the new shared Doxygen style sheet.
