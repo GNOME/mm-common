@@ -39,6 +39,10 @@ h3 {
   text-align: center;
 }
 
+table h2, table h3 {
+  text-align: left;
+}
+
 caption {
   font-weight: bold;
 }
