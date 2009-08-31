@@ -31,16 +31,14 @@ h1 {
 
 h2 {
   font-size: 120%;
-  text-align: center;
 }
 
 h3 {
   font-size: 100%;
-  text-align: center;
 }
 
-table h2, table h3 {
-  text-align: left;
+h1 + h3 {
+  text-align: center;
 }
 
 caption {
