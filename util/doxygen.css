@@ -16,21 +16,35 @@ table {
   font-size: inherit;
 }
 
+img {
+  border-style: none;
+}
+
+address img {
+  vertical-align: middle;
+}
+
 h1 {
   font-size: 150%;
   text-align: center;
 }
 
-div h2 {
+h2 {
   font-size: 120%;
+  text-align: center;
 }
 
-div h3 {
+h3 {
   font-size: 100%;
+  text-align: center;
 }
 
 caption {
   font-weight: bold;
+}
+
+.center {
+  text-align: center;
 }
 
 div.qindex {
@@ -71,7 +85,6 @@ dl.el {
 
 code, .fragment {
   font-family: monospace, fixed;
-  font-size: 90%;
 }
 
 pre.fragment {
@@ -137,7 +150,7 @@ span.charliteral {
 }
 
 .tiny {
-  font-size: 75%;
+  font-size: 80%;
 }
 
 hr {
@@ -169,7 +182,7 @@ hr {
 
 .memtemplate {
   color: #606060;
-  font-size: 80%;
+  font-size: 90%;
   font-weight: normal;
   margin-left: 3px;
 }
