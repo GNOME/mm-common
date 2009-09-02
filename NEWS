@@ -1,3 +1,13 @@
+mm-common 0.7.2 "Help" (2009-09-02)
+
+	Get better help from Devhelp with an improved transformation.
+
+	* The transformation from Doxygen to Devhelp no longer treats
+	  documentation groups as C++ namespaces.  Also, documentation
+	  modules are now listed as book chapters.
+	* The shared Doxygen style sheet has been adjusted to work
+	  properly with the new XHTML output of Doxygen.
+
 mm-common 0.7.1 "Lenience" (2009-08-28)
 
 	Be a bit less unfashionably draconian.
