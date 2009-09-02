@@ -207,7 +207,6 @@ my %basename_hash = ();
 foreach my $in_name (@ARGV)
 {
   my $basename = path_basename($in_name);
-  my $out_name = File::Spec->catfile($target_dir, $basename);
 
   # If there are multiple files with the same base name in the list, only
   # the first one will be installed.  This behavior makes it very easy to
@@ -215,6 +214,7 @@ foreach my $in_name (@ARGV)
   unless (exists $basename_hash{$basename})
   {
     $basename_hash{$basename} = undef;
+    my $out_name = File::Spec->catfile($target_dir, $basename);
     install_file($in_name, $out_name, $basename);
   }
 }
