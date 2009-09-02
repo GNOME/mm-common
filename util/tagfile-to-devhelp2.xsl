@@ -41,8 +41,8 @@
         </sub>
       </chapters>
       <functions>
-        <xsl:apply-templates select="tagfile/compound|tagfile/compound/member" mode="keyword">
-          <xsl:sort lang="en" select="concat(../name, '::', name)"/>
+        <xsl:apply-templates select="tagfile/compound[@kind='namespace' or @kind='class' or @kind='struct']" mode="compound">
+          <xsl:sort lang="en" select="name"/>
         </xsl:apply-templates>
       </functions>
     </book>
@@ -52,9 +52,18 @@
     <sub name="{name}" link="{filename}"/>
   </xsl:template>
 
-  <xsl:template match="compound[@kind='class' or @kind='struct']" mode="keyword">
-    <keyword type="struct" name="{name}" link="{filename}"/>
+  <xsl:template match="compound[@kind='namespace']" mode="compound">
+    <xsl:apply-templates select="member" mode="keyword">
+      <xsl:sort lang="en" select="name"/>
+    </xsl:apply-templates>
   </xsl:template>
+  <xsl:template match="compound[@kind='class' or @kind='struct']" mode="compound">
+    <keyword type="struct" name="{name}" link="{filename}"/>
+    <xsl:apply-templates select="member" mode="keyword">
+      <xsl:sort lang="en" select="name"/>
+    </xsl:apply-templates>
+  </xsl:template>
+
   <xsl:template match="member[@kind='function' or @kind='typedef']" mode="keyword">
     <keyword type="{@kind}" xsl:use-attribute-sets="keyword-member"/>
   </xsl:template>
