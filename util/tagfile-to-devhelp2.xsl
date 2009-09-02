@@ -46,8 +46,8 @@
         </sub>
       </chapters>
       <functions>
-        <xsl:apply-templates select="tagfile/compound[@kind='namespace' or @kind='class' or @kind='struct']" mode="compound">
-          <xsl:sort lang="en" select="name"/>
+        <xsl:apply-templates select="tagfile/compound" mode="compound">
+          <xsl:sort lang="en" case-order="upper-first" select="name"/>
         </xsl:apply-templates>
       </functions>
     </book>
@@ -63,15 +63,17 @@
 
   <xsl:template match="compound[@kind='namespace']" mode="compound">
     <xsl:apply-templates select="member" mode="keyword">
-      <xsl:sort lang="en" select="name"/>
+      <xsl:sort lang="en" case-order="upper-first" select="name"/>
     </xsl:apply-templates>
   </xsl:template>
   <xsl:template match="compound[@kind='class' or @kind='struct']" mode="compound">
     <keyword type="struct" name="{name}" link="{filename}"/>
     <xsl:apply-templates select="member" mode="keyword">
-      <xsl:sort lang="en" select="name"/>
+      <xsl:sort lang="en" case-order="upper-first" select="name"/>
     </xsl:apply-templates>
   </xsl:template>
+  <!-- Ignore compounds of unknown type -->
+  <xsl:template match="*" mode="compound"/>
 
   <xsl:template match="member[@kind='function' or @kind='typedef']" mode="keyword">
     <keyword type="{@kind}" xsl:use-attribute-sets="keyword-member"/>
