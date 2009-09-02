@@ -29,13 +29,18 @@
     <book title="{$book_title}" name="{$book_name}" base="{$book_base}"
           link="index.html" version="2" language="c++">
       <chapters>
-        <sub name="Classes" link="classes.html">
-          <xsl:apply-templates select="tagfile/compound[@kind='class' or @kind='struct']" mode="sub">
-            <xsl:sort lang="en" case-order="upper-first" select="name"/>
+        <sub name="Modules" link="modules.html">
+          <xsl:apply-templates select="tagfile/compound[@kind='group']" mode="module">
+            <xsl:sort lang="en" select="title"/>
           </xsl:apply-templates>
         </sub>
         <sub name="Namespaces" link="namespaces.html">
           <xsl:apply-templates select="tagfile/compound[@kind='namespace']" mode="sub">
+            <xsl:sort lang="en" case-order="upper-first" select="name"/>
+          </xsl:apply-templates>
+        </sub>
+        <sub name="Classes" link="classes.html">
+          <xsl:apply-templates select="tagfile/compound[@kind='class' or @kind='struct']" mode="sub">
             <xsl:sort lang="en" case-order="upper-first" select="name"/>
           </xsl:apply-templates>
         </sub>
@@ -46,6 +51,10 @@
         </xsl:apply-templates>
       </functions>
     </book>
+  </xsl:template>
+
+  <xsl:template match="compound" mode="module">
+    <sub name="{title}" link="{filename}"/>
   </xsl:template>
 
   <xsl:template match="compound" mode="sub">
