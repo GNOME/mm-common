@@ -29,21 +29,38 @@
     <book title="{$book_title}" name="{$book_name}" base="{$book_base}"
           link="index.html" version="2" language="c++">
       <chapters>
-        <sub name="Modules" link="modules.html">
+        <xsl:variable name="modules">
           <xsl:apply-templates select="tagfile/compound[@kind='group']" mode="module">
             <xsl:sort lang="en" select="title"/>
           </xsl:apply-templates>
-        </sub>
-        <sub name="Namespaces" link="namespaces.html">
+        </xsl:variable>
+        <xsl:if test="$modules">
+          <sub name="Modules" link="modules.html">
+            <xsl:copy-of select="$modules"/>
+          </sub>
+        </xsl:if>
+
+        <xsl:variable name="namespaces">
           <xsl:apply-templates select="tagfile/compound[@kind='namespace']" mode="sub">
             <xsl:sort lang="en" case-order="upper-first" select="name"/>
           </xsl:apply-templates>
-        </sub>
-        <sub name="Classes" link="classes.html">
+        </xsl:variable>
+        <xsl:if test="$namespaces">
+          <sub name="Namespaces" link="namespaces.html">
+            <xsl:copy-of select="$namespaces"/>
+          </sub>
+        </xsl:if>
+
+        <xsl:variable name="classes">
           <xsl:apply-templates select="tagfile/compound[@kind='class' or @kind='struct']" mode="sub">
             <xsl:sort lang="en" case-order="upper-first" select="name"/>
           </xsl:apply-templates>
-        </sub>
+        </xsl:variable>
+        <xsl:if test="$classes">
+          <sub name="Classes" link="classes.html">
+            <xsl:copy-of select="$classes"/>
+          </sub>
+        </xsl:if>
       </chapters>
       <functions>
         <xsl:apply-templates select="tagfile/compound" mode="compound">
