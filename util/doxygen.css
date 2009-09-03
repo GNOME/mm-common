@@ -42,6 +42,10 @@ h1 + h3 {
   text-align: center;
 }
 
+.navpath {
+  display: none;
+}
+
 caption {
   font-weight: bold;
 }
