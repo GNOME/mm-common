@@ -11,6 +11,16 @@ GNU C++ Library reference documentation.  It is covered by the same
 licence as the source code it was extracted from.  More information
 is available at <http://gcc.gnu.org/onlinedocs/libstdc++/>.
 
+
+Skeleton C++ binding project
+============================
+
+When creating a new C++ binding module based on mm-common, the easiest way
+to get started is to copy the skeletonmm directory in the mm-common module.
+It contains the build support files required for a C++ binding module using
+gmmproc and glibmm.
+
+
 mm-common overview
 ==================
 
