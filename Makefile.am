@@ -50,7 +50,43 @@ shared_pkgconfigdir = $(datadir)/pkgconfig
 nodist_shared_pkgconfig_DATA = doctags/mm-common-libstdc++.pc
 noinst_DATA = doctags/mm-common-libstdc++-uninstalled.pc
 
-dist_noinst_SCRIPTS = autogen.sh
+dist_noinst_SCRIPTS = autogen.sh skeletonmm/autogen.sh
+
+dist_noinst_DATA =							\
+	skeletonmm/.gitignore						\
+	skeletonmm/AUTHORS						\
+	skeletonmm/COPYING						\
+	skeletonmm/ChangeLog						\
+	skeletonmm/Makefile.am						\
+	skeletonmm/README						\
+	skeletonmm/configure.ac						\
+	skeletonmm/skeletonmm.doap					\
+	skeletonmm/codegen/Makefile.am					\
+	skeletonmm/codegen/extradefs/generate_extra_defs_skeleton.cc	\
+	skeletonmm/codegen/m4/convert.m4				\
+	skeletonmm/codegen/m4/convert_skeleton.m4			\
+	skeletonmm/codegen/m4/filelist.am				\
+	skeletonmm/doc/Makefile.am					\
+	skeletonmm/doc/reference/.gitignore				\
+	skeletonmm/doc/reference/Doxyfile.in				\
+	skeletonmm/skeleton/.gitignore					\
+	skeletonmm/skeleton/skeletonmm-uninstalled.pc.in		\
+	skeletonmm/skeleton/skeletonmm.pc.in				\
+	skeletonmm/skeleton/skeletonmmconfig.h.in			\
+	skeletonmm/skeleton/skeletonmm/Makefile.am			\
+	skeletonmm/skeleton/skeletonmm/filelist.am			\
+	skeletonmm/skeleton/skeletonmm/wrap_init.h			\
+	skeletonmm/skeleton/skeletonmm/private/.gitignore		\
+	skeletonmm/skeleton/src/Makefile.am				\
+	skeletonmm/skeleton/src/filelist.am				\
+	skeletonmm/skeleton/src/skeleton.ccg				\
+	skeletonmm/skeleton/src/skeleton.defs				\
+	skeletonmm/skeleton/src/skeleton.hg				\
+	skeletonmm/skeleton/src/skeleton_docs.xml			\
+	skeletonmm/skeleton/src/skeleton_docs_override.xml		\
+	skeletonmm/skeleton/src/skeleton_enum.defs			\
+	skeletonmm/skeleton/src/skeleton_extra.defs			\
+	skeletonmm/skeleton/src/skeleton_method.defs
 
 MAINTAINERCLEANFILES = $(dist_doctags_DATA)
 
