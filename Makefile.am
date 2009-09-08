@@ -52,6 +52,8 @@ nodist_shared_pkgconfig_DATA = doctags/mm-common-libstdc++.pc
 noinst_DATA = doctags/mm-common-libstdc++-uninstalled.pc
 
 nobase_dist_doc_SCRIPTS = skeletonmm/autogen.sh
+AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = skeletonmm/autogen.sh
+
 nobase_dist_doc_DATA =							\
 	README								\
 	skeletonmm/.gitignore						\
