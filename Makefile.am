@@ -64,6 +64,7 @@ nobase_dist_doc_DATA =							\
 	skeletonmm/README						\
 	skeletonmm/configure.ac						\
 	skeletonmm/skeletonmm.doap					\
+	skeletonmm/build/.gitignore					\
 	skeletonmm/codegen/Makefile.am					\
 	skeletonmm/codegen/extradefs/generate_extra_defs_skeleton.cc	\
 	skeletonmm/codegen/m4/convert.m4				\
@@ -126,6 +127,7 @@ doctags/libstdc++.tag:
 	$(if $(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
 	     $(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f '$@'))
 
+# Build the mm-common-prepare(1) manual page.
 util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
 	$(subst_manpage) $(srcdir)/util/mm-common-prepare.1.in >$@
 
