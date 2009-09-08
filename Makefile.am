@@ -51,9 +51,9 @@ shared_pkgconfigdir = $(datadir)/pkgconfig
 nodist_shared_pkgconfig_DATA = doctags/mm-common-libstdc++.pc
 noinst_DATA = doctags/mm-common-libstdc++-uninstalled.pc
 
-dist_noinst_SCRIPTS = autogen.sh skeletonmm/autogen.sh
-
-dist_noinst_DATA =							\
+nobase_dist_doc_SCRIPTS = skeletonmm/autogen.sh
+nobase_dist_doc_DATA =							\
+	README								\
 	skeletonmm/.gitignore						\
 	skeletonmm/AUTHORS						\
 	skeletonmm/COPYING						\
@@ -88,6 +88,8 @@ dist_noinst_DATA =							\
 	skeletonmm/skeleton/src/skeleton_enum.defs			\
 	skeletonmm/skeleton/src/skeleton_extra.defs			\
 	skeletonmm/skeleton/src/skeleton_method.defs
+
+dist_noinst_SCRIPTS = autogen.sh
 
 MAINTAINERCLEANFILES = $(dist_doctags_DATA)
 
