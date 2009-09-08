@@ -1,3 +1,16 @@
+mm-common 0.7.3 "Skeleton" (2009-09-08)
+
+	The hip bone is connected to the rib bone.
+
+	* A skeleton source tree of a C++ binding based on mm-common
+	  is now provided as a starting point for new binding modules.
+	* The mm-common-prepare utility now comes with a manual page.
+	* Empty documentation groups are no longer shown as chapters
+	  in the Devhelp document.
+	* The reference documentation will be rebuilt when any of the
+	  configuration header files of a module changed.
+	* The Doxygen style sheet has been further refined.
+
 mm-common 0.7.2 "Help" (2009-09-02)
 
 	Get better help from Devhelp with an improved transformation.
