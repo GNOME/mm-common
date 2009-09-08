@@ -19,6 +19,7 @@
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 
 bin_SCRIPTS = util/mm-common-prepare
+dist_man1_MANS = util/mm-common-prepare.1
 
 build_supportdir = $(pkgdatadir)/build
 dist_build_support_DATA =		\
