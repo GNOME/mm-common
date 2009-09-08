@@ -19,7 +19,7 @@
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 
 bin_SCRIPTS = util/mm-common-prepare
-dist_man1_MANS = util/mm-common-prepare.1
+man1_MANS = util/mm-common-prepare.1
 
 build_supportdir = $(pkgdatadir)/build
 dist_build_support_DATA =		\
@@ -89,8 +89,10 @@ nobase_dist_doc_DATA =							\
 	skeletonmm/skeleton/src/skeleton_extra.defs			\
 	skeletonmm/skeleton/src/skeleton_method.defs
 
+dist_noinst_DATA = util/mm-common-prepare.1.in
 dist_noinst_SCRIPTS = autogen.sh
 
+CLEANFILES = $(man1_MANS)
 MAINTAINERCLEANFILES = $(dist_doctags_DATA)
 
 # Remote location of the GNU libstdc++ Doxygen tag file.
@@ -101,6 +103,8 @@ libstdcxx_tag_url = http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libst
 download_curl = $(CURL) --compressed --connect-timeout 300 -g -L -m 3600 -R --retry 5 \
 		$(if $(wildcard $@),-z '$@') -o '$@'
 download_wget = $(WGET) -N -nd -T 300 -t 5 -P '$(dir $@)'
+
+subst_manpage = sed 's|[@]PACKAGE_STRING[@]|$(PACKAGE_STRING)|g;s|[@]docdir[@]|$(docdir)|g'
 
 # If maintainer mode is enabled, always check the remote locations
 # of the tag files for updates when building the default target.
@@ -119,5 +123,8 @@ endif
 doctags/libstdc++.tag:
 	$(if $(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
 	     $(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f '$@'))
+
+util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
+	$(subst_manpage) $(srcdir)/util/mm-common-prepare.1.in >$@
 
 include $(top_srcdir)/build/dist-changelog.am

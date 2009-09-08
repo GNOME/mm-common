@@ -1,4 +1,4 @@
-.TH MM-COMMON-PREPARE 1 2009-09-08 GNOME mm-common
+.TH MM-COMMON-PREPARE 1 2009-09-08 GNOME "@PACKAGE_STRING@"
 .SH NAME
 mm-common-prepare \- Prepare a C++ binding module to use mm-common
 .SH SYNOPSIS
@@ -85,3 +85,9 @@ are listed below.
 .PD
 .SH "SEE ALSO"
 .BR autoreconf (1)
+.PD 0
+.PP
+.I @docdir@/README
+.PP
+.I @docdir@/skeletonmm/
+.PD
