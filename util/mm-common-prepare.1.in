@@ -3,7 +3,7 @@
 mm-common-prepare \- Prepare a C++ binding module to use mm-common
 .SH SYNOPSIS
 .B mm-common-prepare
-.RI [ OPTION "]... [" DIRECTORY ]
+.RI [ OPTION "]... [" SOURCE-DIR ]
 .SH DESCRIPTION
 Run
 .B mm-common-prepare
@@ -18,28 +18,35 @@ file.
 .BI AC_CONFIG_AUX_DIR( [AUX-DIR] )
 The Automake include files are placed into the
 .I AUX-DIR
-subdirectory of the top-level source directory.  If
+subdirectory of the top-level source directory.
+If
 .B AC_CONFIG_AUX_DIR
-is not specified, the files are placed at the top-level of the
-module's source tree.
+is not specified, the files are placed at the top-level of the module's
+source tree.
 .TP
 .BI MM_CONFIG_DOCTOOL_DIR( [DOCTOOL-DIR] )
 If the
 .B MM_CONFIG_DOCTOOL_DIR
-macro is used with an explicit
+macro is called with an explicit
 .I DOCTOOL-DIR
 argument, the common utilities required for generating and installing
-the reference documentation for a C++ binding module will be installed
-into the named subdirectory.  If
+the reference documentation of a C++ binding module will be installed
+into the named subdirectory.
+If
 .B MM_CONFIG_DOCTOOL_DIR
 is not used or does not specify a
 .I DOCTOOL-DIR
 argument,
 .B mm-common-prepare
-will not install the documentation utility files into the module's
-source tree. Instead, it is assumed that the module depends on
+will not install the documentation utility files into the module's source tree.
+Instead, it is assumed that the module depends on
 .I glibmm
 and can use the installed documentation utilities that come with it.
+.PP
+If no
+.I SOURCE-DIR
+argument has been specified on the command line, the current working
+directory will be used.
 .SH OPTIONS
 .TP
 .BR \-c ", " \-\-copy
@@ -84,8 +91,8 @@ are listed below.
 .I tagfile-to-devhelp2.xsl
 .PD
 .SH "SEE ALSO"
-.BR autoreconf (1)
 .PD 0
+.BR autoreconf (1)
 .PP
 .I @docdir@/README
 .PP
