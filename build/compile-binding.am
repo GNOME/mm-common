@@ -34,14 +34,14 @@ binding_basedir ?= $(patsubst %/,%,$(dir $(subdir)))
 binding_modulename ?= $(patsubst lib%,$(binding_libprefix)%,$(basename $(lib_LTLIBRARIES)))
 
 # Try to work out whether the binding's module name includes a "lib" prefix.
-binding_libprefix = $(if $(binding_name:lib%=),,lib)
+binding_libprefix = $(if $(filter lib%,$(binding_name)),lib)
 
 # Files to be listed in the module's _SOURCES variable.
 binding_sources = $(files_built_cc) $(files_extra_cc)
 
 # Default include directories and preprocessor flags.
-binding_includes = -I.. $(if $(srcdir:.=),-I$(top_srcdir)/$(binding_basedir)) -I$(top_builddir)
-binding_cppflags = -DG_LOG_DOMAIN=\""$(binding_name)"\"
+binding_includes = -I..$(if $(srcdir:.=), -I$(top_srcdir)/$(binding_basedir)) -I$(top_builddir)
+binding_cppflags = -DG_LOG_DOMAIN=\"$(binding_name)\"
 
 # Installation directories for header files.
 binding_includedir = $(includedir)/$(binding_modulename)/$(binding_name)

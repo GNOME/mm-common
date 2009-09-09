@@ -40,7 +40,7 @@ binding_stampdir = $(srcdir)/.stamps
 # Lists of qualified file names relative to the current directory.
 binding_relfiles_m4 = $(addprefix $(codegen_m4_srcdir)/,$(files_codegen_m4))
 binding_relfiles_hg = $(addprefix $(srcdir)/,$(files_hg))
-binding_stampfiles  = $(files_hg:%.hg=$(binding_stampdir)/%.stamp)
+binding_stampfiles  = $(patsubst %.hg,$(binding_stampdir)/%.stamp,$(files_hg))
 
 # Distributed code generation source files.
 dist_noinst_DATA = $(files_defs) $(files_hg) $(files_ccg)
@@ -65,7 +65,7 @@ $(binding_stampdir):
 	$(MKDIR_P) $@
 
 # Generate the wrap_init.cc file using generate_wrap_init.pl.
-$(binding_outputdir)/wrap_init.cc: $(binding_relfiles_hg)
+$(binding_outputdir)/wrap_init.cc: $(binding_relfiles_hg) $(srcdir)/Makefile.in
 	$(gen_wrap_init) $(wrap_init_flags) $(binding_relfiles_hg) >$@
 
 # Run the gmmproc code generator to produce the C++ binding code.
