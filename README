@@ -11,15 +11,18 @@ GNU C++ Library reference documentation.  It is covered by the same
 licence as the source code it was extracted from.  More information
 is available at <http://gcc.gnu.org/onlinedocs/libstdc++/>.
 
-
-Skeleton C++ binding project
-============================
+Skeleton C++ binding module
+===========================
 
 When creating a new C++ binding module based on mm-common, the easiest way
-to get started is to copy the skeletonmm directory in the mm-common module.
+to get started is to copy the skeletonmm directory shipped with mm-common.
 It contains the build support files required for a C++ binding module using
 gmmproc and glibmm.
 
+In order to create a new binding project from the copied skeleton directory,
+any files which have "skeleton" in the filename must be renamed.  References
+to the project name or author in the files need to be substituted with the
+actual name and author of the new binding.
 
 mm-common overview
 ==================
@@ -42,8 +45,8 @@ mm-common-prepare.  A typical autogen.sh would look like this:
   test -n "$srcdir" || srcdir=`dirname "$0"`
   test -n "$srcdir" || srcdir=.
 
-  mm-common-prepare --force --copy "$srcdir"
-  autoreconf --force --install "$srcdir"
+  mm-common-prepare --copy --force "$srcdir"
+  autoreconf --force --install --verbose "$srcdir"
   test -n "$NOCONFIGURE" || "$srcdir/configure" --enable-maintainer-mode "$@"
 
 Do not forget to set:
@@ -67,7 +70,7 @@ mm-common-prepare.  If mm-common is installed to a different prefix than
 Automake, it may be necessary to adjust ACLOCAL_FLAGS accordingly so that
 aclocal can find the M4 files:
 
-  export ACLOCAL_FLAGS='-I ${mm_common_prefix}/share/aclocal'
+  export ACLOCAL_FLAGS="-I ${mm_common_prefix}/share/aclocal"
 
 This step is not necessary when using jhbuild, as it takes care of setting
 up the environment for using the locally built modules.
