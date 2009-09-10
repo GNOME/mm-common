@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of mm-common.
 ##
@@ -15,12 +15,12 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090814
+#serial 20090910
 
 ## _MM_ARG_ENABLE_WARNINGS_OPTION
 ##
 ## Implementation helper macro of MM_ARG_ENABLE_WARNINGS().  Pulled in
-## through AC_REQUIRE() so that it will only be expanded once.
+## through AC_REQUIRE() so that it is only expanded once.
 ##
 m4_define([_MM_ARG_ENABLE_WARNINGS_OPTION],
 [dnl
@@ -53,7 +53,7 @@ dnl
 AS_CASE([$ac_compile],
         [[*'$CXXFLAGS '*]], [mm_lang='C++' mm_cc=$CXX mm_conftest="conftest.[$]{ac_ext-cc}"],
         [[*'$CFLAGS '*]],   [mm_lang=C mm_cc=$CC mm_conftest="conftest.[$]{ac_ext-c}"],
-                            [AC_MSG_ERROR([[current language is neither C nor C++]])])
+        [AC_MSG_ERROR([[current language is neither C nor C++]])])
 dnl
 AC_MSG_CHECKING([which $mm_lang compiler warning flags to use])
 m4_ifval([$4], [mm_deprecation_flags=
@@ -65,7 +65,7 @@ AS_CASE([$mm_enable_warnings],
         [fatal], [mm_warning_flags="$3 -Werror"[]m4_ifval([$4], [
          for mm_prefix in $4
          do
-           mm_deprecation_flags="[$]{mm_deprecation_flags}-D[$]{mm_prefix}[_DISABLE_DEPRECATED ]"
+           mm_deprecation_flags="$mm_deprecation_flags-D[$]{mm_prefix}_DISABLE_DEPRECATED "
          done])],
         [mm_warning_flags="$2"])
 dnl
@@ -81,7 +81,7 @@ int main(int argc, char** argv) { return (argv != 0) ? argc : 0; }
     # Test whether the compiler accepts the flag.  Look at standard output,
     # since GCC only shows a warning message if an option is not supported.
     mm_cc_out=`$mm_cc $mm_tested_flags $mm_flag -c "$mm_conftest" 2>&1 || echo failed`
-    rm -f "conftest.${OBJEXT-o}"
+    rm -f "conftest.[$]{OBJEXT-o}"
 
     AS_IF([test "x$mm_cc_out" = x],
           [AS_IF([test "x$mm_tested_flags" = x],
