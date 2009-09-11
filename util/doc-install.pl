@@ -20,6 +20,7 @@ package main;
 use strict;
 use warnings;
 use bytes;
+use File::Glob qw(:glob);
 use File::Spec;
 use Getopt::Long qw(:config no_getopt_compat no_ignore_case require_order bundling);
 
@@ -201,7 +202,7 @@ unless (defined $target_dir)
 }
 error('No target directory specified') unless (defined($target_dir) and $target_dir ne '');
 
-@ARGV = map(glob, @ARGV) if ($expand_glob);
+@ARGV = map(bsd_glob($_, GLOB_NOSORT), @ARGV) if ($expand_glob);
 my %basename_hash = ();
 
 foreach my $in_name (@ARGV)

@@ -20,6 +20,7 @@ package main;
 use strict;
 use warnings;
 use bytes;
+use File::Glob qw(:glob);
 use File::Spec;
 use Getopt::Long qw(:config no_getopt_compat no_ignore_case require_order bundling);
 
@@ -58,7 +59,7 @@ sub error (@)
 GetOptions('help|?' => \&exit_help)
   or exit 2;
 
-foreach my $filename (map(glob, @ARGV))
+foreach my $filename (map(bsd_glob($_, GLOB_NOSORT), @ARGV))
 {
   my @buf;
   my $file;
