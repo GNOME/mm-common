@@ -26,6 +26,7 @@ AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 AC_ARG_VAR([CURL], [curl transfer command])
 AC_ARG_VAR([WGET], [wget download command])
 
+AC_PROG_SED
 AC_CHECK_PROG([CURL], [curl], [curl])
 AC_CHECK_PROG([WGET], [wget], [wget])
 

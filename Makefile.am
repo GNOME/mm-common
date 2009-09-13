@@ -107,7 +107,7 @@ download_curl = $(CURL) --compressed --connect-timeout 300 -g -L -m 3600 -R --re
 		$(if $(wildcard $@),-z '$@') -o '$@'
 download_wget = $(WGET) -N -nd -T 300 -t 5 -P '$(dir $@)'
 
-subst_manpage = sed 's|[@]PACKAGE_STRING[@]|$(PACKAGE_STRING)|g;s|[@]docdir[@]|$(docdir)|g'
+subst_manpage = $(SED) 's|[@]PACKAGE_STRING[@]|$(PACKAGE_STRING)|g;s|[@]docdir[@]|$(docdir)|g'
 
 # If maintainer mode is enabled, always check the remote locations
 # of the tag files for updates when building the default target.
