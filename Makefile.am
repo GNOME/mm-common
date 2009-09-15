@@ -73,8 +73,12 @@ nobase_dist_doc_DATA =							\
 	skeletonmm/doc/Makefile.am					\
 	skeletonmm/doc/reference/.gitignore				\
 	skeletonmm/doc/reference/Doxyfile.in				\
+	skeletonmm/examples/.gitignore					\
+	skeletonmm/examples/Makefile.am					\
+	skeletonmm/examples/example/example.cc				\
 	skeletonmm/skeleton/.gitignore					\
 	skeletonmm/skeleton/skeletonmm-uninstalled.pc.in		\
+	skeletonmm/skeleton/skeletonmm.h				\
 	skeletonmm/skeleton/skeletonmm.pc.in				\
 	skeletonmm/skeleton/skeletonmmconfig.h.in			\
 	skeletonmm/skeleton/skeletonmm/Makefile.am			\

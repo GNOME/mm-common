@@ -61,6 +61,7 @@ AC_CONFIG_FILES([Makefile
                  skeleton/${SKELETONMM_MODULE_NAME}-uninstalled.pc:skeleton/skeletonmm-uninstalled.pc.in
                  skeleton/src/Makefile
                  skeleton/skeletonmm/Makefile
+                 examples/Makefile
                  doc/Makefile
                  doc/reference/Doxyfile])
 AC_OUTPUT

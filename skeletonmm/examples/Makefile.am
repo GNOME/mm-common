@@ -15,30 +15,15 @@
 ## You should have received a copy of the GNU Lesser General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-ACLOCAL_AMFLAGS = -I build ${ACLOCAL_FLAGS}
-DISTCHECK_CONFIGURE_FLAGS = --enable-warnings=fatal
+AUTOMAKE_OPTIONS = subdir-objects
 
-if MAINTAINER_MODE
-src_subdirs = codegen skeleton/src
-else
-src_subdirs =
-endif
-if ENABLE_DOCUMENTATION
-doc_subdirs = doc
-else
-doc_subdirs =
-endif
-SUBDIRS = $(src_subdirs) skeleton/skeletonmm examples $(doc_subdirs)
+check_PROGRAMS = example/example
 
-skeletonmm_includedir = $(includedir)/$(SKELETONMM_MODULE_NAME)
-skeletonmm_include_HEADERS = skeleton/skeletonmm.h
+local_includes = -I$(top_builddir)/skeleton $(if $(srcdir:.=),-I$(top_srcdir)/skeleton)
+local_libs = $(top_builddir)/skeleton/skeletonmm/libskeletonmm-$(GLIBMM_API_VERSION).la
 
-skeletonmm_libincludedir = $(libdir)/$(SKELETONMM_MODULE_NAME)/include
-nodist_skeletonmm_libinclude_HEADERS = skeleton/skeletonmmconfig.h
+AM_CPPFLAGS = -I$(top_builddir) $(local_includes) $(GTHREAD_CFLAGS) $(SKELETONMM_CFLAGS)
+AM_CXXFLAGS = $(SKELETONMM_WXXFLAGS)
+LDADD = $(SKELETONMM_LIBS) $(local_libs)
 
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = skeleton/$(SKELETONMM_MODULE_NAME).pc
-
-dist_noinst_SCRIPTS = autogen.sh
-
-include $(top_srcdir)/build/dist-changelog.am
+example_example_SOURCES = example/example.cc
