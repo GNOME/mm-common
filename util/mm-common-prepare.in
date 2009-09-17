@@ -2,7 +2,7 @@
 
 # Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 #
-# This file is part of mm-common.
+# @configure_input@
 #
 # mm-common is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published
@@ -22,18 +22,18 @@ datarootdir="@datarootdir@"
 datadir="@datadir@"
 pkgdatadir="${datadir}/@PACKAGE_TARNAME@"
 
-progname="${0##*/}"
+progname=${0##*/}
 installcmd='ln -s'
 instaction=symlinking
 forceflag=
-srcdir=.
+target=.
 
 for arg
 do
   case $arg in
   '-?'|--help)
     cat <<EOF
-Usage: $progname [OPTION]... [DIRECTORY]
+Usage: $progname [OPTION]... [DIRECTORY | CONFIGURE-FILE]
 
 Prepare a C++ binding module to use mm-common.
 
@@ -65,24 +65,32 @@ EOF
     exit 1
     ;;
   ?*)
-    srcdir="${arg%/}"
+    target=${arg%/}
     ;;
   esac
 done
 
-acfile=$srcdir/configure.ac
+if test -d "$target"; then
+  srcdir=$target
+  acfile=$target/configure.ac
+else
+  srcdir=${target%/*}
+  acfile=$target
+fi
 
-test -f "$acfile" || {
+if test ! -f "$acfile"; then
   echo "$progname: error: $acfile not found" >&2
   exit 1
-}
+fi
+
 # Extract the directory macro arguments from configure.ac
 s='	 ' # tab+space
 auxdir=`sed -n "s/^[$s]*AC_CONFIG_AUX_DIR([[$s]*\\([^])\$,$s]*\\).*/\\1/p" "$acfile"`
 doctooldir=`sed -n "s/^[$s]*MM_CONFIG_DOCTOOL_DIR([[$s]*\\([^])\$,$s]*\\).*/\\1/p" "$acfile"`
 
-auxdir="$srcdir${auxdir:+/}$auxdir"
+auxdir=$srcdir${auxdir:+/}$auxdir
 echo "$progname: putting auxiliary files in '$auxdir'."
+test -d "$auxdir" || mkdir "$auxdir"
 
 for file in compile-binding.am dist-changelog.am doc-reference.am generate-binding.am
 do
@@ -94,10 +102,8 @@ done
 
 if test -n "$doctooldir"
 then
-  doctooldir="$srcdir/$doctooldir"
+  doctooldir=$srcdir/$doctooldir
   echo "$progname: putting documentation utilities in '$doctooldir'."
-
-  # Create the destination directory automatically if necessary
   test -d "$doctooldir" || mkdir "$doctooldir"
 
   for file in doc-install.pl doc-postprocess.pl doxygen.css tagfile-to-devhelp2.xsl
