@@ -57,11 +57,14 @@ gmmproc       ?= $(PERL) -I"$(GMMPROC_DIR)/pm" -- "$(GMMPROC_DIR)/gmmproc"
 gen_wrap_init ?= $(PERL) -- "$(GMMPROC_DIR)/generate_wrap_init.pl"
 gmmproc_flags ?= -I $(codegen_m4_srcdir) --defs $(srcdir)
 
+# Automatically created output directories.
+binding_mkdirs = $(binding_stampdir) $(binding_outputdir)/private
+
 # Declare the built sources main targets.
 all-local: $(binding_stampfiles) $(other_built_sources)
 
-# Create the .stamps/ subdirectory if it does not exist already.
-$(binding_stampdir):
+# Create the output directories if they do not exist already.
+$(binding_mkdirs):
 	$(MKDIR_P) $@
 
 # Generate the wrap_init.cc file using generate_wrap_init.pl.
@@ -69,7 +72,7 @@ $(binding_outputdir)/wrap_init.cc: $(binding_relfiles_hg) $(srcdir)/Makefile.in
 	$(gen_wrap_init) $(wrap_init_flags) $(binding_relfiles_hg) >$@
 
 # Run the gmmproc code generator to produce the C++ binding code.
-$(binding_stampdir)/%.stamp: %.hg %.ccg $(gmmproc_dependencies) | $(binding_stampdir)
+$(binding_stampdir)/%.stamp: %.hg %.ccg $(gmmproc_dependencies) | $(binding_mkdirs)
 	@: >$@
 	$(gmmproc) $(gmmproc_flags) $(notdir $*) $(srcdir) $(binding_outputdir)
 
