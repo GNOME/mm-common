@@ -41,4 +41,5 @@ pkgconfig_DATA = skeleton/$(SKELETONMM_MODULE_NAME).pc
 
 dist_noinst_SCRIPTS = autogen.sh
 
-include $(top_srcdir)/build/dist-changelog.am
+# Optional: auto-generate the ChangeLog file from the git log on make dist
+#include $(top_srcdir)/build/dist-changelog.am
