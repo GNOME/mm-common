@@ -25,7 +25,7 @@ endif
 
 dist-changelog:
 	@if git --git-dir="$(top_srcdir)/.git" --work-tree="$(top_srcdir)" \
-		log --date=short --pretty='format:%cd  %an  <%ae>%n%n%s%n%n%b%n' | \
+		log --no-merges --date=short --pretty='tformat:%cd  %an  <%ae>%n%n%s%n%n%b' | \
 	 $(SED)	-e '/^[12]...-[01].-[0123].  [^<>]*  <[^<>]*>$$/,/^$$/ b' \
 		-e '/[^	 ]/,/^[	 ]*$$/! d' \
 		-e 's/^[	 ]*/	/' \
