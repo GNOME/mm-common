@@ -108,8 +108,8 @@ libstdcxx_tag_url = http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libst
 # Commands for downloading a target from a remote location, taking care
 # not to download a file again if its time stamp has not changed.
 download_curl = $(CURL) --compressed --connect-timeout 300 -g -L -m 3600 -R --retry 5 \
-		$(if $(wildcard $@),-z '$@') -o '$@'
-download_wget = $(WGET) -N -nd -T 300 -t 5 -P '$(dir $@)'
+		$(if $(wildcard $@),-z $@) -o $@
+download_wget = $(WGET) -N -nd -T 300 -t 5 -P $(dir $@)
 
 subst_manpage = $(SED) 's|[@]PACKAGE_STRING[@]|$(PACKAGE_STRING)|g;s|[@]docdir[@]|$(docdir)|g'
 
@@ -129,7 +129,7 @@ endif
 # Download the libstdc++ tag file from the GCC website.
 doctags/libstdc++.tag:
 	$(if $(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
-	     $(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f '$@'))
+	     $(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f $@))
 
 # Build the mm-common-prepare(1) manual page.
 util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
