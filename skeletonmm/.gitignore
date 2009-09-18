@@ -1,6 +1,6 @@
-.deps
+.deps/
 .dirstamp
-.libs
+.libs/
 Makefile
 Makefile.in
 stamp-h?
@@ -8,7 +8,7 @@ stamp-h?
 *.l[ao]
 /INSTALL
 /aclocal.m4
-/autom4te.cache
+/autom4te.cache/
 /config*.lineno
 /config.log
 /config.status
