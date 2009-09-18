@@ -64,8 +64,7 @@ htmlrefdir   = $(referencedir)/html
 devhelpdir   = $(datadir)/devhelp/books/$(book_name)
 
 dist_reference_DATA = $(doxytagfile)
-dist_devhelp_DATA   = $(devhelpfile)
-dist_noinst_DATA    = $(call vpath_listall,$(htmlref_patterns))
+dist_noinst_DATA    = $(devhelpfile) $(call vpath_listall,$(htmlref_patterns))
 
 DISTCLEANFILES       = reference/doxygen.log
 MAINTAINERCLEANFILES = $(doxytagfile) $(devhelpfile) reference/html/*
@@ -84,16 +83,14 @@ docdir_base_uri = file:///$(patsubst /%,%,$(datarootdir_esc))/doc
 htmlref_relinst = $(subst @$(docdir_base_uri)/,@../../../,$(DOCINSTALL_FLAGS))
 htmlref_install = $(doc_install_cmd) $(htmlref_relinst)
 
-# Override the file installation program for dist_devhelp_DATA files.
-# Note that this is not a documented feature as far as I'm aware, but
-# Automake recognizes the override and does not try to assign its own
-# default value.
-dist_devhelpDATA_INSTALL = $(doc_install_cmd) --book-base='$(htmlrefdir:/=)' -T --
+# The command and options used to install the Devhelp file.
+devhelp_install = $(doc_install_cmd) --book-base='$(htmlrefdir:/=)'
 
 # Helper variables to replicate each pattern with a $(srcdir)/ prefix.
 # Also add quoting to prevent the shell from expanding the patterns.
 htmlref_patterns_dup   = $(foreach file,$(htmlref_patterns),'$(file)' '$(srcdir)/$(file)')
-htmlref_patterns_vpath = $(if $(srcdir:.=),$(htmlref_patterns_dup),$(htmlref_patterns:%='%'))
+htmlref_patterns_quote = $(patsubst %,'%',$(htmlref_patterns))
+htmlref_patterns_vpath = $(if $(srcdir:.=),$(htmlref_patterns_dup),$(htmlref_patterns_quote))
 
 # Expand to a list of -name 'PATTERN' arguments for use with 'find'.
 htmlref_find_patterns = $(patsubst %,-name '%' -o,$(notdir $(htmlref_patterns))) -false
@@ -103,6 +100,8 @@ dh_xsl_params =	--stringparam book_title '$(book_title)' \
 		--stringparam book_name '$(book_name)' \
 		--stringparam book_base '$(htmlrefpub:/=)'
 
+# Generated configuration files which, when updated, should cause the
+# reference documentation to be rebuilt.
 doc_config_deps = $(CONFIG_HEADER) $(srcdir)/reference/Doxyfile.in $(srcdir)/Makefile.in
 
 # Regenerate the documentation automatically only in maintainer mode.
@@ -116,12 +115,19 @@ else
 doc_dependencies =
 endif
 
+# Hook up custom rules for translating references to external documentation
+# to the actual location at install time.
+install-data-local: install-htmlref install-devhelp
+
+# Hook up corresponding custom uninstall rules.
+uninstall-local: uninstall-htmlref uninstall-devhelp
+
 # Install the HTML reference documentation files with just one invocation
 # of doc-install.pl to speed up the build process.  Make use of the --glob
 # option, which tells it to perform filename globbing itself, like 'find'.
 # This helps to avoid excessively long command lines, as some platforms
 # have rather restrictive limits.
-install-data-local: reference/html/index.html
+install-htmlref: reference/html/index.html
 	@$(NORMAL_INSTALL)
 	$(MKDIR_P) '$(DESTDIR)$(htmlrefdir)'
 	$(htmlref_install) -t '$(DESTDIR)$(htmlrefdir)' --glob -- $(htmlref_patterns_vpath)
@@ -129,11 +135,23 @@ install-data-local: reference/html/index.html
 # Delete files from the html installation directory.  Avoid recursive
 # directory removal, and apply the same wildcard pattern as was used to
 # select files for installation.
-uninstall-local:
+uninstall-htmlref:
 	@$(NORMAL_UNINSTALL)
 	(cd '$(DESTDIR)$(htmlrefdir)' 2>/dev/null || exit 0; \
-	 find . -type f \( $(htmlref_find_patterns) \) -exec rm -f '{}' '+')
+	 find . -type f '(' $(htmlref_find_patterns) ')' -exec rm -f '{}' '+')
 	-test ! -r '$(DESTDIR)$(htmlrefdir)' || rmdir '$(DESTDIR)$(htmlrefdir)'
+
+# Install the Devhelp file, translating the base path on the fly.
+install-devhelp: $(devhelpfile)
+	@$(NORMAL_INSTALL)
+	$(MKDIR_P) '$(DESTDIR)$(devhelpdir)'
+	$(devhelp_install) -t '$(DESTDIR)$(devhelpdir)' -- $^
+
+# Remove the installed Devhelp file and directory.
+uninstall-devhelp:
+	@$(NORMAL_UNINSTALL)
+	rm -f '$(DESTDIR)$(devhelpdir)/$(notdir $(devhelpfile))'
+	-test ! -r '$(DESTDIR)$(devhelpdir)' || rmdir '$(DESTDIR)$(devhelpdir)'
 
 # Regenerate the Doxygen configuration file automatically.
 reference/Doxyfile: $(srcdir)/reference/Doxyfile.in $(top_builddir)/config.status
@@ -146,7 +164,7 @@ reference/html/%: | $(doxytagfile)
 # Run Doxygen to build the reference documentation. The generated tag file
 # also functions as time stamp target for the documentation as a whole.
 $(doxytagfile): $(doc_dependencies) | reference/Doxyfile
-	-rm -f '$@'
+	-rm -f $@
 	-rm -fr reference/html
 	(echo '@INCLUDE =' reference/Doxyfile && echo 'INPUT =' $(doc_input)) | $(DOXYGEN) -
 	$(doc_postprocess) 'reference/html/*.html'
@@ -154,6 +172,8 @@ $(doxytagfile): $(doc_dependencies) | reference/Doxyfile
 # Run XSL transformation to generate a Devhelp book from a Doxygen tag file.
 %.devhelp2: %.tag
 	$(XSLTPROC) $(dh_xsl_params) -o $@ $(tagfile_to_devhelp2) $<
+
+.PHONY: install-htmlref uninstall-htmlref install-devhelp uninstall-devhelp
 
 # Instruct GNU make to delete the targets of a rule after it failed, in
 # order to avoid the complication of handling that situation manually.
