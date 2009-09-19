@@ -128,11 +128,12 @@ endif
 
 # Download the libstdc++ tag file from the GCC website.
 doctags/libstdc++.tag:
-	$(if $(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
-	     $(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f $@))
+	$(AM_V_at)$(if\
+	$(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
+	$(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f $@))
 
 # Build the mm-common-prepare(1) manual page.
 util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
-	$(subst_manpage) $(srcdir)/util/mm-common-prepare.1.in >$@
+	$(AM_V_GEN)$(subst_manpage) $(srcdir)/util/mm-common-prepare.1.in >$@
 
 include $(top_srcdir)/build/dist-changelog.am

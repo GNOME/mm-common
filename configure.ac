@@ -20,6 +20,7 @@ AC_PREREQ([2.59])
 AC_CONFIG_SRCDIR([util/mm-common-prepare.in])
 
 AM_INIT_AUTOMAKE([1.9 -Wno-portability check-news dist-bzip2 no-define std-options])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AM_MAINTAINER_MODE
 
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])

@@ -60,21 +60,25 @@ gmmproc_flags ?= -I $(codegen_m4_srcdir) --defs $(srcdir)
 # Automatically created output directories.
 binding_mkdirs = $(binding_stampdir) $(binding_outputdir)/private
 
+# Show names of generated files in silent rules output.
+mm_0_gen = @echo '  GEN    $(binding_outputdir)/{$*.cc,$*.h,private/$*_p.h}';
+mm_v_gen = $(if $(filter 0,$(or $(V),$(AM_DEFAULT_VERBOSITY))),$(mm_0_gen))
+
 # Declare the built sources main targets.
 all-local: $(binding_stampfiles) $(other_built_sources)
 
 # Create the output directories if they do not exist already.
 $(binding_mkdirs):
-	$(MKDIR_P) $@
+	$(AM_V_at)$(MKDIR_P) $@
 
 # Generate the wrap_init.cc file using generate_wrap_init.pl.
 $(binding_outputdir)/wrap_init.cc: $(binding_relfiles_hg) $(srcdir)/Makefile.in
-	$(gen_wrap_init) $(wrap_init_flags) $(binding_relfiles_hg) >$@
+	$(AM_V_GEN)$(gen_wrap_init) $(wrap_init_flags) $(binding_relfiles_hg) >$@
 
 # Run the gmmproc code generator to produce the C++ binding code.
 $(binding_stampdir)/%.stamp: %.hg %.ccg $(gmmproc_dependencies) | $(binding_mkdirs)
 	@: >$@
-	$(gmmproc) $(gmmproc_flags) $(notdir $*) $(srcdir) $(binding_outputdir)
+	$(mm_v_gen)$(gmmproc) $(gmmproc_flags) $* $(srcdir) $(binding_outputdir)
 
 # Instruct GNU make to delete the targets of a rule after it failed, in
 # order to avoid the complication of handling that situation manually.

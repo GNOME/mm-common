@@ -155,7 +155,7 @@ uninstall-devhelp:
 
 # Regenerate the Doxygen configuration file automatically.
 reference/Doxyfile: $(srcdir)/reference/Doxyfile.in $(top_builddir)/config.status
-	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+	$(AM_V_GEN)cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 
 # Make sure that the documentation will always have been generated before
 # executing the commands of a rule that depends on files in reference/html/.
@@ -164,14 +164,14 @@ reference/html/%: | $(doxytagfile)
 # Run Doxygen to build the reference documentation. The generated tag file
 # also functions as time stamp target for the documentation as a whole.
 $(doxytagfile): $(doc_dependencies) | reference/Doxyfile
-	-rm -f $@
-	-rm -fr reference/html
-	(echo '@INCLUDE =' reference/Doxyfile && echo 'INPUT =' $(doc_input)) | $(DOXYGEN) -
-	$(doc_postprocess) 'reference/html/*.html'
+	-$(AM_V_at)rm -f $@
+	-$(AM_V_at)rm -fr reference/html
+	$(AM_V_GEN)(echo '@INCLUDE =' reference/Doxyfile && echo 'INPUT =' $(doc_input)) | $(DOXYGEN) -
+	$(AM_V_at)$(doc_postprocess) 'reference/html/*.html'
 
 # Run XSL transformation to generate a Devhelp book from a Doxygen tag file.
 %.devhelp2: %.tag
-	$(XSLTPROC) $(dh_xsl_params) -o $@ $(tagfile_to_devhelp2) $<
+	$(AM_V_GEN)$(XSLTPROC) $(dh_xsl_params) -o $@ $(tagfile_to_devhelp2) $<
 
 .PHONY: install-htmlref uninstall-htmlref install-devhelp uninstall-devhelp
 
