@@ -128,7 +128,7 @@ endif
 
 # Download the libstdc++ tag file from the GCC website.
 doctags/libstdc++.tag:
-	$(AM_V_at)$(if\
+	$(AM_V_GEN)$(if\
 	$(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
 	$(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f $@))
 
