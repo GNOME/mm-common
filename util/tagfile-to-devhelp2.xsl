@@ -29,36 +29,28 @@
     <book title="{$book_title}" name="{$book_name}" base="{$book_base}"
           link="index.html" version="2" language="c++">
       <chapters>
-        <xsl:variable name="modules">
-          <xsl:apply-templates select="tagfile/compound[@kind='group']" mode="module">
-            <xsl:sort lang="en" select="title"/>
-          </xsl:apply-templates>
-        </xsl:variable>
+        <xsl:variable name="modules" select="tagfile/compound[@kind='group']"/>
         <xsl:if test="$modules">
           <sub name="Modules" link="modules.html">
-            <xsl:copy-of select="$modules"/>
+            <xsl:apply-templates select="$modules" mode="module">
+              <xsl:sort lang="en" select="title"/>
+            </xsl:apply-templates>
           </sub>
         </xsl:if>
-
-        <xsl:variable name="namespaces">
-          <xsl:apply-templates select="tagfile/compound[@kind='namespace']" mode="sub">
-            <xsl:sort lang="en" case-order="upper-first" select="name"/>
-          </xsl:apply-templates>
-        </xsl:variable>
+        <xsl:variable name="namespaces" select="tagfile/compound[@kind='namespace']"/>
         <xsl:if test="$namespaces">
           <sub name="Namespaces" link="namespaces.html">
-            <xsl:copy-of select="$namespaces"/>
+            <xsl:apply-templates select="$namespaces" mode="sub">
+              <xsl:sort lang="en" case-order="upper-first" select="name"/>
+            </xsl:apply-templates>
           </sub>
         </xsl:if>
-
-        <xsl:variable name="classes">
-          <xsl:apply-templates select="tagfile/compound[@kind='class' or @kind='struct']" mode="sub">
-            <xsl:sort lang="en" case-order="upper-first" select="name"/>
-          </xsl:apply-templates>
-        </xsl:variable>
+        <xsl:variable name="classes" select="tagfile/compound[@kind='class' or @kind='struct']"/>
         <xsl:if test="$classes">
           <sub name="Classes" link="classes.html">
-            <xsl:copy-of select="$classes"/>
+            <xsl:apply-templates select="$classes" mode="sub">
+              <xsl:sort lang="en" case-order="upper-first" select="name"/>
+            </xsl:apply-templates>
           </sub>
         </xsl:if>
       </chapters>
