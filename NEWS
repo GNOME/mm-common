@@ -1,3 +1,23 @@
+mm-common 0.8 "STFU!" (2009-09-21)
+
+	Enjoy the silence.
+
+	* Support for Automake 1.11 silent rules has been implemented
+	  in the shared Automake include files.
+	* The base path of the Devhelp file is now correctly translated
+	  at installation time even with Automake 1.11.
+	* A number of output directories are now created automatically
+	  at build time if needed, so that it is no longer necessary to
+	  put dummy files into otherwise empty directories.
+	* The automatically generated ChangeLog file now omits merge
+	  commits.
+	* The skeleton source tree now includes an examples/ directory
+	  a skeletonmm.h single-include header file.
+	* The skeleton Doxygen configuration file has been corrected
+	  and updated for Doxygen 1.6.1.
+	* The doc-install.pl utility no longer splits glob patterns
+	  with embedded whitespace into multiple patterns.
+
 mm-common 0.7.4 "Example" (2009-09-15)
 
 	Id est exempli gratia.
