@@ -12,18 +12,7 @@ mm-common 0.8 "STFU!" (2009-09-21)
 	* The automatically generated ChangeLog file now omits merge
 	  commits.
 	* The skeleton source tree now includes an examples/ directory
-	  a skeletonmm.h single-include header file.
-	* The skeleton Doxygen configuration file has been corrected
-	  and updated for Doxygen 1.6.1.
-	* The doc-install.pl utility no longer splits glob patterns
-	  with embedded whitespace into multiple patterns.
-
-mm-common 0.7.4 "Example" (2009-09-15)
-
-	Id est exempli gratia.
-
-	* The skeleton source tree now includes an examples/ directory
-	  a skeletonmm.h single-include header file.
+	  and a skeletonmm.h single-include header file.
 	* The skeleton Doxygen configuration file has been corrected
 	  and updated for Doxygen 1.6.1.
 	* The doc-install.pl utility no longer splits glob patterns
