@@ -24,10 +24,11 @@ AC_CONFIG_MACRO_DIR([build])
 AC_CONFIG_HEADERS([build/config.h skeleton/skeletonmmconfig.h])
 
 AM_INIT_AUTOMAKE([1.9 -Wno-portability check-news dist-bzip2 no-define nostdinc tar-pax])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
-MM_PREREQ([0.7.2])
+MM_PREREQ([0.8])
 MM_INIT_MODULE([skeletonmm-1.0])
 
 # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
