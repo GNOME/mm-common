@@ -20,7 +20,7 @@ AUTOMAKE_OPTIONS = subdir-objects
 check_PROGRAMS = example/example
 
 local_includes = -I$(top_builddir)/skeleton $(if $(srcdir:.=),-I$(top_srcdir)/skeleton)
-local_libs = $(top_builddir)/skeleton/skeletonmm/libskeletonmm-$(GLIBMM_API_VERSION).la
+local_libs = $(top_builddir)/skeleton/skeletonmm/libskeletonmm-$(SKELETONMM_API_VERSION).la
 
 AM_CPPFLAGS = -I$(top_builddir) $(local_includes) $(GTHREAD_CFLAGS) $(SKELETONMM_CFLAGS)
 AM_CXXFLAGS = $(SKELETONMM_WXXFLAGS)
