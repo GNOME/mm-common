@@ -8,7 +8,7 @@ includedir=@includedir@
 docdir=${datarootdir}/doc/@SKELETONMM_MODULE_NAME@
 doxytagfile=${docdir}/reference/@SKELETONMM_MODULE_NAME@.tag
 htmlrefdir=${docdir}/reference/html
-htmlrefpub=http://library.gnome.org/@PACKAGE_TARNAME@/unstable/
+htmlrefpub=http://library.gnome.org/devel/@PACKAGE_TARNAME@/unstable/
 
 Name: skeletonmm
 Description: C++ binding for skeleton
