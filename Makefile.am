@@ -91,7 +91,6 @@ nobase_dist_doc_DATA =							\
 	skeletonmm/skeleton/src/skeleton.defs				\
 	skeletonmm/skeleton/src/skeleton.hg				\
 	skeletonmm/skeleton/src/skeleton_docs.xml			\
-	skeletonmm/skeleton/src/skeleton_docs_override.xml		\
 	skeletonmm/skeleton/src/skeleton_enum.defs			\
 	skeletonmm/skeleton/src/skeleton_extra.defs			\
 	skeletonmm/skeleton/src/skeleton_method.defs
