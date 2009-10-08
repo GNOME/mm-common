@@ -15,7 +15,8 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([mm-common], [0.8], [gtkmm-list@gnome.org], [mm-common], [http://www.gtkmm.org/])
+AC_INIT([mm-common], [0.8.1], [https://bugzilla.gnome.org/enter_bug.cgi?product=mm-common],
+        [mm-common], [http://www.gtkmm.org/])
 AC_PREREQ([2.59])
 AC_CONFIG_SRCDIR([util/mm-common-prepare.in])
 

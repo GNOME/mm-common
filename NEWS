@@ -1,3 +1,14 @@
+mm-common 0.8.1 "Bugzilla" (2009-10-09)
+
+	Skeleton regurgitated by the lizard of Moz.
+
+	* A number of small mistakes in the skeleton C++ binding files
+	  have been corrected.
+	* The sample XML file for the obsolete documentation override
+	  mechanism has been removed from the skeleton project.
+	* The tranformation from Doxygen to Devhelp has been extended
+	  to produce a hierarchy of class chapters grouped by scope.
+
 mm-common 0.8 "STFU!" (2009-09-21)
 
 	Enjoy the silence.
