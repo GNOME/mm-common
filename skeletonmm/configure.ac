@@ -15,10 +15,11 @@
 ## You should have received a copy of the GNU Lesser General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([skeletonmm], [1.2.3], [http://bugzilla.gnome.org/], [skeletonmm], [http://www.gtkmm.org/])
+AC_INIT([skeletonmm], [1.2.3], [https://bugzilla.gnome.org/enter_bug.cgi?product=skeletonmm],
+        [skeletonmm], [http://www.gtkmm.org/])
 AC_PREREQ([2.59])
 
-AC_CONFIG_SRCDIR([skeleton/src/skeleton.hg])
+AC_CONFIG_SRCDIR([skeleton/skeletonmm.h])
 AC_CONFIG_AUX_DIR([build])
 AC_CONFIG_MACRO_DIR([build])
 AC_CONFIG_HEADERS([build/config.h skeleton/skeletonmmconfig.h])
