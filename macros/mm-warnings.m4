@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090910
+#serial 20091103
 
 ## _MM_ARG_ENABLE_WARNINGS_OPTION
 ##
@@ -45,18 +45,24 @@ AC_ARG_ENABLE([warnings],
 ## are enabled, too.
 ##
 ## For instance, your configure.ac file might use the macro like this:
-##   MM_ARG_ENABLE_WARNINGS([MYAPP_C_WARNING_FLAGS],
-##                         [-Wall],
-##                         [-pedantic -Wall -Wextra]
-##                         [G PANGO ATK GDK GDK_PIXBUF GTK])
+##
+##   MM_ARG_ENABLE_WARNINGS([EXAMPLE_WFLAGS],
+##                          [-Wall],
+##                          [-pedantic -Wall -Wextra],
+##                          [G PANGO ATK GDK GDK_PIXBUF GTK])
 ##
 ## Your Makefile.am could then contain a line such as this:
-##   AM_CFLAGS = $(MYAPP_C_WARNING_FLAGS)
 ##
-## Note that you may call MM_ARG_ENABLE_WARNINGS twice, once for CFLAGS, and once for CXXFLAGS (for C++).
+##   AM_CFLAGS = $(EXAMPLE_WFLAGS)
 ##
-## You may force people to fix warnings when creating release tarballs by 
+## In order to determine the warning options to use with the C++ compiler,
+## call AC_LANG([C++]) first to change the current language.  If different
+## output variables are used, it is also fine to call MM_ARG_ENABLE_WARNINGS
+## repeatedly, once for each language setting.
+##
+## You may force people to fix warnings when creating release tarballs by
 ## adding this line to your Makefile.am:
+##
 ##   DISTCHECK_CONFIGURE_FLAGS = --enable-warnings=fatal
 ##
 AC_DEFUN([MM_ARG_ENABLE_WARNINGS],
