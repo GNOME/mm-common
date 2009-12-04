@@ -67,8 +67,18 @@ referencedir = $(libdocdir)/reference
 htmlrefdir   = $(referencedir)/html
 devhelpdir   = $(datadir)/devhelp/books/$(book_name)
 
-dist_reference_DATA = $(doxytagfile)
-dist_noinst_DATA    = $(devhelpfile) $(call vpath_listall,$(htmlref_patterns))
+if ENABLE_DOCUMENTATION
+doc_inst_targets = install-htmlref install-devhelp
+doc_inst_files   = $(doxytagfile)
+doc_dist_files   = $(devhelpfile) $(call vpath_listall,$(htmlref_patterns))
+else
+doc_inst_targets =
+doc_inst_files   =
+doc_dist_files   =
+endif
+
+dist_reference_DATA = $(doc_inst_files)
+dist_noinst_DATA    = $(doc_dist_files)
 
 DISTCLEANFILES       = $(doc_outdir)/doxygen.log
 MAINTAINERCLEANFILES = $(doxytagfile) $(devhelpfile) $(doc_outdir)/html/*
@@ -121,10 +131,10 @@ endif
 
 # Hook up custom rules for translating references to external documentation
 # to the actual location at install time.
-install-data-local: install-htmlref install-devhelp
+install-data-local: $(doc_inst_targets)
 
 # Hook up corresponding custom uninstall rules.
-uninstall-local: uninstall-htmlref uninstall-devhelp
+uninstall-local: $(addprefix un,$(doc_inst_targets))
 
 # Install the HTML reference documentation files with just one invocation
 # of doc-install.pl to speed up the build process.  Make use of the --glob
@@ -157,10 +167,13 @@ uninstall-devhelp:
 	rm -f '$(DESTDIR)$(devhelpdir)/$(notdir $(devhelpfile))'
 	-test ! -r '$(DESTDIR)$(devhelpdir)' || rmdir '$(DESTDIR)$(devhelpdir)'
 
-# Regenerate the Doxygen configuration file automatically.
+# Regenerate the Doxygen configuration file automatically.  In the
+# top-level build directory Automake already takes care of this.
+ ifneq ($(subdir),.)
 $(doc_config): $(srcdir)/$(doc_config).in $(top_builddir)/config.status
 	$(AM_V_GEN)cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 
+ endif
 # Make sure that the documentation will always have been generated before
 # executing commands of a rule that depends on files in $(doc_outdir)/html/.
 $(doc_outdir)/html/%: | $(doxytagfile)
