@@ -18,7 +18,7 @@
 ## Parameters:  book_name
 ## Overrides:   pubdocbase, htmlrefpub, book_title, htmlref_patterns,
 ##              doc_outdir, doc_config, doc_postprocess, doc_install,
-##              tagfile_to_devhelp2
+##              tagfile_to_devhelp2, doxytagfile, devhelpfile
 ## Files:       doc_input
 ## Output:      dist_noinst_DATA, DISTCLEANFILES, MAINTAINERCLEANFILES
 
@@ -51,8 +51,8 @@ doc_install         ?= $(PERL) -- "$(MMDOCTOOLDIR)/doc-install.pl"
 tagfile_to_devhelp2 ?= "$(MMDOCTOOLDIR)/tagfile-to-devhelp2.xsl"
 
 # Names of the main output files.
-doxytagfile = $(doc_outdir)/$(book_name).tag
-devhelpfile = $(doc_outdir)/$(book_name).devhelp2
+doxytagfile ?= $(doc_outdir)/$(book_name).tag
+devhelpfile ?= $(doc_outdir)/$(book_name).devhelp2
 
 # Function: $(call vpath_listall,PATTERN ...)
 # Get all filenames which match a PATTERN from the list.  Look for files
