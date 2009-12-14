@@ -77,8 +77,8 @@ doc_inst_files   =
 doc_dist_files   =
 endif
 
-dist_reference_DATA = $(doc_inst_files)
-dist_noinst_DATA    = $(doc_dist_files)
+dist_reference_DATA = $(strip $(doc_inst_files))
+dist_noinst_DATA    = $(strip $(doc_dist_files))
 
 DISTCLEANFILES       = $(doc_outdir)/doxygen.log
 MAINTAINERCLEANFILES = $(doxytagfile) $(devhelpfile) $(doc_outdir)/html/*
