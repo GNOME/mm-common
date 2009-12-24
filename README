@@ -111,6 +111,7 @@ macros/mm-pkg.m4:
 macros/mm-dietlib.m4:
   Implements Autoconf macros which provide options intended to reduce the
   binary size of the generated binding library, typically for embedded use.
+  The MM_PROG_GCC_VISIBILITY macro is defined in this file as well.
 
 Automake include files
 ----------------------

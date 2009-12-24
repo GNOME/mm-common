@@ -15,7 +15,55 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090817
+#serial 20091224
+
+## _MM_PROG_GCC_VISIBILITY_CHECK
+##
+## Implementation helper macro of MM_PROG_GCC_VISIBILITY().  Pulled
+## in through AC_REQUIRE() so that it will only be expanded once.
+##
+m4_define([_MM_PROG_GCC_VISIBILITY_CHECK],
+[dnl
+AC_PROVIDE([$0])[]dnl
+AC_CACHE_CHECK([for GCC symbol visibility options],
+               [mm_cv_gcc_visibility_cxxflags],
+[dnl
+mm_save_CXXFLAGS=$CXXFLAGS
+CXXFLAGS="$CXXFLAGS -fvisibility=hidden -fvisibility-inlines-hidden"
+dnl
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+#pragma GCC visibility push(default)
+namespace Mm { void __attribute__((__visibility__("hidden"))) mmfunc(); }
+void Mm::mmfunc() {}
+#pragma GCC visibility pop
+]], [[Mm::mmfunc();]])],
+[mm_cv_gcc_visibility_cxxflags='-fvisibility=hidden -fvisibility-inlines-hidden'],
+[mm_cv_gcc_visibility_cxxflags=none])
+dnl
+CXXFLAGS=$mm_save_CXXFLAGS])[]dnl
+])
+
+## MM_PROG_GCC_VISIBILITY(variable-name)
+##
+## Check whether the compiler supports the GNU C++ symbol visibility
+## attributes and command-line options.  If explicit symbol visibility is
+## supported, the compiler command-line options for hiding all symbols by
+## default are made available through the specified substitution variable
+## <variable-name>.
+##
+## See also <http://gcc.gnu.org/wiki/Visibility> for more information on
+## symbol visibility and the attributes supported by GCC.
+##
+AC_DEFUN([MM_PROG_GCC_VISIBILITY],
+[dnl
+m4_assert([$# >= 1])[]dnl
+AC_LANG_ASSERT([C++])[]dnl
+AC_REQUIRE([_MM_PRE_INIT])[]dnl
+AC_REQUIRE([_MM_PROG_GCC_VISIBILITY_CHECK])[]dnl
+AS_IF([test "x$mm_cv_gcc_visibility_cxxflags" != xnone],
+      [$1=$mm_cv_gcc_visibility_cxxflags], [$1=])
+AC_SUBST([$1])[]dnl
+])
 
 ## _MM_ARG_DISABLE_DEPRECATED_API_OPTION
 ##
