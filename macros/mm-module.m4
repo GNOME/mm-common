@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090822
+#serial 20091228
 
 ## _MM_INIT_MODULE_VERSION(basename, BASENAME, [major], [minor], [micro])
 ##
@@ -82,6 +82,6 @@ AC_REQUIRE([_MM_PRE_INIT])[]dnl
 AC_REQUIRE([MM_CHECK_GNU_MAKE])[]dnl
 _MM_INIT_MODULE_BASENAME([$1],
                  m4_quote(m4_ifval([$2], [$2], m4_defn([AC_PACKAGE_VERSION]))),
-                 m4_quote(m4_bpatsubst([$1], [-[.0123456789]+$])),
-                 m4_quote(m4_bregexp([$1], [-\([.0123456789]+\)$], [\1])))[]dnl
+                 m4_quote(m4_bpatsubst([$1], [[-.0123456789]+$])),
+                 m4_quote(m4_bregexp([$1], [-?\([.0123456789]+\)$], [\1])))[]dnl
 ])
