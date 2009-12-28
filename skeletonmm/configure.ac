@@ -29,7 +29,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
-MM_PREREQ([0.8])
+MM_PREREQ([0.9])
 MM_INIT_MODULE([skeletonmm-1.0])
 
 # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
