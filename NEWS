@@ -1,3 +1,12 @@
+mm-common 0.9.1 "Dash" (2009-12-28)
+
+	Dash or no dash!
+
+	* The skeleton Doxygen configuration file has been updated to
+	  further improve the generated reference documentation.
+	* The dash separator before the API version suffix of a module
+	  name is now optional.
+
 mm-common 0.9 "Invisible" (2009-12-26)
 
 	The Invisible Book of Invisibility.
