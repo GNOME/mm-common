@@ -51,11 +51,10 @@ shared_pkgconfigdir = $(datadir)/pkgconfig
 nodist_shared_pkgconfig_DATA = doctags/mm-common-libstdc++.pc
 noinst_DATA = doctags/mm-common-libstdc++-uninstalled.pc
 
-nobase_dist_doc_SCRIPTS = skeletonmm/autogen.sh
-AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = skeletonmm/autogen.sh
+dist_doc_DATA = README
+doc_DATA = skeletonmm.tar.gz
 
-nobase_dist_doc_DATA =							\
-	README								\
+skeletonmm_data_files =							\
 	skeletonmm/.gitignore						\
 	skeletonmm/AUTHORS						\
 	skeletonmm/COPYING						\
@@ -95,10 +94,12 @@ nobase_dist_doc_DATA =							\
 	skeletonmm/skeleton/src/skeleton_extra.defs			\
 	skeletonmm/skeleton/src/skeleton_method.defs
 
-dist_noinst_DATA = util/mm-common-prepare.1.in
-dist_noinst_SCRIPTS = autogen.sh
+skeletonmm_files = skeletonmm/autogen.sh $(skeletonmm_data_files)
 
-CLEANFILES = $(man1_MANS)
+dist_noinst_DATA = util/mm-common-prepare.1.in $(skeletonmm_data_files)
+dist_noinst_SCRIPTS = autogen.sh skeletonmm/autogen.sh
+
+CLEANFILES = $(man1_MANS) $(doc_DATA)
 MAINTAINERCLEANFILES = $(dist_doctags_DATA)
 
 # Remote location of the GNU libstdc++ Doxygen tag file.
@@ -134,5 +135,9 @@ doctags/libstdc++.tag:
 # Build the mm-common-prepare(1) manual page.
 util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
 	$(AM_V_GEN)$(subst_manpage) $(srcdir)/util/mm-common-prepare.1.in >$@
+
+# Create tar archive of skeletonmm for installation.
+skeletonmm.tar.gz: $(skeletonmm_files)
+	$(AM_V_GEN)(cd $(srcdir) && ./missing --run tar chof - $(skeletonmm_files)) | gzip -c >$@
 
 include $(top_srcdir)/build/dist-changelog.am

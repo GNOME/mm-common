@@ -10,6 +10,7 @@
 /install-sh
 /missing
 /mm-common-*.tar.*
+/skeletonmm.tar.gz
 /doctags/libstdc++.tag
 /doctags/mm-common*.pc
 /macros/mm-common.m4
