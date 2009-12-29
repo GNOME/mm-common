@@ -112,6 +112,7 @@ download_curl = $(CURL) --compressed --connect-timeout 300 -g -L -m 3600 -R --re
 download_wget = $(WGET) -N -nd -T 300 -t 5 -P $(dir $@)
 
 subst_manpage = $(SED) 's|[@]PACKAGE_STRING[@]|$(PACKAGE_STRING)|g;s|[@]docdir[@]|$(docdir)|g'
+srctar_stdout = cd $(top_srcdir) >/dev/null && $(SHELL) ./missing --run tar chof -
 
 # If maintainer mode is enabled, always check the remote locations
 # of the tag files for updates when building the default target.
@@ -138,6 +139,6 @@ util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
 
 # Create tar archive of skeletonmm for installation.
 skeletonmm.tar.gz: $(skeletonmm_files)
-	$(AM_V_GEN)(cd $(srcdir) && ./missing --run tar chof - $(skeletonmm_files)) | gzip -c >$@
+	$(AM_V_GEN)($(srctar_stdout) $(skeletonmm_files)) | gzip -c >$@
 
 include $(top_srcdir)/build/dist-changelog.am
