@@ -1,11 +1,16 @@
-mm-common 0.9.1 "Dash" (2009-12-28)
+mm-common 0.9.1 "Dash" (2009-12-31)
 
-	Dash or no dash!
+	Two years to go!
 
 	* The skeleton Doxygen configuration file has been updated to
 	  further improve the generated reference documentation.
 	* The dash separator before the API version suffix of a module
 	  name is now optional.
+	* The installed skeletonmm source tree is now bundled in a tar
+	  archive.
+	* When installing from source into a different prefix than the
+	  system aclocal, an informational notice will now be shown to
+	  inform about the need to set ACLOCAL_FLAGS.
 
 mm-common 0.9 "Invisible" (2009-12-26)
 
