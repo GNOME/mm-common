@@ -122,7 +122,7 @@ else
 check_updates =
 endif
 
-.PHONY: $(check_updates)
+.PHONY: $(check_updates) postinst-acdir-notice
 
 # Avoid shipping partially downloaded files.
 .DELETE_ON_ERROR:
@@ -142,3 +142,19 @@ skeletonmm.tar.gz: $(skeletonmm_files)
 	$(AM_V_GEN)($(srctar_stdout) $(skeletonmm_files)) | gzip -c >$@
 
 include $(top_srcdir)/build/dist-changelog.am
+
+install-data-hook: $(if $(DESTDIR),,postinst-acdir-notice)
+
+# Inform the installer that M4 macro files installed in a prefix
+# not known to aclocal will not be picked up automatically.
+postinst-acdir-notice:
+	@$(POST_INSTALL)
+	@-acdir=`$${ACLOCAL-aclocal} --print-ac-dir 2>/dev/null || :`; \
+	if test "x$$acdir" = 'x$(aclocal_macrodir)'; then :; else \
+	  echo 'NOTICE:'; echo; \
+	  echo 'The $(PACKAGE_NAME) Autoconf macro files have been installed in a different'; \
+	  echo 'prefix than the system aclocal directory.  In order for the installed'; \
+	  echo 'macros to be found, it may be necessary to add the $(PACKAGE_NAME) include'; \
+	  echo 'path to the ACLOCAL_FLAGS environment variable:'; echo; \
+	  echo "  ACLOCAL_FLAGS='-I $(aclocal_macrodir)'; export ACLOCAL_FLAGS"; \
+	fi
