@@ -111,8 +111,11 @@
     <xsl:apply-templates select="member" mode="keyword-list"/>
   </xsl:template>
   <!-- Match leaf compound members -->
-  <xsl:template match="member[@kind='function' or @kind='typedef']" mode="keyword-list">
-    <keyword type="{@kind}" xsl:use-attribute-sets="keyword-member"/>
+  <xsl:template match="member[@kind='typedef']" mode="keyword-list">
+    <keyword type="typedef" xsl:use-attribute-sets="keyword-member"/>
+  </xsl:template>
+  <xsl:template match="member[@kind='function' or @kind='friend']" mode="keyword-list">
+    <keyword type="function" xsl:use-attribute-sets="keyword-member"/>
   </xsl:template>
   <xsl:template match="member[@kind='enumeration']" mode="keyword-list">
     <keyword type="enum" xsl:use-attribute-sets="keyword-member"/>
