@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
+## Copyright (c) 2009-2010  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of mm-common.
 ##
@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20090828
+#serial 20100107
 
 ## _MM_CONFIG_DOCTOOL_DIR
 ##
@@ -159,8 +159,8 @@ m4_define([_MM_ARG_WITH_TAGFILE_DOC],
               [AS_HELP_STRING([[--with-$1-doc=[TAGFILE@]HTMLREFDIR]],
                               [Link to external $1 documentation]m4_ifval([$4], [[ [auto]]]))],
   [
-    mm_htmlrefdir=`[expr "@$withval" : '.*@\(.*\)' 2>&]AS_MESSAGE_LOG_FD`
-    mm_tagname=`[expr "/$withval" : '[^@]*[\\/]\([^\\/@]*\)@' 2>&]AS_MESSAGE_LOG_FD`
+    mm_htmlrefdir=`[expr "X@$withval" : '.*@\(.*\)' 2>&]AS_MESSAGE_LOG_FD`
+    mm_tagname=`[expr "X/$withval" : '[^@]*[\\/]\([^\\/@]*\)@' 2>&]AS_MESSAGE_LOG_FD`
     mm_tagpath=`[expr "X$withval" : 'X\([^@]*\)@' 2>&]AS_MESSAGE_LOG_FD`
     test "x$mm_tagname" != x || mm_tagname="$3"
     test "x$mm_tagpath" != x || mm_tagpath=$mm_tagname[]dnl
