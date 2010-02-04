@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Joe Hacker <joe@example.com>
+## Copyright (c) 2010  Joe Hacker <joe@example.com>
 ##
 ## This file is part of skeletonmm.
 ##
@@ -21,6 +21,7 @@ include $(top_srcdir)/skeleton/skeletonmm/filelist.am
 skeletonmm_files_h = $(files_built_h) $(filter-out wrap_init.h,$(files_extra_h))
 
 book_name = $(SKELETONMM_MODULE_NAME)
-doc_input = $(addprefix $(top_srcdir)/skeleton/skeletonmm/,$(skeletonmm_files_h))
+doc_input = $(top_srcdir)/skeleton/skeletonmm.h	$(addprefix\
+            $(top_srcdir)/skeleton/skeletonmm/,$(skeletonmm_files_h))
 
 include $(top_srcdir)/build/doc-reference.am

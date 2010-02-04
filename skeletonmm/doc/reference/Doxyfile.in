@@ -234,12 +234,21 @@ INCLUDE_FILE_PATTERNS  = *.h
 PREDEFINED             = __cplusplus \
                          DOXYGEN_SHOULD_SKIP_THIS \
                          "G_GNUC_CONST=" \
+                         "G_GNUC_DEPRECATED=" \
+                         "G_GNUC_EXTENSION=" \
                          "G_GNUC_INTERNAL=" \
-                         "SKELETONMM_API=" \
-                         GLIBMM_VFUNCS_ENABLED \
-                         GLIBMM_PROPERTIES_ENABLED \
+                         "G_GNUC_MALLOC=" \
+                         "G_GNUC_NORETURN=" \
+                         "G_GNUC_NO_INSTRUMENT=" \
+                         "G_GNUC_NULL_TERMINATED=" \
+                         "G_GNUC_PURE=" \
+                         "G_GNUC_WARN_UNUSED_RESULT=" \
+                         "G_MODULE_EXPORT=" \
+                         GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED \
                          GLIBMM_EXCEPTIONS_ENABLED \
-                         GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+                         GLIBMM_PROPERTIES_ENABLED \
+                         GLIBMM_VFUNCS_ENABLED \
+                         "SKELETONMM_API="
 EXPAND_AS_DEFINED      = SKELETONMM_MAJOR_VERSION \
                          SKELETONMM_MINOR_VERSION \
                          SKELETONMM_MICRO_VERSION

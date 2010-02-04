@@ -1,4 +1,4 @@
-/* Copyright (c) 2009  Joe Hacker <joe@example.com>
+/* Copyright (c) 2010  Joe Hacker <joe@example.com>
  *
  * This file is part of skeletonmm.
  *
@@ -19,7 +19,29 @@
 #ifndef SKELETONMM_H_INCLUDED
 #define SKELETONMM_H_INCLUDED
 
+/** @mainpage skeletonmm Reference Manual
+ *
+ * @section description Description
+ *
+ * The skeletonmm C++ binding provides a C++ interface on top of the skeleton
+ * C library.
+ *
+ * @section overview Overview
+ *
+ * [...]
+ *
+ * @section use Use
+ *
+ * To use skeletonmm in your C++ application, include the central header file
+ * <tt>\<skeletonmm.h\></tt>.  The skeletonmm package ships a @c pkg-config
+ * file with the correct include path and link command-line for the compiler.
+ */
+
 #include <skeletonmmconfig.h>
 #include <skeletonmm/skeleton.h>
+
+/** @example example/example.cc
+ * A skeletonmm example program.
+ */
 
 #endif /* !SKELETONMM_H_INCLUDED */
