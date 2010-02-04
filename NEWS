@@ -1,4 +1,4 @@
-mm-common 0.9.2 "Friends" (2010-01-06)
+mm-common 0.9.2 "Friends" (2010-02-05)
 
 	Friends don't let friends declare friends.
 
@@ -6,6 +6,8 @@ mm-common 0.9.2 "Friends" (2010-01-06)
 	  file are now included in the transformation to Devhelp.
 	* The skeleton Doxygen configuration has been updated to avoid
 	  blurry class labels in the hierarchy graphs.
+	* A template for a custom reference documentation main page
+	  has been added to the skeleton binding module.
 
 mm-common 0.9.1 "Dash" (2009-12-31)
 
