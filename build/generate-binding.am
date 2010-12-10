@@ -25,7 +25,11 @@
 # Location of the module's gmmproc support files.
 codegen_srcdir ?= $(top_srcdir)/codegen
 
-# Location of the module's gmmproc M4 files.
+# Location of the module's gmmproc M4 files,
+# and of any extra m4 files from installed modules, 
+# such as from gtkmm rather than just glibmm.
+# Use, for instance, this in configure.ac:
+# MM_PKG_CONFIG_SUBST([GMMPROC_EXTRA_M4_DIR], [--variable=gmmprocm4dir gtkmm-3.0])
 codegen_m4_srcdir ?= $(codegen_srcdir)/m4
 
 # Destination directory of the generated source files.
@@ -55,7 +59,8 @@ gmmproc_dependencies = $(binding_relfiles_m4) $(files_defs)
 # Default command lines for running the code generators.
 gmmproc       ?= $(PERL) -I"$(GMMPROC_DIR)/pm" -- "$(GMMPROC_DIR)/gmmproc"
 gen_wrap_init ?= $(PERL) -- "$(GMMPROC_DIR)/generate_wrap_init.pl"
-gmmproc_flags ?= -I $(codegen_m4_srcdir) --defs $(srcdir)
+codegen_m4_flags = $(addprefix -I , $(codegen_m4_srcdir) $(GMMPROC_EXTRA_M4_DIR))
+gmmproc_flags ?= $(codegen_m4_flags) --defs $(srcdir)
 
 # Automatically created output directories.
 binding_mkdirs = $(binding_stampdir) $(binding_outputdir)/private
