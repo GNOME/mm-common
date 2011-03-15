@@ -1,3 +1,18 @@
+mm-common 0.9.3 (2010-03-15)
+
+  * Add an mm-common-util pkg-config file, to be used intead of
+  of glibmm-2.4 to get the location of doctool .pl files, such
+  as doc-install.pl.
+  * MM_CONFIG_DOCTOOL_DIR(): Get the .pl files from mm-common's
+  installed copy instead of from glibmm, which now doesn't install its own
+  copy. Because this macro has been updated, there should be no need for
+  any changes in other *mm modules due to the changes in glibmm or mm-common.
+  * Allow use of GMMPROC_EXTRA_M4_DIR in configure.ac to tell gmmproc about
+  extra -I arguments.
+  For instance, use this in configure.ac:
+  MM_PKG_CONFIG_SUBST([GMMPROC_EXTRA_M4_DIR], [--variable=gmmprocm4dir gtkmm-3.0])
+  (Murray Cumming)
+
 mm-common 0.9.2 "Friends" (2010-02-05)
 
 	Friends don't let friends declare friends.
