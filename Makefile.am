@@ -21,6 +21,7 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 bin_SCRIPTS = util/mm-common-prepare
 man1_MANS = util/mm-common-prepare.1
 
+# These are installed so that mm-common-prepare can copy them into projects at autogen.sh time:
 build_supportdir = $(pkgdatadir)/build
 dist_build_support_DATA =		\
 	build/compile-binding.am	\
@@ -28,6 +29,7 @@ dist_build_support_DATA =		\
 	build/doc-reference.am		\
 	build/generate-binding.am
 
+# These are installed so that mm-common-prepare can copy them into projects at autogen.sh time:
 aclocal_macrodir = $(datadir)/aclocal
 aclocal_macro_DATA = macros/mm-common.m4
 dist_aclocal_macro_DATA =		\
@@ -37,12 +39,20 @@ dist_aclocal_macro_DATA =		\
 	macros/mm-pkg.m4		\
 	macros/mm-warnings.m4
 
+# These are installed so that mm-common-prepare can copy them into projects at autogen.sh time,
+# if a directory path is given to MM_CONFIG_DOCTOOL_DIR(),
+# or they can be found via pkg-config --variable=doctooldir mm-common,
+# which is preferrable.
 doctooldir = $(pkgdatadir)/doctool
 dist_doctool_DATA =			\
 	util/doc-install.pl		\
 	util/doc-postprocess.pl		\
 	util/doxygen.css		\
 	util/tagfile-to-devhelp2.xsl
+
+# Let other modules find the utils with pkg-config:
+pkgconfigdir = $(libdir)/pkgconfig
+nodist_pkgconfig_DATA = util/mm-common-util.pc
 
 doctagsdir = $(pkgdatadir)/doctags
 dist_doctags_DATA = doctags/libstdc++.tag

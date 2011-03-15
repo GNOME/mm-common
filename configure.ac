@@ -39,5 +39,6 @@ AC_CONFIG_FILES([Makefile
                  doctags/mm-common-libstdc++.pc
                  doctags/mm-common-libstdc++-uninstalled.pc
                  macros/mm-common.m4
+                 util/mm-common-util.pc
                  util/mm-common-prepare])
 AC_OUTPUT

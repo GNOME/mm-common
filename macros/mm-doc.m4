@@ -31,13 +31,13 @@ dnl
 AC_MSG_CHECKING([location of documentation utilities])
 AS_IF([test "x$MMDOCTOOLDIR" = x],
 [
-  MMDOCTOOLDIR=`$PKG_CONFIG --variable=doctooldir glibmm-2.4 2>&AS_MESSAGE_LOG_FD`
+  MMDOCTOOLDIR=`$PKG_CONFIG --variable=doctooldir mm-common-util 2>&AS_MESSAGE_LOG_FD`
   AS_IF([test "[$]?" -ne 0],
         [AC_MSG_ERROR([[not found
-The required module glibmm could not be found on this system.  If you
-are running a binary distribution and the glibmm package is installed,
-make sure that any separate development package for glibmm is installed
-as well.  If you built glibmm yourself, it may be necessary to adjust
+The required module mm-common-util could not be found on this system.  If you
+are running a binary distribution and the mm-common package is installed,
+make sure that any separate development package for mm-common is installed
+as well.  If you built mm-common yourself, it may be necessary to adjust
 the PKG_CONFIG_PATH environment variable for pkg-config to find it.
 ]])])
 ])
@@ -53,7 +53,7 @@ AC_MSG_RESULT([$MMDOCTOOLDIR])[]dnl
 ##
 ## The directory name is used by mm-common-prepare as the destination
 ## for copying the required files into the source tree.  If you make
-## use of this feature in order to avoid a dependency on glibmm, make
+## use of this feature in order to avoid a dependency on mm-common, make
 ## sure to include the installed files in the distribution tarball of
 ## your package.
 ##
@@ -91,10 +91,10 @@ AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
 [
   mm_err=
   AS_IF([test "x$MMDOCTOOLDIR" = x], [mm_err='dnl
-The glibmm module is available, but the installation of glibmm on this
+The mm-common-util module is available, but the installation of mm-common on this
 machine is missing the shared documentation utilities of the GNOME C++
 bindings.  It may be necessary to upgrade to a more recent release of
-glibmm in order to build '$PACKAGE_NAME' and install the documentation.'],
+mm-common in order to build '$PACKAGE_NAME' and install the documentation.'],
         [test "x$PERL" = xperl], [mm_err='Perl is required for installing the documentation.'],
         [test "x$USE_MAINTAINER_MODE" != xno],
   [
