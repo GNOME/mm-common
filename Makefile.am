@@ -50,15 +50,14 @@ dist_doctool_DATA =			\
 	util/doxygen.css		\
 	util/tagfile-to-devhelp2.xsl
 
-# Let other modules find the utils with pkg-config:
-pkgconfigdir = $(libdir)/pkgconfig
-nodist_pkgconfig_DATA = util/mm-common-util.pc
-
 doctagsdir = $(pkgdatadir)/doctags
 dist_doctags_DATA = doctags/libstdc++.tag
 
+# Let other modules find the utils with pkg-config:
 shared_pkgconfigdir = $(datadir)/pkgconfig
-nodist_shared_pkgconfig_DATA = doctags/mm-common-libstdc++.pc
+nodist_shared_pkgconfig_DATA =		\
+	doctags/mm-common-libstdc++.pc	\
+	util/mm-common-util.pc
 noinst_DATA = doctags/mm-common-libstdc++-uninstalled.pc
 
 dist_doc_DATA = README
