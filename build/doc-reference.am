@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
+## Copyright (c) 2009, 2011  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of mm-common.
 ##
@@ -75,6 +75,10 @@ else
 doc_inst_targets =
 doc_inst_files   =
 doc_dist_files   =
+endif
+
+if DIST_DOCTOOLS
+doc_dist_files   += $(MMDOCTOOLDIR)/doc-postprocess.pl $(MMDOCTOOLDIR)/doc-install.pl $(MMDOCTOOLDIR)/tagfile-to-devhelp2.xsl $(MMDOCTOOLDIR)/doxygen.css
 endif
 
 dist_reference_DATA = $(strip $(doc_inst_files))

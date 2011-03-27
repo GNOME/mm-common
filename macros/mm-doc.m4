@@ -1,4 +1,4 @@
-## Copyright (c) 2009-2010  Openismus GmbH  <http://www.openismus.com/>
+## Copyright (c) 2009, 2010, 2011  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of mm-common.
 ##
@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
 
-#serial 20100107
+#serial 20110327
 
 ## _MM_CONFIG_DOCTOOL_DIR
 ##
@@ -52,16 +52,15 @@ AC_MSG_RESULT([$MMDOCTOOLDIR])[]dnl
 ## the source tree.
 ##
 ## The directory name is used by mm-common-prepare as the destination
-## for copying the required files into the source tree.  If you make
-## use of this feature in order to avoid a dependency on mm-common, make
-## sure to include the installed files in the distribution tarball of
-## your package.
+## for copying the required files into the source tree.  The files are not
+## distributed if first parameter is empty.
 ##
 AC_DEFUN([MM_CONFIG_DOCTOOL_DIR],
 [dnl
 AC_REQUIRE([_MM_PRE_INIT])[]dnl
 AC_REQUIRE([MM_CHECK_GNU_MAKE])[]dnl
 m4_ifval([$1], [MMDOCTOOLDIR='[$]{top_srcdir}/$1'], [AC_REQUIRE([_MM_CONFIG_DOCTOOL_DIR])])
+AM_CONDITIONAL([DIST_DOCTOOLS], [test 'x$1' != 'x'])dnl
 AC_SUBST([MMDOCTOOLDIR])[]dnl
 ])
 
