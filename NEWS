@@ -1,3 +1,9 @@
+mm-common 0.9.5 (2010-03-30)
+
+  * Distribute doctools if non-empty parameter is passed to
+  MM_CONFIG_DOCTOOL_DIR
+  (Krzesimir Nowak) Bug #645836
+
 mm-common 0.9.4 (2010-03-18)
 
   * Correct the installation of the mm-common-util.pc file.
