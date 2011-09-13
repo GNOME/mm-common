@@ -29,6 +29,9 @@ AC_ARG_VAR([CURL], [curl transfer command])
 AC_ARG_VAR([WGET], [wget download command])
 
 AC_PROG_SED
+dnl list of tar execs is taken from the generated ./missing script.
+AC_CHECK_PROGS([TAR], [tar gnutar gtar], [no])
+AS_VAR_IF([TAR], [no], [AC_MSG_ERROR([tar utility not found])])
 AC_CHECK_PROG([CURL], [curl], [curl])
 AC_CHECK_PROG([WGET], [wget], [wget])
 
