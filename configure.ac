@@ -32,11 +32,36 @@ AC_PROG_SED
 dnl list of tar execs is taken from the generated ./missing script.
 AC_CHECK_PROGS([TAR], [tar gnutar gtar], [no])
 AS_VAR_IF([TAR], [no], [AC_MSG_ERROR([tar utility not found])])
-AC_CHECK_PROG([CURL], [curl], [curl])
-AC_CHECK_PROG([WGET], [wget], [wget])
 
-AS_IF([test "x$USE_MAINTAINER_MODE" != xno && test "x$CURL$WGET" = x],
-      [AC_MSG_FAILURE([[Either curl or wget is required for building mm-common.]])])
+AC_MSG_CHECKING([whether to enable network])
+AC_ARG_ENABLE([network],
+              [AS_HELP_STRING([--enable-network],
+                              [use network to download tags if needed @<:@default=same as maintainer mode@:>@])],
+              [AS_VAR_IF([enableval], ['yes'],,
+                         [AS_VAR_IF([enableval], ['no'],,
+                                    [AC_MSG_ERROR([[Pass either `yes', `no' or nothing to --enable-network.]])]
+                                   )
+                         ]
+                        )
+               AS_VAR_SET([enable_network], ["$enableval"])
+              ],
+              [AS_VAR_SET([enable_network], ["$USE_MAINTAINER_MODE"])]
+             )
+AC_SUBST([USE_NETWORK], ["$enable_network"])
+AM_CONDITIONAL(NETWORK_ENABLED, [test "x$enable_network" = 'xyes'])
+AC_MSG_RESULT([$USE_NETWORK])
+
+AS_VAR_IF([USE_NETWORK], ['yes'],
+          [AC_CHECK_PROG([CURL], [curl], [curl])
+           AC_CHECK_PROG([WGET], [wget], [wget])
+           AS_VAR_IF([CURL], [],
+                     [AS_VAR_IF([WGET], [],
+                                [AC_MSG_FAILURE([[Network is enabled so either curl or wget is required for building mm-common.]])]
+                               )
+                     ]
+                    )
+          ]
+         )
 
 AC_CONFIG_FILES([Makefile
                  doctags/mm-common-libstdc++.pc

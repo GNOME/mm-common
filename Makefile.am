@@ -123,10 +123,15 @@ download_wget = $(WGET) -N -nd -T 300 -t 5 -P $(dir $@)
 subst_manpage = $(SED) 's|[@]PACKAGE_STRING[@]|$(PACKAGE_STRING)|g;s|[@]docdir[@]|$(docdir)|g'
 srctar_stdout = cd $(top_srcdir) >/dev/null && $(TAR) chof -
 
-# If maintainer mode is enabled, always check the remote locations
-# of the tag files for updates when building the default target.
+# If maintainer mode is enabled and network is enabled then always
+# check the remote locations of the tag files for updates when
+# building the default target.
 if MAINTAINER_MODE
+if NETWORK_ENABLED
 check_updates = $(if $(filter all%,$(or $(MAKECMDGOALS),all)),$(dist_doctags_DATA))
+else
+check_updates =
+endif
 else
 check_updates =
 endif
@@ -138,9 +143,15 @@ endif
 
 # Download the libstdc++ tag file from the GCC website.
 doctags/libstdc++.tag:
-	$(AM_V_GEN)$(if\
+	$(AM_V_GEN)$(if $(filter no,$(USE_NETWORK)),\
+	echo 'Error: $@ does not exist.';\
+	echo 'Downloading it is not possible because network is disabled.';\
+	echo 'Please run configure script with --enable-network flag.';\
+	echo 'Bailing out.' >&2;\
+	exit 1;,\
+	$(if\
 	$(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
-	$(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f $@))
+	$(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f $@)))
 
 # Build the mm-common-prepare(1) manual page.
 util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
