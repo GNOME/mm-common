@@ -121,7 +121,7 @@ download_curl = $(CURL) --compressed --connect-timeout 300 -g -L -m 3600 -R --re
 download_wget = $(WGET) -N -nd -T 300 -t 5 -P $(dir $@)
 
 subst_manpage = $(SED) 's|[@]PACKAGE_STRING[@]|$(PACKAGE_STRING)|g;s|[@]docdir[@]|$(docdir)|g'
-srctar_stdout = cd $(top_srcdir) >/dev/null && $(SHELL) $(TAR) chof -
+srctar_stdout = cd $(top_srcdir) >/dev/null && $(TAR) chof -
 
 # If maintainer mode is enabled, always check the remote locations
 # of the tag files for updates when building the default target.
