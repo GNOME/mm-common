@@ -32,6 +32,10 @@ AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 MM_PREREQ([0.9])
 MM_INIT_MODULE([skeletonmm-1.0])
 
+# Copy the mm-common .pl scripts into doc/, and use them from there,
+# so we can dist them to avoid a tarball-build dependency.
+MM_CONFIG_DOCTOOL_DIR([doc])
+
 # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 AC_SUBST([SKELETONMM_SO_VERSION], [0:0:0])
 
