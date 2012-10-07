@@ -1,3 +1,17 @@
+mm-common 0.9.6 (2012-10-07)
+
+  * Dist .js files that doxygen now generates
+    (Murray Cumming)
+  * Use $(MMDOCTOOLDIR) instead of @MMDOCTOOLDIR@ in Doxyfile.in.
+    (Kjell Ahlstedt) Bug #673984.
+  * Make downloading tags optional.
+    (Krzesimir Nowak)
+  * Don't try to run tar by shell.
+  * Don't use missing for making skeleton tarball.
+    (Krzesimir Nowak)
+  * Fix running doxygen when it is located at a path containing spaces
+    (Armin Burgmeier) Bug #630051
+
 mm-common 0.9.5 (2010-03-30)
 
   * Distribute doctools if non-empty parameter is passed to
