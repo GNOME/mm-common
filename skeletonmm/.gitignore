@@ -1,3 +1,4 @@
+# wildcard patterns
 .deps/
 .dirstamp
 .libs/
@@ -6,6 +7,8 @@ Makefile.in
 stamp-h?
 *.[ao]
 *.l[ao]
+
+# ./
 /INSTALL
 /aclocal.m4
 /autom4te.cache/
@@ -15,4 +18,13 @@ stamp-h?
 /configure
 /skeletonmm-*.tar.*
 /libtool
+
+# codegen/
 /codegen/extradefs/generate_extra_defs
+
+# doc/
+/doc/doc-install.pl
+/doc/doc-postprocess.pl
+/doc/doxygen.css
+/doc/tagfile-to-devhelp2.xsl
+

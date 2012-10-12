@@ -1,4 +1,5 @@
 ;; Include generated API definition files
 (include skeleton_enum.defs)
 (include skeleton_method.defs)
-(include skeleton_extra.defs)
+(include skeleton_signal.defs)
+(include skeleton_vfunc.defs)

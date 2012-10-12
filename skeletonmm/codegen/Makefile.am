@@ -19,8 +19,9 @@ AUTOMAKE_OPTIONS = subdir-objects
 
 include $(srcdir)/m4/filelist.am
 
-dist_noinst_DATA = $(addprefix m4/,$(files_codegen_m4))
-noinst_PROGRAMS  = extradefs/generate_extra_defs
+dist_noinst_DATA    = $(addprefix m4/,$(files_codegen_m4))
+dist_noinst_SCRIPTS = generate_defs_and_docs.sh
+noinst_PROGRAMS     = extradefs/generate_extra_defs
 
 extradefs_generate_extra_defs_SOURCES = extradefs/generate_extra_defs_skeleton.cc
 extradefs_generate_extra_defs_LDADD   = $(SKELETONMM_LIBS) -lglibmm_generate_extra_defs-2.4
