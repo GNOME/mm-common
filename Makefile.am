@@ -100,7 +100,7 @@ skeletonmm_data_files =							\
 	skeletonmm/skeleton/src/skeleton.hg				\
 	skeletonmm/skeleton/src/skeleton_docs.xml			\
 	skeletonmm/skeleton/src/skeleton_enum.defs			\
-	skeletonmm/skeleton/src/skeleton_extra.defs			\
+	skeletonmm/skeleton/src/skeleton_signal.defs			\
 	skeletonmm/skeleton/src/skeleton_method.defs
 
 skeletonmm_files = skeletonmm/autogen.sh $(skeletonmm_data_files)
