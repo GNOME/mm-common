@@ -100,13 +100,19 @@ skeletonmm_data_files =							\
 	skeletonmm/skeleton/src/skeleton.hg				\
 	skeletonmm/skeleton/src/skeleton_docs.xml			\
 	skeletonmm/skeleton/src/skeleton_enum.defs			\
-	skeletonmm/skeleton/src/skeleton_signal.defs			\
-	skeletonmm/skeleton/src/skeleton_method.defs
+	skeletonmm/skeleton/src/skeleton_method.defs \
+	skeletonmm/skeleton/src/skeleton_signal.defs \
+	skeletonmm/skeleton/src/skeleton_vfunc.defs
 
-skeletonmm_files = skeletonmm/autogen.sh $(skeletonmm_data_files)
+skeletonmm_script_files = \
+  skeletonmm/autogen.sh \
+  skeletonmm/codegen/generate_defs_and_docs.sh
+
+skeletonmm_files = $(skeletonmm_script_files) $(skeletonmm_data_files)
 
 dist_noinst_DATA = util/mm-common-prepare.1.in $(skeletonmm_data_files)
-dist_noinst_SCRIPTS = autogen.sh skeletonmm/autogen.sh
+dist_noinst_SCRIPTS = autogen.sh $(skeletonmm_script_files)
+
 
 CLEANFILES = $(man1_MANS) $(doc_DATA)
 MAINTAINERCLEANFILES = $(dist_doctags_DATA)
