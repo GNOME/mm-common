@@ -94,11 +94,21 @@ code, .fragment {
   font-family: monospace, fixed;
 }
 
-pre.fragment {
+pre.fragment, div.fragment {
   background-color: #EEEEFF;
   border: 1px solid #AAAAFF;
   padding: 0.5em;
   margin: 0.375em 0.75em 0.375em 0.2em;
+}
+
+div.fragment > pre.fragment {
+  border-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+div.line {
+  white-space: pre;
 }
 
 div.ah {

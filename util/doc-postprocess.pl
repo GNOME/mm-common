@@ -110,7 +110,6 @@ foreach my $filename (map(bsd_glob($_, GLOB_NOSORT), @ARGV))
     s/&mdash;/&#8212;/g;
     s/&ndash;/&#8211;/g;
     s/ *&nbsp; */&#160;/g;
-    s/(?<=\S)\s{2,}/ /g;
   }
 
   # write the whole buffer back
