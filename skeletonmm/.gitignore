@@ -26,5 +26,6 @@ stamp-h?
 /doc/doc-install.pl
 /doc/doc-postprocess.pl
 /doc/doxygen.css
+/doc/doxygen-extra.css
 /doc/tagfile-to-devhelp2.xsl
 

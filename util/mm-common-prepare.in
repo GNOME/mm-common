@@ -106,7 +106,7 @@ then
   echo "$progname: putting documentation utilities in '$doctooldir'."
   test -d "$doctooldir" || mkdir "$doctooldir"
 
-  for file in doc-install.pl doc-postprocess.pl doxygen.css tagfile-to-devhelp2.xsl
+  for file in doc-install.pl doc-postprocess.pl doxygen.css doxygen-extra.css tagfile-to-devhelp2.xsl
   do
     if test -n "$forceflag" || test ! -f "$doctooldir/$file"; then
       echo "$progname: $instaction file '$file'"

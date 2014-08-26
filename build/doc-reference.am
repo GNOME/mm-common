@@ -78,7 +78,7 @@ doc_dist_files   =
 endif
 
 if DIST_DOCTOOLS
-doc_dist_files   += $(MMDOCTOOLDIR)/doc-postprocess.pl $(MMDOCTOOLDIR)/doc-install.pl $(MMDOCTOOLDIR)/tagfile-to-devhelp2.xsl $(MMDOCTOOLDIR)/doxygen.css
+doc_dist_files += $(MMDOCTOOLDIR)/doc-postprocess.pl $(MMDOCTOOLDIR)/doc-install.pl $(MMDOCTOOLDIR)/tagfile-to-devhelp2.xsl $(MMDOCTOOLDIR)/doxygen.css $(MMDOCTOOLDIR)/doxygen-extra.css
 endif
 
 dist_reference_DATA = $(strip $(doc_inst_files))
