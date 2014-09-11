@@ -6,9 +6,17 @@
 
   <name xml:lang="en">mm-common</name>
   <shortdesc xml:lang="en">Common build files of the C++ bindings</shortdesc>
+  <description>The mm-common module provides the build infrastructure and utilities
+shared among the GNOME C++ binding libraries. It is only a required
+dependency for building the C++ bindings from the gnome.org version
+control repository. An installation of mm-common is not required for
+building tarball releases, unless configured to use maintainer-mode.</description>
   <homepage rdf:resource="http://www.gtkmm.org/" />
   <mailing-list rdf:resource="mailto:gtkmm-list@gnome.org" />
+  <download-page rdf:resource="http://download.gnome.org/sources/mm-common/" />
+  <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=mm-common" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
+  <programming-language>C++</programming-language>
 
   <maintainer>
     <foaf:Person>
