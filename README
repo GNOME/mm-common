@@ -113,6 +113,13 @@ macros/mm-dietlib.m4:
   binary size of the generated binding library, typically for embedded use.
   The MM_PROG_GCC_VISIBILITY macro is defined in this file as well.
 
+macros/mm-ax_cxx_compile_stdcxx_11.m4:
+  Implements the MM_AX_CXX_COMPILE_STDCXX_11() macro to test and set flags
+  for C++11 compatibility of the C++ compiler. This is identical to the
+  AX_CXX_COMPILE_STDCXX_11() macro described at
+  http://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx_11.html,
+  except for the MM_ prefix.
+
 Automake include files
 ----------------------
 

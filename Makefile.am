@@ -29,10 +29,11 @@ dist_build_support_DATA =		\
 	build/doc-reference.am		\
 	build/generate-binding.am
 
-# These are installed so that mm-common-prepare can copy them into projects at autogen.sh time:
+# These are installed so that aclocal can copy them into aclocal.m4 at autogen.sh time:
 aclocal_macrodir = $(datadir)/aclocal
 aclocal_macro_DATA = macros/mm-common.m4
 dist_aclocal_macro_DATA =		\
+	macros/mm-ax_cxx_compile_stdcxx_11.m4		\
 	macros/mm-dietlib.m4		\
 	macros/mm-doc.m4		\
 	macros/mm-module.m4		\
