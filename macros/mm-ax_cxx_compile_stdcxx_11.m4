@@ -4,7 +4,7 @@
 #
 # SYNOPSIS
 #
-#   AX_CXX_COMPILE_STDCXX_11([ext|noext],[mandatory|optional])
+#   MM_AX_CXX_COMPILE_STDCXX_11([ext|noext],[mandatory|optional])
 #
 # DESCRIPTION
 #
@@ -34,9 +34,12 @@
 #   and this notice are preserved. This file is offered as-is, without any
 #   warranty.
 
+# Copied from ax_cxx_compile_stdcxx_11.m4 and added MM_ prefix to avoid
+# possible conflict with AX_CXX_COMPILE_STDCXX_11 in other modules.
+
 #serial 11
 
-m4_define([_AX_CXX_COMPILE_STDCXX_11_testbody], [[
+m4_define([_MM_AX_CXX_COMPILE_STDCXX_11_testbody], [[
   template <typename T>
     struct check
     {
@@ -86,20 +89,20 @@ m4_define([_AX_CXX_COMPILE_STDCXX_11_testbody], [[
     }
 ]])
 
-AC_DEFUN([AX_CXX_COMPILE_STDCXX_11], [dnl
+AC_DEFUN([MM_AX_CXX_COMPILE_STDCXX_11], [dnl
   m4_if([$1], [], [],
         [$1], [ext], [],
         [$1], [noext], [],
-        [m4_fatal([invalid argument `$1' to AX_CXX_COMPILE_STDCXX_11])])dnl
+        [m4_fatal([invalid argument `$1' to MM_AX_CXX_COMPILE_STDCXX_11])])dnl
   m4_if([$2], [], [ax_cxx_compile_cxx11_required=true],
         [$2], [mandatory], [ax_cxx_compile_cxx11_required=true],
         [$2], [optional], [ax_cxx_compile_cxx11_required=false],
-        [m4_fatal([invalid second argument `$2' to AX_CXX_COMPILE_STDCXX_11])])
+        [m4_fatal([invalid second argument `$2' to MM_AX_CXX_COMPILE_STDCXX_11])])
   AC_LANG_PUSH([C++])dnl
   ac_success=no
   AC_CACHE_CHECK(whether $CXX supports C++11 features by default,
   ax_cv_cxx_compile_cxx11,
-  [AC_COMPILE_IFELSE([AC_LANG_SOURCE([_AX_CXX_COMPILE_STDCXX_11_testbody])],
+  [AC_COMPILE_IFELSE([AC_LANG_SOURCE([_MM_AX_CXX_COMPILE_STDCXX_11_testbody])],
     [ax_cv_cxx_compile_cxx11=yes],
     [ax_cv_cxx_compile_cxx11=no])])
   if test x$ax_cv_cxx_compile_cxx11 = xyes; then
@@ -114,7 +117,7 @@ AC_DEFUN([AX_CXX_COMPILE_STDCXX_11], [dnl
                      $cachevar,
         [ac_save_CXXFLAGS="$CXXFLAGS"
          CXXFLAGS="$CXXFLAGS $switch"
-         AC_COMPILE_IFELSE([AC_LANG_SOURCE([_AX_CXX_COMPILE_STDCXX_11_testbody])],
+         AC_COMPILE_IFELSE([AC_LANG_SOURCE([_MM_AX_CXX_COMPILE_STDCXX_11_testbody])],
           [eval $cachevar=yes],
           [eval $cachevar=no])
          CXXFLAGS="$ac_save_CXXFLAGS"])
@@ -136,7 +139,7 @@ AC_DEFUN([AX_CXX_COMPILE_STDCXX_11], [dnl
                      $cachevar,
         [ac_save_CXXFLAGS="$CXXFLAGS"
          CXXFLAGS="$CXXFLAGS $switch"
-         AC_COMPILE_IFELSE([AC_LANG_SOURCE([_AX_CXX_COMPILE_STDCXX_11_testbody])],
+         AC_COMPILE_IFELSE([AC_LANG_SOURCE([_MM_AX_CXX_COMPILE_STDCXX_11_testbody])],
           [eval $cachevar=yes],
           [eval $cachevar=no])
          CXXFLAGS="$ac_save_CXXFLAGS"])
