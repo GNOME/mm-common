@@ -1,3 +1,11 @@
+mm-common 0.9.8 (2015-07-15)
+
+  * Add the MM_AX_CXX_COMPILE_STDCXX_11() m4 macro,
+    to help other *mm projects build with C++11 compiler support.
+    This is based on AX_CXX_COMPILE_STDCXX_11() but doesn't need to
+    be copied into projects manually.
+    (Kjell Ahlstedt) Bug #751432
+
 mm-common 0.9.7 (2014-09-15)
 
   * Add doxygen-extra.css, deprecate doxygen.css.
