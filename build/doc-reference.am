@@ -68,10 +68,12 @@ htmlrefdir   = $(referencedir)/html
 devhelpdir   = $(datadir)/devhelp/books/$(book_name)
 
 if ENABLE_DOCUMENTATION
+doc_build_files  = $(doc_outdir)/html/index.html $(doxytagfile) $(devhelpfile)
 doc_inst_targets = install-htmlref install-devhelp
 doc_inst_files   = $(doxytagfile)
 doc_dist_files   = $(devhelpfile) $(call vpath_listall,$(htmlref_patterns))
 else
+doc_build_files  =
 doc_inst_targets =
 doc_inst_files   =
 doc_dist_files   =
@@ -133,8 +135,11 @@ else
 doc_dependencies =
 endif
 
-# Explicitly depend on the files to be distributed or installed.
-all-local: $(doc_inst_files) $(doc_dist_files)
+# Depend on the files that we know shall be built.
+# $(call vpath_listall,$(htmlref_patterns)) is not used as a prerequisite.
+# It would expand to files that exist when the make command is issued,
+# which is not necessarily the set of files that shall be built.
+all-local: $(doc_build_files)
 
 # Hook up custom rules for translating references to external documentation
 # to the actual location at install time.
@@ -190,7 +195,7 @@ $(doc_outdir)/html/%: | $(doxytagfile)
 # Quote $(DOXYGEN) so that this still works if this is a path containing
 # spaces such as "/c/Program Files (x86)/Doxygen/bin/doxygen"
 # The doc_config file may contain "$(MMDOCTOOLDIR)". Export MMDOCTOOLDIR to Doxygen.
-$(doxytagfile): $(doc_dependencies) | $(doc_config)
+$(doc_outdir)/html/index.html $(doxytagfile): $(doc_dependencies) | $(doc_config)
 	-$(AM_V_at)rm -f $@
 	-$(AM_V_at)rm -fr $(doc_outdir)/html
 	$(AM_V_GEN)(echo '@INCLUDE =' $(doc_config) && echo 'INPUT =' $(doc_input)) | MMDOCTOOLDIR="$(MMDOCTOOLDIR)" "$(DOXYGEN)" -
