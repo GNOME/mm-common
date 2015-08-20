@@ -173,13 +173,12 @@ install-data-hook: $(if $(DESTDIR),,postinst-acdir-notice)
 postinst-acdir-notice:
 	@$(POST_INSTALL)
 	@-acdir=`$${ACLOCAL-aclocal} --print-ac-dir 2>/dev/null || :`; \
-	if test "x$$acdir" = 'x$(aclocal_macrodir)'; then :; else \
-	  case " $$ACLOCAL_FLAGS " in *' -I $(aclocal_macrodir) '*) ;; *) \
-	    echo; echo 'NOTICE:'; echo; \
-	    echo 'The $(PACKAGE_NAME) Autoconf macro files have been installed in a different'; \
-	    echo 'prefix than the system aclocal directory.  In order for the installed'; \
-	    echo 'macros to be found, it may be necessary to add the $(PACKAGE_NAME) include'; \
-	    echo 'path to the ACLOCAL_FLAGS environment variable:'; echo; \
-	    echo "  ACLOCAL_FLAGS='-I $(aclocal_macrodir)'; export ACLOCAL_FLAGS"; echo;; \
-	  esac; \
-	fi
+	case ":$$ACLOCAL_PATH:$$acdir:" in *':$(aclocal_macrodir):'*) ;; *) \
+	  echo; echo 'NOTICE:'; echo; \
+	  echo 'The $(PACKAGE_NAME) Autoconf macro files have been installed in a different'; \
+	  echo 'prefix than the system aclocal directory.  In order for the installed'; \
+	  echo 'macros to be found, it may be necessary to add the $(PACKAGE_NAME) include'; \
+	  echo 'path to the ACLOCAL_PATH environment variable:'; echo; \
+	  echo '  ACLOCAL_PATH="$(aclocal_macrodir)"'; \
+	  echo '  export ACLOCAL_PATH'; echo;; \
+	esac
