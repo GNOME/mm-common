@@ -133,6 +133,9 @@ else
 doc_dependencies =
 endif
 
+# Export this variable for use in the Doxygen configuration file.
+export MMDOCTOOLDIR
+
 # Explicitly depend on the files to be distributed or installed.
 all-local: $(doc_inst_files) $(doc_dist_files)
 
@@ -187,13 +190,10 @@ $(doc_outdir)/html/%: | $(doxytagfile)
 
 # Run Doxygen to build the reference documentation. The generated tag file
 # also functions as time stamp target for the documentation as a whole.
-# Quote $(DOXYGEN) so that this still works if this is a path containing
-# spaces such as "/c/Program Files (x86)/Doxygen/bin/doxygen"
-# The doc_config file may contain "$(MMDOCTOOLDIR)". Export MMDOCTOOLDIR to Doxygen.
 $(doxytagfile): $(doc_dependencies) | $(doc_config)
 	-$(AM_V_at)rm -f $@
 	-$(AM_V_at)rm -fr $(doc_outdir)/html
-	$(AM_V_GEN)(echo '@INCLUDE =' $(doc_config) && echo 'INPUT =' $(doc_input)) | MMDOCTOOLDIR="$(MMDOCTOOLDIR)" "$(DOXYGEN)" -
+	$(AM_V_GEN)(echo '@INCLUDE =' $(doc_config) && echo 'INPUT =' $(doc_input)) | "$(DOXYGEN)" -
 	$(AM_V_at)$(doc_postprocess) '$(doc_outdir)/html/*.html'
 
 # Run XSL transformation to generate a Devhelp book from a Doxygen tag file.
