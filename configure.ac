@@ -29,44 +29,32 @@ AC_ARG_VAR([CURL], [curl transfer command])
 AC_ARG_VAR([WGET], [wget download command])
 
 AC_PROG_SED
-dnl list of tar execs is taken from the generated ./missing script.
+## List of tar execs is taken from the generated ./missing script.
 AC_CHECK_PROGS([TAR], [tar gnutar gtar], [no])
-AS_VAR_IF([TAR], [no], [AC_MSG_ERROR([tar utility not found])])
+AS_IF([test "x$TAR" = xno], [AC_MSG_ERROR([tar utility not found])])
 
-AC_MSG_CHECKING([whether to enable network])
+AC_MSG_CHECKING([whether to download libstdc++ tags])
 AC_ARG_ENABLE([network],
-              [AS_HELP_STRING([--enable-network],
-                              [use network to download tags if needed @<:@default=same as maintainer mode@:>@])],
-              [AS_VAR_IF([enableval], ['yes'],,
-                         [AS_VAR_IF([enableval], ['no'],,
-                                    [AC_MSG_ERROR([[Pass either `yes', `no' or nothing to --enable-network.]])]
-                                   )
-                         ]
-                        )
-               AS_VAR_SET([enable_network], ["$enableval"])
-              ],
-              [AS_VAR_SET([enable_network], ["$USE_MAINTAINER_MODE"])]
-             )
-AC_SUBST([USE_NETWORK], ["$enable_network"])
-AM_CONDITIONAL(NETWORK_ENABLED, [test "x$enable_network" = 'xyes'])
+              [AS_HELP_STRING([[--disable-network]],
+                              [do not attempt to download libstdc++ tags]
+                              [[default=enabled in maintainer mode]])],
+              [USE_NETWORK=$enableval], [USE_NETWORK=$USE_MAINTAINER_MODE])
 AC_MSG_RESULT([$USE_NETWORK])
+AC_SUBST([USE_NETWORK])
+AM_CONDITIONAL([NETWORK_ENABLED], [test "x$USE_NETWORK" = xyes])
 
-AS_VAR_IF([USE_NETWORK], ['yes'],
-          [AC_CHECK_PROG([CURL], [curl], [curl])
-           AC_CHECK_PROG([WGET], [wget], [wget])
-           AS_VAR_IF([CURL], [],
-                     [AS_VAR_IF([WGET], [],
-                                [AC_MSG_FAILURE([[Network is enabled so either curl or wget is required for building mm-common.]])]
-                               )
-                     ]
-                    )
-          ]
-         )
+AC_CHECK_PROG([CURL], [curl], [curl])
+AC_CHECK_PROG([WGET], [wget], [wget])
 
-AC_CONFIG_FILES([Makefile
-                 doctags/mm-common-libstdc++.pc
-                 doctags/mm-common-libstdc++-uninstalled.pc
-                 macros/mm-common.m4
-                 util/mm-common-util.pc
-                 util/mm-common-prepare])
+AS_IF([test "x$USE_NETWORK$CURL$WGET" = xyes],
+      [AC_MSG_ERROR([[Either curl or wget is required to download the libstdc++ tags.]])])
+
+AC_CONFIG_FILES([
+  Makefile
+  doctags/mm-common-libstdc++.pc
+  doctags/mm-common-libstdc++-uninstalled.pc
+  macros/mm-common.m4
+  util/mm-common-prepare
+  util/mm-common-util.pc
+])
 AC_OUTPUT
