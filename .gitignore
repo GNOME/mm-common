@@ -16,4 +16,4 @@
 /macros/mm-common.m4
 /util/mm-common-prepare
 /util/mm-common-prepare.1
-/util/mm-common-util.pc
+/util/mm-common*.pc

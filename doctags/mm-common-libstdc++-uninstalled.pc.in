@@ -2,6 +2,6 @@ doxytagfile=${pc_top_builddir}/doctags/libstdc++.tag
 htmlrefpub=http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/
 
 Name: mm-common-libstdc++
-Description: GNU libstdc++ metadata module, not installed
+Description: mm-common's libstdc++ metadata module, not installed
 Version: @PACKAGE_VERSION@
 URL: http://www.gtkmm.org/

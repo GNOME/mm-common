@@ -55,5 +55,6 @@ AC_CONFIG_FILES([
   macros/mm-common.m4
   util/mm-common-prepare
   util/mm-common-util.pc
+  util/mm-common-util-uninstalled.pc
 ])
 AC_OUTPUT

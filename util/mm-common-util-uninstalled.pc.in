@@ -1,0 +1,6 @@
+doctooldir=${pc_top_builddir}/util
+
+Name: mm-common-util
+Description: mm-common's doctool build utilities for the GNOME C++ bindings, not installed
+Version: @PACKAGE_VERSION@
+URL: http://www.gtkmm.org/

@@ -21,7 +21,8 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 bin_SCRIPTS = util/mm-common-prepare
 man1_MANS = util/mm-common-prepare.1
 
-# These are installed so that mm-common-prepare can copy them into projects at autogen.sh time:
+# These are installed so that mm-common-prepare can copy them
+# into projects at autogen.sh time:
 build_supportdir = $(pkgdatadir)/build
 dist_build_support_DATA =		\
 	build/compile-binding.am	\
@@ -29,19 +30,20 @@ dist_build_support_DATA =		\
 	build/doc-reference.am		\
 	build/generate-binding.am
 
-# These are installed so that aclocal can copy them into aclocal.m4 at autogen.sh time:
+# These are installed so that aclocal can copy them into aclocal.m4
+# at autogen.sh time:
 aclocal_macrodir = $(datadir)/aclocal
 aclocal_macro_DATA = macros/mm-common.m4
 dist_aclocal_macro_DATA =		\
-	macros/mm-ax_cxx_compile_stdcxx_11.m4		\
+	macros/mm-ax_cxx_compile_stdcxx_11.m4	\
 	macros/mm-dietlib.m4		\
 	macros/mm-doc.m4		\
 	macros/mm-module.m4		\
 	macros/mm-pkg.m4		\
 	macros/mm-warnings.m4
 
-# These are installed so that mm-common-prepare can copy them into projects at autogen.sh time,
-# if a directory path is given to MM_CONFIG_DOCTOOL_DIR(),
+# These are installed so that mm-common-prepare can copy them into projects
+# at autogen.sh time if a directory path is given to MM_CONFIG_DOCTOOL_DIR(),
 # or they can be found via pkg-config --variable=doctooldir mm-common,
 # which is preferrable.
 doctooldir = $(pkgdatadir)/doctool
@@ -60,7 +62,10 @@ shared_pkgconfigdir = $(datadir)/pkgconfig
 nodist_shared_pkgconfig_DATA =		\
 	doctags/mm-common-libstdc++.pc	\
 	util/mm-common-util.pc
-noinst_DATA = doctags/mm-common-libstdc++-uninstalled.pc
+
+noinst_DATA = \
+	doctags/mm-common-libstdc++-uninstalled.pc \
+	util/mm-common-util-uninstalled.pc
 
 dist_doc_DATA = README
 doc_DATA = skeletonmm.tar.gz
