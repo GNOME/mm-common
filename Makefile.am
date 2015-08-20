@@ -115,7 +115,6 @@ skeletonmm_files = $(skeletonmm_script_files) $(skeletonmm_data_files)
 dist_noinst_DATA = util/mm-common-prepare.1.in $(skeletonmm_data_files)
 dist_noinst_SCRIPTS = autogen.sh $(skeletonmm_script_files)
 
-
 CLEANFILES = $(man1_MANS) $(doc_DATA)
 MAINTAINERCLEANFILES = $(dist_doctags_DATA)
 
@@ -131,19 +130,12 @@ download_wget = $(WGET) -N -nd -T 300 -t 5 -P $(dir $@)
 subst_manpage = $(SED) 's|[@]PACKAGE_STRING[@]|$(PACKAGE_STRING)|g;s|[@]docdir[@]|$(docdir)|g'
 srctar_stdout = cd $(top_srcdir) >/dev/null && $(TAR) chof -
 
-# If maintainer mode is enabled and network is enabled then always
-# check the remote locations of the tag files for updates when
-# building the default target.
-if MAINTAINER_MODE
-if NETWORK_ENABLED
-check_updates = $(if $(filter all%,$(or $(MAKECMDGOALS),all)),$(dist_doctags_DATA))
-else
-check_updates =
-endif
-else
-check_updates =
-endif
+# If network access is enabled (either by explicit user request or by default
+# if in maintainer mode), then always check the remote location of the tag file
+# for updates when building the default target.
+check_updates = $(and $(USE_NETWORK:no=),$(filter all%,$(or $(MAKECMDGOALS),all)),$(dist_doctags_DATA))
 
+# By declaring a target phony, its rule is always executed.
 .PHONY: $(check_updates) postinst-acdir-notice
 
 # Avoid shipping partially downloaded files.
@@ -151,15 +143,13 @@ endif
 
 # Download the libstdc++ tag file from the GCC website.
 doctags/libstdc++.tag:
-	$(AM_V_GEN)$(if $(filter no,$(USE_NETWORK)),\
-	echo 'Error: $@ does not exist.';\
-	echo 'Downloading it is not possible because network is disabled.';\
-	echo 'Please run configure script with --enable-network flag.';\
-	echo 'Bailing out.' >&2;\
-	exit 1;,\
-	$(if\
+	@$(if $(USE_NETWORK:no=),:,echo 'Error: $@ does not exist.' >&2; \
+	echo 'Downloading it is not possible because network is disabled.' >&2; \
+	echo 'Please run "$(MAKE) USE_NETWORK=yes", or reconfigure with' >&2; \
+	echo 'the --enable-network option.' >&2; exit 1)
+	$(AM_V_GEN)$(if\
 	$(CURL),$(download_curl) '$(libstdcxx_tag_url)',$(if\
-	$(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f $@)))
+	$(WGET),$(download_wget) '$(libstdcxx_tag_url)',test -f $@))
 
 # Build the mm-common-prepare(1) manual page.
 util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile

@@ -41,7 +41,6 @@ AC_ARG_ENABLE([network],
               [USE_NETWORK=$enableval], [USE_NETWORK=$USE_MAINTAINER_MODE])
 AC_MSG_RESULT([$USE_NETWORK])
 AC_SUBST([USE_NETWORK])
-AM_CONDITIONAL([NETWORK_ENABLED], [test "x$USE_NETWORK" = xyes])
 
 AC_CHECK_PROG([CURL], [curl], [curl])
 AC_CHECK_PROG([WGET], [wget], [wget])
