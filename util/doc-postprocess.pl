@@ -106,6 +106,12 @@ foreach my $filename (map(bsd_glob($_, GLOB_NOSORT), @ARGV))
       s/^(<h\d>|)template&lt;/$1template &lt;/;
     }
 
+    # For some reason, recent versions of Doxygen output the full path to
+    # referenced tag files.  This is bad since it breaks doc-install.pl,
+    # and also because it leaks local path names into source tarballs.
+    # Thus, strip the directory prefix here.
+    s| doxygen="[^":]*/([^":]+\.tag):| doxygen="$1:|g;
+
     s/&copy;/&#169;/g;
     s/&mdash;/&#8212;/g;
     s/&ndash;/&#8211;/g;
