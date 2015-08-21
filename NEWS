@@ -1,3 +1,8 @@
+mm-common 0.9.9 (2015-08-21) UNRELEASED
+
+  * Fix install-time rewrite of documentation tag references with
+    newer Doxygen versions.  (Daniel Elstner)
+
 mm-common 0.9.8 (2015-07-15)
 
   * Add the MM_AX_CXX_COMPILE_STDCXX_11() m4 macro,
