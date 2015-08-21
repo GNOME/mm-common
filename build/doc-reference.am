@@ -67,6 +67,14 @@ referencedir = $(libdocdir)/reference
 htmlrefdir   = $(referencedir)/html
 devhelpdir   = $(datadir)/devhelp/books/$(book_name)
 
+# Optionally, the documentation utilities may be included in source tarballs
+# so that mm-common is only required when building in maintainer mode.
+if DIST_DOCTOOLS
+doctools_dist_files = $(addprefix $(MMDOCTOOLDIR)/,doc-postprocess.pl doc-install.pl tagfile-to-devhelp2.xsl doxygen-extra.css)
+else
+doctools_dist_files =
+endif
+
 if ENABLE_DOCUMENTATION
 doc_inst_targets = install-htmlref install-devhelp
 doc_inst_files   = $(doxytagfile)
@@ -77,12 +85,8 @@ doc_inst_files   =
 doc_dist_files   =
 endif
 
-if DIST_DOCTOOLS
-doc_dist_files += $(MMDOCTOOLDIR)/doc-postprocess.pl $(MMDOCTOOLDIR)/doc-install.pl $(MMDOCTOOLDIR)/tagfile-to-devhelp2.xsl $(MMDOCTOOLDIR)/doxygen.css $(MMDOCTOOLDIR)/doxygen-extra.css
-endif
-
 dist_reference_DATA = $(strip $(doc_inst_files))
-dist_noinst_DATA    = $(strip $(doc_dist_files))
+dist_noinst_DATA    = $(strip $(doctools_dist_files) $(doc_dist_files))
 
 DISTCLEANFILES       = $(doc_outdir)/doxygen.log
 MAINTAINERCLEANFILES = $(doxytagfile) $(devhelpfile) $(doc_outdir)/html/*
