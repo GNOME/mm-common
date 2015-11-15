@@ -95,7 +95,7 @@ AS_IF([test "x$mm_warning_flags" != x],
   # Keep in mind that the dummy source must be devoid of any
   # problems that might cause diagnostics.
   AC_LANG_CONFTEST([AC_LANG_SOURCE([[
-int main(int argc, char** argv) { return (argv != 0) ? argc : 0; }
+int main(int argc, char** argv) { return !argv ? 0 : argc; }
 ]])])
   for mm_flag in $mm_warning_flags
   do
