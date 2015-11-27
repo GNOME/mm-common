@@ -1,7 +1,13 @@
-mm-common 0.9.9 (2015-08-21) UNRELEASED
+mm-common 0.9.9 (2015-11-27)
 
   * Fix install-time rewrite of documentation tag references with
-    newer Doxygen versions.  (Daniel Elstner)
+    newer Doxygen versions.
+    (Daniel Elstner)
+  * MM_ARG_ENABLE_WARNINGS for C++11 when using the
+    -Wzero-as-null-pointer-constant option with g++.
+    (Kjell Ahlstedt) Bug #757979.
+  * doc-reference.am: Don't assume all existing html files shall be rebuilt.
+    (Kjell Ahlstedt) Bug #686364.
 
 mm-common 0.9.8 (2015-07-15)
 
