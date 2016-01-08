@@ -4,7 +4,7 @@
 #
 # SYNOPSIS
 #
-#   AX_CXX_COMPILE_STDCXX(VERSION, [ext|noext], [mandatory|optional])
+#   MM_AX_CXX_COMPILE_STDCXX(VERSION, [ext|noext], [mandatory|optional])
 #
 # DESCRIPTION
 #
@@ -39,29 +39,32 @@
 #   and this notice are preserved.  This file is offered as-is, without any
 #   warranty.
 
+# Copied from ax_cxx_compile_stdcxx.m4 and added MM_ prefix to avoid
+# possible conflict with AX_CXX_COMPILE_STDCXX in other modules.
+
 #serial 1
 
-dnl  This macro is based on the code from the AX_CXX_COMPILE_STDCXX_11 macro
+dnl  This macro is based on the code from the MM_AX_CXX_COMPILE_STDCXX_11 macro
 dnl  (serial version number 13).
 
-AC_DEFUN([AX_CXX_COMPILE_STDCXX], [dnl
+AC_DEFUN([MM_AX_CXX_COMPILE_STDCXX], [dnl
   m4_if([$1], [11], [],
         [$1], [14], [],
-        [$1], [17], [m4_fatal([support for C++17 not yet implemented in AX_CXX_COMPILE_STDCXX])],
-        [m4_fatal([invalid first argument `$1' to AX_CXX_COMPILE_STDCXX])])dnl
+        [$1], [17], [m4_fatal([support for C++17 not yet implemented in MM_AX_CXX_COMPILE_STDCXX])],
+        [m4_fatal([invalid first argument `$1' to MM_AX_CXX_COMPILE_STDCXX])])dnl
   m4_if([$2], [], [],
         [$2], [ext], [],
         [$2], [noext], [],
-        [m4_fatal([invalid second argument `$2' to AX_CXX_COMPILE_STDCXX])])dnl
+        [m4_fatal([invalid second argument `$2' to MM_AX_CXX_COMPILE_STDCXX])])dnl
   m4_if([$3], [], [ax_cxx_compile_cxx$1_required=true],
         [$3], [mandatory], [ax_cxx_compile_cxx$1_required=true],
         [$3], [optional], [ax_cxx_compile_cxx$1_required=false],
-        [m4_fatal([invalid third argument `$3' to AX_CXX_COMPILE_STDCXX])])
+        [m4_fatal([invalid third argument `$3' to MM_AX_CXX_COMPILE_STDCXX])])
   AC_LANG_PUSH([C++])dnl
   ac_success=no
   AC_CACHE_CHECK(whether $CXX supports C++$1 features by default,
   ax_cv_cxx_compile_cxx$1,
-  [AC_COMPILE_IFELSE([AC_LANG_SOURCE([_AX_CXX_COMPILE_STDCXX_testbody_$1])],
+  [AC_COMPILE_IFELSE([AC_LANG_SOURCE([_MM_AX_CXX_COMPILE_STDCXX_testbody_$1])],
     [ax_cv_cxx_compile_cxx$1=yes],
     [ax_cv_cxx_compile_cxx$1=no])])
   if test x$ax_cv_cxx_compile_cxx$1 = xyes; then
@@ -76,7 +79,7 @@ AC_DEFUN([AX_CXX_COMPILE_STDCXX], [dnl
                      $cachevar,
         [ac_save_CXXFLAGS="$CXXFLAGS"
          CXXFLAGS="$CXXFLAGS $switch"
-         AC_COMPILE_IFELSE([AC_LANG_SOURCE([_AX_CXX_COMPILE_STDCXX_testbody_$1])],
+         AC_COMPILE_IFELSE([AC_LANG_SOURCE([_MM_AX_CXX_COMPILE_STDCXX_testbody_$1])],
           [eval $cachevar=yes],
           [eval $cachevar=no])
          CXXFLAGS="$ac_save_CXXFLAGS"])
@@ -99,7 +102,7 @@ AC_DEFUN([AX_CXX_COMPILE_STDCXX], [dnl
                      $cachevar,
         [ac_save_CXXFLAGS="$CXXFLAGS"
          CXXFLAGS="$CXXFLAGS $switch"
-         AC_COMPILE_IFELSE([AC_LANG_SOURCE([_AX_CXX_COMPILE_STDCXX_testbody_$1])],
+         AC_COMPILE_IFELSE([AC_LANG_SOURCE([_MM_AX_CXX_COMPILE_STDCXX_testbody_$1])],
           [eval $cachevar=yes],
           [eval $cachevar=no])
          CXXFLAGS="$ac_save_CXXFLAGS"])
@@ -132,22 +135,22 @@ AC_DEFUN([AX_CXX_COMPILE_STDCXX], [dnl
 
 dnl  Test body for checking C++11 support
 
-m4_define([_AX_CXX_COMPILE_STDCXX_testbody_11],
-  _AX_CXX_COMPILE_STDCXX_testbody_new_in_11
+m4_define([_MM_AX_CXX_COMPILE_STDCXX_testbody_11],
+  _MM_AX_CXX_COMPILE_STDCXX_testbody_new_in_11
 )
 
 
 dnl  Test body for checking C++14 support
 
-m4_define([_AX_CXX_COMPILE_STDCXX_testbody_14],
-  _AX_CXX_COMPILE_STDCXX_testbody_new_in_11
-  _AX_CXX_COMPILE_STDCXX_testbody_new_in_14
+m4_define([_MM_AX_CXX_COMPILE_STDCXX_testbody_14],
+  _MM_AX_CXX_COMPILE_STDCXX_testbody_new_in_11
+  _MM_AX_CXX_COMPILE_STDCXX_testbody_new_in_14
 )
 
 
 dnl  Tests for new features in C++11
 
-m4_define([_AX_CXX_COMPILE_STDCXX_testbody_new_in_11], [[
+m4_define([_MM_AX_CXX_COMPILE_STDCXX_testbody_new_in_11], [[
 
 // If the compiler admits that it is not ready for C++11, why torture it?
 // Hopefully, this will speed up the test.
@@ -436,7 +439,7 @@ namespace cxx11
 
 dnl  Tests for new features in C++14
 
-m4_define([_AX_CXX_COMPILE_STDCXX_testbody_new_in_14], [[
+m4_define([_MM_AX_CXX_COMPILE_STDCXX_testbody_new_in_14], [[
 
 // If the compiler admits that it is not ready for C++14, why torture it?
 // Hopefully, this will speed up the test.
