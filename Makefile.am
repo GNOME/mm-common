@@ -35,6 +35,7 @@ dist_build_support_DATA =		\
 aclocal_macrodir = $(datadir)/aclocal
 aclocal_macro_DATA = macros/mm-common.m4
 dist_aclocal_macro_DATA =		\
+	macros/mm-ax_cxx_compile_stdcxx.m4	\
 	macros/mm-ax_cxx_compile_stdcxx_11.m4	\
 	macros/mm-dietlib.m4		\
 	macros/mm-doc.m4		\
