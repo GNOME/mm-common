@@ -1,3 +1,12 @@
+mm-common 0.9.10 (2016-02-06)
+
+  * Add the MM_AX_CXX_COMPILE_STDCXX() m4 macro,
+    to help other *mm projects build with C++11 or C++14 compiler support.
+    This is based on AX_CXX_COMPILE_STDCXX() but doesn't need to
+    be copied into projects manually.
+    It is less specific than MM_AX_CXX_COMPILE_STDCXX_11.
+    (Murray Cumming)
+
 mm-common 0.9.9 (2015-11-27)
 
   * Fix install-time rewrite of documentation tag references with
