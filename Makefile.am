@@ -163,7 +163,7 @@ util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
 
 # Create tar archive of skeletonmm for installation.
 skeletonmm.tar.gz: $(skeletonmm_files)
-	$(AM_V_GEN)($(srctar_stdout) $(skeletonmm_files)) | gzip -c >$@
+	$(AM_V_GEN)($(srctar_stdout) $(skeletonmm_files)) | gzip -c -n >$@
 
 include $(top_srcdir)/build/dist-changelog.am
 
