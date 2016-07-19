@@ -21,7 +21,9 @@ AC_PREREQ([2.59])
 AC_CONFIG_SRCDIR([util/mm-common-prepare.in])
 
 AM_INIT_AUTOMAKE([1.9 -Wno-portability check-news dist-bzip2 no-define std-options])
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
+# Support silent build rules.
+# Disable by either passing --disable-silent-rules to configure or passing V=1 to make.
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE
 
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
