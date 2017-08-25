@@ -1,3 +1,10 @@
+mm-common 0.9.11 (2017-08-25)
+
+* Fix silent build.
+  (Kjell Ahlstedt) Bug #768797 (Sebastian)
+* Build: don't save time stamps in skeletonmm.tar.gz
+  (Michael Bielb) Bug #765108
+
 mm-common 0.9.10 (2016-02-06)
 
   * Add the MM_AX_CXX_COMPILE_STDCXX() m4 macro,
