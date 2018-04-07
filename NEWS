@@ -1,3 +1,9 @@
+mm-common 0.9.12 (2018-04-07)
+
+* MM_AX_CXX_COMPILE_STDCXX():
+  Update based on the upstream AX_CXX_COMPILE_STDCXX() macro,
+  to support C++17.
+
 mm-common 0.9.11 (2017-08-25)
 
 * Fix silent build.
