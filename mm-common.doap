@@ -14,7 +14,7 @@ building tarball releases, unless configured to use maintainer-mode.</descriptio
   <homepage rdf:resource="http://www.gtkmm.org/" />
   <mailing-list rdf:resource="mailto:gtkmm-list@gnome.org" />
   <download-page rdf:resource="http://download.gnome.org/sources/mm-common/" />
-  <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=mm-common" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/mm-common/issues/" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
   <programming-language>C++</programming-language>
 
