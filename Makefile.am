@@ -25,10 +25,10 @@ man1_MANS = util/mm-common-prepare.1
 # into projects at autogen.sh time:
 build_supportdir = $(pkgdatadir)/build
 dist_build_support_DATA =		\
-	build/compile-binding.am	\
-	build/dist-changelog.am		\
-	build/doc-reference.am		\
-	build/generate-binding.am
+	am_include/compile-binding.am	\
+	am_include/dist-changelog.am		\
+	am_include/doc-reference.am		\
+	am_include/generate-binding.am
 
 # These are installed so that aclocal can copy them into aclocal.m4
 # at autogen.sh time:
@@ -45,7 +45,7 @@ dist_aclocal_macro_DATA =		\
 
 # These are installed so that mm-common-prepare can copy them into projects
 # at autogen.sh time if a directory path is given to MM_CONFIG_DOCTOOL_DIR(),
-# or they can be found via pkg-config --variable=doctooldir mm-common,
+# or they can be found via pkg-config --variable=doctooldir mm-common-util,
 # which is preferrable.
 doctooldir = $(pkgdatadir)/doctool
 dist_doctool_DATA =			\
@@ -165,7 +165,7 @@ util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
 skeletonmm.tar.gz: $(skeletonmm_files)
 	$(AM_V_GEN)($(srctar_stdout) $(skeletonmm_files)) | gzip -c -n >$@
 
-include $(top_srcdir)/build/dist-changelog.am
+include $(top_srcdir)/am_include/dist-changelog.am
 
 install-data-hook: $(if $(DESTDIR),,postinst-acdir-notice)
 
