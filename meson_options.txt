@@ -1,0 +1,2 @@
+option('use-network', type: 'boolean', value: false,
+  description : 'Download Doxygen tag file from the network')

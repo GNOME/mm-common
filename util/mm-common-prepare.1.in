@@ -7,10 +7,10 @@ mm-common-prepare \- Prepare a C++ binding module to use mm-common
 .SH DESCRIPTION
 Run
 .B mm-common-prepare
-to install the
+to copy the
 .I mm-common
 build support files into the source tree of a C++ binding module.
-The exact location where these files will be installed can be influenced
+The exact location these files will be copied to can be influenced
 through special macros in the
 .I configure.ac
 file.
@@ -30,17 +30,17 @@ If the
 macro is called with an explicit
 .I DOCTOOL-DIR
 argument, the common utilities required for generating and installing
-the reference documentation of a C++ binding module will be installed
-into the named subdirectory.
+the reference documentation of a C++ binding module will be copied
+to the named subdirectory.
 If
 .B MM_CONFIG_DOCTOOL_DIR
 is not used or does not specify a
 .I DOCTOOL-DIR
 argument,
 .B mm-common-prepare
-will not install the documentation utility files into the module's source tree.
+will not copy the documentation utility files into the module's source tree.
 Instead, it is assumed that the module depends on
-.I glibmm
+.I mm-common
 and can use the installed documentation utilities that come with it.
 .PP
 If no
@@ -63,11 +63,11 @@ show version information and exit
 .SH "EXIT STATUS"
 The exit status is 0 if OK, or 1 if an error occurred.
 .SH FILES
-The build support files currently installed by
+The build support files currently copied by
 .B mm-common-prepare
 are listed below.
 .TP
-.BI "Automake include files installed into " AUX-DIR :
+.BI "Automake include files copied to " AUX-DIR :
 .PD 0
 .IP
 .I compile-binding.am
@@ -79,7 +79,7 @@ are listed below.
 .I generate-binding.am
 .PD
 .TP
-.BI "Documentation utilities installed into " DOCTOOL-DIR :
+.BI "Documentation utilities copied to " DOCTOOL-DIR :
 .PD 0
 .IP
 .I doc-install.pl
@@ -97,6 +97,8 @@ are listed below.
 .BR autoreconf (1)
 .PP
 .I @docdir@/README
+.PP
+.I @docdir@/skeletonmm.tar.xz or
 .PP
 .I @docdir@/skeletonmm.tar.gz
 .PD

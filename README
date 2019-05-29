@@ -11,6 +11,17 @@ GNU C++ Library reference documentation.  It is covered by the same
 licence as the source code it was extracted from.  More information
 is available at <http://gcc.gnu.org/onlinedocs/libstdc++/>.
 
+Autotools or Meson?
+===================
+
+mm-common can be built with autotools or meson. Building with autotools
+may be phased out in the future.
+
+Most of the files that mm-common installs and mm-common-prepare copies to
+other modules are useful only if those modules are built with autotools.
+The files in the skeletonmm directory show the start of a project that will
+use autotools.
+
 Skeleton C++ binding module
 ===========================
 

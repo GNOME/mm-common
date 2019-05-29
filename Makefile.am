@@ -124,6 +124,15 @@ dist_noinst_SCRIPTS = autogen.sh $(skeletonmm_script_files)
 CLEANFILES = $(man1_MANS) $(doc_DATA)
 MAINTAINERCLEANFILES = $(dist_doctags_DATA)
 
+# Distribute files needed when building mm-common with meson.
+EXTRA_DIST = \
+  meson.build \
+  meson_options.txt \
+  util/meson_aux/extra-dist-cmd.sh \
+  util/meson_aux/extra-install-cmd.sh \
+  util/meson_aux/libstdcxx-tag.sh \
+  util/meson_aux/skeletonmm-tarball.sh
+
 # Remote location of the GNU libstdc++ Doxygen tag file.
 libstdcxx_tag_url = http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libstdc++.tag
 
