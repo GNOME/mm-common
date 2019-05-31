@@ -226,9 +226,14 @@ install_data('README', install_dir: mm_common_docdir)
 
 # Either curl or wget is required for downloading libstdc++.tag,
 # used by Doxygen.
-curl = find_program('curl', required: false)
-if not curl.found()
-  wget = find_program('wget', required: true)
+download_cmd = 'none'
+if get_option('use-network')
+  curl = find_program('curl', required: false)
+  download_cmd = 'curl'
+  if not curl.found()
+    wget = find_program('wget', required: true)
+    download_cmd = 'wget'
+  endif
 endif
 
 # Download libstdc++.tag if it does not exist or if it's out of date.
@@ -236,8 +241,7 @@ custom_target('libstdc++.tag',
   output: 'libstdc++.tag',
   command: [
     files(join_paths('util', 'meson_aux', 'libstdcxx-tag.sh')),
-    '@0@'.format(get_option('use-network')), # true or false
-    curl.found() ? 'curl' : 'wget',
+    download_cmd,
     join_paths(meson.current_source_dir(), 'doctags'),
     '@OUTPUT@',
   ],
