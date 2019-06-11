@@ -140,7 +140,8 @@ configure_file(
   input: join_paths('util', 'mm-common-prepare.in'),
   output: '@BASENAME@',
   configuration: conf_data3,
-  install_dir: mm_common_bindir
+  install_dir: mm_common_bindir,
+  install_mode: 'rwxr-xr-x'
 )
 
 # mm-common-prepare.1 manual page.
