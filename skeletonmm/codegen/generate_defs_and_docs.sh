@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # skeletonmm/codegen/generate_defs_and_docs.sh
 
