@@ -10,7 +10,7 @@ shift; shift
 
 # These options don't contain filenames, and thus no spaces that
 # must be preserved in the call to tar.
-tar_options="--create --dereference --old-archive --file=-"
+tar_options="-chof -"
 
 case "$output_file" in
   *.xz)
