@@ -3,25 +3,25 @@
 project('mm-common',
   version: '0.9.12',
   meson_version: '>= 0.49.0',
-  license: 'GPLv2'
+  license: 'GPLv2+'
 )
 
-# Installation directories.
-mm_common_prefix = get_option('prefix')
-mm_common_bindir = join_paths(mm_common_prefix, get_option('bindir'))
+# Install directories are relative to {prefix}.
+install_prefix = get_option('prefix')
+install_bindir = get_option('bindir')
 
-mm_common_datadir = join_paths(mm_common_prefix, get_option('datadir'))
-mm_common_aclocal_macrodir = join_paths(mm_common_datadir, 'aclocal')
-mm_common_pkgconfigdir = join_paths(mm_common_datadir, 'pkgconfig')
-mm_common_docdir = join_paths(mm_common_datadir, 'doc', meson.project_name())
+install_datadir = get_option('datadir')
+install_aclocal_macrodir = install_datadir / 'aclocal'
+install_pkgconfigdir = install_datadir / 'pkgconfig'
+install_docdir = install_datadir / 'doc' / meson.project_name()
 
-mm_common_pkgdatadir = join_paths(mm_common_datadir, meson.project_name())
-mm_common_build_supportdir = join_paths(mm_common_pkgdatadir, 'build')
-mm_common_doctooldir = join_paths(mm_common_pkgdatadir, 'doctool')
-mm_common_doctagsdir = join_paths(mm_common_pkgdatadir, 'doctags')
+install_pkgdatadir = install_datadir / meson.project_name()
+install_build_supportdir = install_pkgdatadir / 'build'
+install_doctooldir = install_pkgdatadir / 'doctool'
+install_doctagsdir = install_pkgdatadir / 'doctags'
 
-mm_common_mandir = join_paths(mm_common_prefix, get_option('mandir'))
-mm_common_man1dir = join_paths(mm_common_mandir, 'man1')
+install_mandir = get_option('mandir')
+install_man1dir = install_mandir / 'man1'
 
 # Configuration data for built files:
 #   doctags/mm-common-libstdc++.pc.in -> mm-common-libstdc++.pc
@@ -32,10 +32,10 @@ mm_common_man1dir = join_paths(mm_common_mandir, 'man1')
 #   util/mm-common-util.pc.in -> mm-common-util.pc
 #   util/mm-common-util-uninstalled.pc.in -> mm-common-util-uninstalled.pc
 conf_data = configuration_data()
-conf_data.set('prefix', mm_common_prefix)
-conf_data.set('datarootdir', join_paths('${prefix}', get_option('datadir')))
+conf_data.set('prefix', install_prefix)
+conf_data.set('datarootdir', '${prefix}' / install_datadir)
 conf_data.set('datadir', '${datarootdir}')
-conf_data.set('docdir', mm_common_docdir)
+conf_data.set('docdir', install_prefix / install_docdir)
 conf_data.set('PACKAGE_NAME', meson.project_name())
 conf_data.set('PACKAGE_TARNAME', meson.project_name())
 conf_data.set('PACKAGE_VERSION', meson.project_version())
@@ -50,10 +50,10 @@ build_support_basefiles = [
   'generate-binding.am',
 ]
 build_support_files = []
-foreach i : build_support_basefiles
-  build_support_files += join_paths('am_include', i)
+foreach file : build_support_basefiles
+  build_support_files += 'am_include' / file
 endforeach
-install_data(build_support_files, install_dir: mm_common_build_supportdir)
+install_data(build_support_files, install_dir: install_build_supportdir)
 
 # These are installed so that aclocal can copy them into aclocal.m4
 # at autogen.sh time.
@@ -67,25 +67,25 @@ aclocal_macro_basefiles = [
   'mm-warnings.m4',
 ]
 aclocal_macro_files = []
-foreach i : aclocal_macro_basefiles
-  aclocal_macro_files += join_paths('macros', i)
+foreach file : aclocal_macro_basefiles
+  aclocal_macro_files += 'macros' / file
 endforeach
-install_data(aclocal_macro_files, install_dir: mm_common_aclocal_macrodir)
+install_data(aclocal_macro_files, install_dir: install_aclocal_macrodir)
 
 conf_data2 = configuration_data()
 conf_data2.merge_from(conf_data)
 conf_data2.set('configure_input', 'mm-common.m4.  Generated from macros/mm-common.m4.in')
 configure_file(
-  input: join_paths('macros', 'mm-common.m4.in'),
+  input: 'macros' / 'mm-common.m4.in',
   output: '@BASENAME@',
   configuration: conf_data2,
-  install_dir: mm_common_aclocal_macrodir
+  install_dir: install_aclocal_macrodir
 )
 
 if find_program('aclocal', required: false).found()
   meson.add_install_script(
-    join_paths('util', 'meson_aux', 'extra-install-cmd.sh'),
-    mm_common_aclocal_macrodir
+    'util' / 'meson_aux' / 'extra-install-cmd.sh',
+    install_prefix / install_aclocal_macrodir
   )
 endif
 
@@ -100,34 +100,34 @@ doctool_basefiles = [
   'tagfile-to-devhelp2.xsl',
 ]
 doctool_files = []
-foreach i : doctool_basefiles
-  doctool_files += join_paths('util', i)
+foreach file : doctool_basefiles
+  doctool_files += 'util' / file
 endforeach
-install_data(doctool_files, install_dir: mm_common_doctooldir)
+install_data(doctool_files, install_dir: install_doctooldir)
 
 # Let other modules find the utils with pkg-config.
 configure_file(
-  input: join_paths('doctags', 'mm-common-libstdc++.pc.in'),
+  input: 'doctags' / 'mm-common-libstdc++.pc.in',
   output: '@BASENAME@',
   configuration: conf_data,
-  install_dir: mm_common_pkgconfigdir
+  install_dir: install_pkgconfigdir
 )
 
 configure_file(
-  input: join_paths('util', 'mm-common-util.pc.in'),
+  input: 'util' / 'mm-common-util.pc.in',
   output: '@BASENAME@',
   configuration: conf_data,
-  install_dir: mm_common_pkgconfigdir
+  install_dir: install_pkgconfigdir
 )
 
 configure_file(
-  input: join_paths('doctags', 'mm-common-libstdc++-uninstalled.pc.in'),
+  input: 'doctags' / 'mm-common-libstdc++-uninstalled.pc.in',
   output: '@BASENAME@',
   configuration: conf_data,
 )
 
 configure_file(
-  input: join_paths('util', 'mm-common-util-uninstalled.pc.in'),
+  input: 'util' / 'mm-common-util-uninstalled.pc.in',
   output: '@BASENAME@',
   configuration: conf_data,
 )
@@ -137,19 +137,19 @@ conf_data3 = configuration_data()
 conf_data3.merge_from(conf_data)
 conf_data3.set('configure_input', 'mm-common-prepare.  Generated from util/mm-common-prepare.in')
 configure_file(
-  input: join_paths('util', 'mm-common-prepare.in'),
+  input: 'util' / 'mm-common-prepare.in',
   output: '@BASENAME@',
   configuration: conf_data3,
-  install_dir: mm_common_bindir,
+  install_dir: install_bindir,
   install_mode: 'rwxr-xr-x'
 )
 
 # mm-common-prepare.1 manual page.
 configure_file(
-  input: join_paths('util', 'mm-common-prepare.1.in'),
+  input: 'util' / 'mm-common-prepare.1.in',
   output: '@BASENAME@',
   configuration: conf_data,
-  install_dir: mm_common_man1dir
+  install_dir: install_man1dir
 )
 
 # Skeleton project.
@@ -197,8 +197,8 @@ skeletonmm_basefiles = [
   'skeleton/src/skeleton_vfunc.defs',
 ]
 skeletonmm_files = []
-foreach i : skeletonmm_basefiles
-  skeletonmm_files += join_paths('skeletonmm', i)
+foreach file : skeletonmm_basefiles
+  skeletonmm_files += 'skeletonmm' / file
 endforeach
 
 # tar and either xz or gzip are required for the skeletonmm.tar.[xz|gz] file.
@@ -214,16 +214,16 @@ custom_target(tarball_filename,
   input: skeletonmm_files,
   output: tarball_filename,
   command: [
-    files(join_paths('util', 'meson_aux', 'skeletonmm-tarball.sh')),
+    files('util' / 'meson_aux' / 'skeletonmm-tarball.sh'),
     meson.current_source_dir(),
     '@OUTPUT@',
     skeletonmm_files,
   ],
   build_by_default: true,
-  install_dir: mm_common_docdir,
+  install_dir: install_docdir,
   install: true
 )
-install_data('README', install_dir: mm_common_docdir)
+install_data('README', install_dir: install_docdir)
 
 # Either curl or wget is required for downloading libstdc++.tag,
 # used by Doxygen.
@@ -241,24 +241,26 @@ endif
 custom_target('libstdc++.tag',
   output: 'libstdc++.tag',
   command: [
-    files(join_paths('util', 'meson_aux', 'libstdcxx-tag.sh')),
+    files('util' / 'meson_aux' / 'libstdcxx-tag.sh'),
     download_cmd,
-    join_paths(meson.current_source_dir(), 'doctags'),
+    meson.current_source_dir() / 'doctags',
     '@OUTPUT@',
   ],
   build_by_default: true,
   build_always_stale: true,
-  install_dir: mm_common_doctagsdir,
+  install_dir: install_doctagsdir,
   install: true
 )
 
-# Modify the contents of the distribution directory.
-meson.add_dist_script(
-  join_paths('util', 'meson_aux', 'extra-dist-cmd.sh'),
-  meson.current_source_dir(),
-  meson.current_build_dir(),
-  join_paths('meson-dist', meson.project_name() + '-' + meson.project_version()),
-)
+if not meson.is_subproject()
+  # Modify the contents of the distribution directory. (not allowed in a subproject)
+  meson.add_dist_script(
+    'util' / 'meson_aux' / 'extra-dist-cmd.sh',
+    meson.current_source_dir(),
+    meson.current_build_dir(),
+    'meson-dist' / meson.project_name() + '-' + meson.project_version(),
+  )
+endif
 
 # Print a summary.
 summary = [
@@ -268,17 +270,17 @@ summary = [
   '',
   '       Use network: @0@'.format(get_option('use-network')),
   'Directories:',
-  '            prefix: @0@'.format(mm_common_prefix),
-  '            bindir: @0@'.format(mm_common_bindir),
-  '           datadir: @0@'.format(mm_common_datadir),
-  '            docdir: @0@'.format(mm_common_docdir),
-  '  aclocal_macrodir: @0@'.format(mm_common_aclocal_macrodir),
-  '      pkgconfigdir: @0@'.format(mm_common_pkgconfigdir),
-  '        pkgdatadir: @0@'.format(mm_common_pkgdatadir),
-  '  build_supportdir: @0@'.format(mm_common_build_supportdir),
-  '        doctooldir: @0@'.format(mm_common_doctooldir),
-  '        doctagsdir: @0@'.format(mm_common_doctagsdir),
-  '           man1dir: @0@'.format(mm_common_man1dir),
+  '            prefix: @0@'.format(install_prefix),
+  '            bindir: @0@'.format(install_prefix / install_bindir),
+  '           datadir: @0@'.format(install_prefix / install_datadir),
+  '            docdir: @0@'.format(install_prefix / install_docdir),
+  '  aclocal_macrodir: @0@'.format(install_prefix / install_aclocal_macrodir),
+  '      pkgconfigdir: @0@'.format(install_prefix / install_pkgconfigdir),
+  '        pkgdatadir: @0@'.format(install_prefix / install_pkgdatadir),
+  '  build_supportdir: @0@'.format(install_prefix / install_build_supportdir),
+  '        doctooldir: @0@'.format(install_prefix / install_doctooldir),
+  '        doctagsdir: @0@'.format(install_prefix / install_doctagsdir),
+  '           man1dir: @0@'.format(install_prefix / install_man1dir),
   '------'
 ]
 
