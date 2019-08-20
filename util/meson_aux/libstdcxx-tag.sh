@@ -32,7 +32,9 @@ case "$1" in
       echo "Warning: $3 does not exist."
       echo "Copying from the source directory because network is disabled."
       echo "If you want an up-to-date copy, reconfigure with the -Duse-network=true option."
-      cp --preserve=timestamps "$2/$output_filename" "$3"
+      # -p == --preserve=mode,ownership,timestamps (Posix does not support long options.)
+      # Only the preservation of timestamps is essential here.
+      cp -p "$2/$output_filename" "$3"
     else
       echo "Error: $3 does not exist." >&2
       echo "Downloading it is not possible because network is disabled." >&2

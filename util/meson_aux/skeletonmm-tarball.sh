@@ -6,10 +6,9 @@
 
 source_dir="$1"
 output_file="$2"
-shift; shift
+shift 2
 
-# These options don't contain filenames, and thus no spaces that
-# must be preserved in the call to tar.
+# -chof == --create --dereference --old-archive --file (Posix does not support long options.)
 tar_options="-chof -"
 
 case "$output_file" in

@@ -4,7 +4,7 @@
 
 # extra-dist-cmd.sh <root_source_dir> <root_build_dir> <relative_dist_dir>
 
-# relative_dist_dir is the distribution directory path relative to root_build_dir.
+# <relative_dist_dir> is the distribution directory path relative to <root_build_dir>.
 # Meson does not preserve timestamps on distributed files.
 # But this script preserves the timestamps on libstdc++.tag.
 
@@ -13,5 +13,6 @@ git --git-dir="$1/.git" --work-tree="$1" log --no-merges --date=short --max-coun
     --pretty='tformat:%cd  %an  <%ae>%n%n  %s%n%w(0,0,2)%+b' > "$2/$3/ChangeLog"
 
 # Distribute the libstdc++.tag file in addition to the files in the local git clone.
-cd "$2"
-cp --preserve=timestamps "libstdc++.tag" "$3/doctags/"
+# -p == --preserve=mode,ownership,timestamps (Posix does not support long options.)
+# Only the preservation of timestamps is essential here.
+cp -p "$2/libstdc++.tag" "$2/$3/doctags/"
