@@ -43,16 +43,29 @@ conf_data.set('PACKAGE_STRING', meson.project_name() + ' ' + meson.project_versi
 
 # These are installed so that mm-common-prepare can copy them
 # into projects at autogen.sh time.
-build_support_basefiles = [
+autotools_build_support_basefiles = [
   'compile-binding.am',
   'dist-changelog.am',
   'doc-reference.am',
   'generate-binding.am',
 ]
 build_support_files = []
-foreach file : build_support_basefiles
+foreach file : autotools_build_support_basefiles
   build_support_files += 'am_include' / file
 endforeach
+
+# These are installed so that mm-common-prepare can copy them
+# into projects at Meson setup or configure time.
+meson_build_support_basefiles = [
+  'dist-build-scripts.sh',
+  'dist-changelog.sh',
+  'doc-reference.sh',
+  'generate-binding.sh',
+]
+foreach file : meson_build_support_basefiles
+  build_support_files += 'util' / 'build_scripts' / file
+endforeach
+
 install_data(build_support_files, install_dir: install_build_supportdir)
 
 # These are installed so that aclocal can copy them into aclocal.m4
@@ -92,6 +105,8 @@ endif
 # These are installed so that mm-common-prepare can copy them into projects
 # at autogen.sh time, if a directory path is given to MM_CONFIG_DOCTOOL_DIR(),
 # or they can be found via pkg-config --variable=doctooldir mm-common-util.
+# They are also installed so that mm-common-prepare can copy them
+# into projects at Meson setup or configure time.
 doctool_basefiles = [
   'doc-install.pl',
   'doc-postprocess.pl',

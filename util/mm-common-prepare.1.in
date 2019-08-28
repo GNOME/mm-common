@@ -1,4 +1,4 @@
-.TH MM-COMMON-PREPARE 1 2014-08-13 GNOME "@PACKAGE_STRING@"
+.TH MM-COMMON-PREPARE 1 2019-08-25 GNOME "@PACKAGE_STRING@"
 .SH NAME
 mm-common-prepare \- Prepare a C++ binding module to use mm-common
 .SH SYNOPSIS
@@ -10,8 +10,8 @@ Run
 to copy the
 .I mm-common
 build support files into the source tree of a C++ binding module.
-The exact location these files will be copied to can be influenced
-through special macros in the
+If the module is built with Autotools, the exact location these files
+will be copied to can be influenced through special macros in the
 .I configure.ac
 file.
 .TP
@@ -43,7 +43,9 @@ Instead, it is assumed that the module depends on
 .I mm-common
 and can use the installed documentation utilities that come with it.
 .PP
-If no
+If neither
+.BR \-\-doctooldir ", " \-\-buildscriptdir
+nor a
 .I SOURCE-DIR
 argument has been specified on the command line, the current working
 directory will be used.
@@ -60,6 +62,16 @@ display a help message and exit
 .TP
 .B \-\-version
 show version information and exit
+.TP
+.BI \-\-doctooldir= DOCTOOL-DIR
+copy the documentation utility files to
+.I DOCTOOL-DIR
+(Meson build)
+.TP
+.BI \-\-buildscriptdir= BUILDSCRIPT-DIR
+copy the build scripts to
+.I BUILDSCRIPT-DIR
+(Meson build)
 .SH "EXIT STATUS"
 The exit status is 0 if OK, or 1 if an error occurred.
 .SH FILES
@@ -67,7 +79,7 @@ The build support files currently copied by
 .B mm-common-prepare
 are listed below.
 .TP
-.BI "Automake include files copied to " AUX-DIR :
+.BI "Automake include files copied to " AUX-DIR " (Autotools):"
 .PD 0
 .IP
 .I compile-binding.am
@@ -79,7 +91,19 @@ are listed below.
 .I generate-binding.am
 .PD
 .TP
-.BI "Documentation utilities copied to " DOCTOOL-DIR :
+.BI "Shell build scripts copied to " BUILDSCRIPT-DIR " (Meson):"
+.PD 0
+.IP
+.I dist-build-scripts.sh
+.IP
+.I dist-changelog.sh
+.IP
+.I doc-reference.sh
+.IP
+.I generate-binding.sh
+.PD
+.TP
+.BI "Documentation utilities copied to " DOCTOOL-DIR " (Autotools and Meson):"
 .PD 0
 .IP
 .I doc-install.pl

@@ -27,6 +27,8 @@ installcmd='ln -s'
 instaction=symlinking
 forceflag=
 target=.
+doctooldir=
+buildscriptdir=
 
 for arg
 do
@@ -41,6 +43,9 @@ Prepare a C++ binding module to use mm-common.
  -f, --force         replace existing files
      --help          display this help message
      --version       print version information
+     --doctooldir=DIR where to store doc tool files (Meson build)
+     --buildscriptdir=DIR where to store build scripts (Meson build)
+ DIRECTORY | CONFIGURE-FILE (Autotools build)
 EOF
     exit 0
     ;;
@@ -60,6 +65,12 @@ EOF
     instaction=copying
     forceflag=' -f'
     ;;
+  --doctooldir=*)
+    doctooldir="${arg#--doctooldir=}"
+    ;;
+  --buildscriptdir=*)
+    buildscriptdir="${arg#--buildscriptdir=}"
+    ;;
   -*)
     echo "$progname: error: unrecognized option '$arg'" >&2
     exit 1
@@ -69,6 +80,46 @@ EOF
     ;;
   esac
 done
+
+# Copy or link files for Meson build.
+if [ -n "$doctooldir" ]; then
+  echo "$progname: putting documentation utilities in '$doctooldir'."
+  # -p == --parents (Posix does not support long options.)
+  mkdir -p "$doctooldir"
+
+  for file in doc-install.pl doc-postprocess.pl doxygen.css doxygen-extra.css tagfile-to-devhelp2.xsl
+  do
+    # Don't update the timestamp of $doctooldir/$file, if it's equal to "$pkgdatadir/doctool/$file".
+    # if file-does-not-exist || (force && files-are-not-equal)
+    # -s == --quiet, --silent
+    if test ! -f "$doctooldir/$file" || \
+       { test -n "$forceflag" && ! cmp -s "$pkgdatadir/doctool/$file" "$doctooldir/$file"; }; then
+      echo "$progname: $instaction file '$file'"
+      $installcmd$forceflag "$pkgdatadir/doctool/$file" "$doctooldir/$file"
+    fi
+  done
+fi
+
+if [ -n "$buildscriptdir" ]; then
+  echo "$progname: putting Meson build scripts in '$buildscriptdir'."
+  mkdir -p "$buildscriptdir"
+
+  for file in dist-build-scripts.sh dist-changelog.sh doc-reference.sh generate-binding.sh
+  do
+    if test ! -f "$buildscriptdir/$file" || \
+       { test -n "$forceflag" && ! cmp -s "$pkgdatadir/build/$file" "$buildscriptdir/$file"; }; then
+      echo "$progname: $instaction file '$file'"
+      $installcmd$forceflag "$pkgdatadir/build/$file" "$buildscriptdir/$file"
+    fi
+  done
+fi
+
+if [ -n "$doctooldir" -o -n "$buildscriptdir" ]; then
+  exit 0
+fi
+
+# Copy or link files for Autotools build.
+# The configure.ac file is read in order to find directories where to store files.
 
 if test -d "$target"; then
   srcdir=$target
@@ -89,7 +140,7 @@ auxdir=`sed -n "s/^[$s]*AC_CONFIG_AUX_DIR([[$s]*\\([^])\$,$s]*\\).*/\\1/p" "$acf
 doctooldir=`sed -n "s/^[$s]*MM_CONFIG_DOCTOOL_DIR([[$s]*\\([^])\$,$s]*\\).*/\\1/p" "$acfile"`
 
 auxdir=$srcdir${auxdir:+/}$auxdir
-echo "$progname: putting auxiliary files in '$auxdir'."
+echo "$progname: putting auxiliary Automake files in '$auxdir'."
 test -d "$auxdir" || mkdir "$auxdir"
 
 for file in compile-binding.am dist-changelog.am doc-reference.am generate-binding.am

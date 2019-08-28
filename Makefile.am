@@ -22,13 +22,17 @@ bin_SCRIPTS = util/mm-common-prepare
 man1_MANS = util/mm-common-prepare.1
 
 # These are installed so that mm-common-prepare can copy them
-# into projects at autogen.sh time:
+# into projects at autogen.sh time, or at meson setup or configure time:
 build_supportdir = $(pkgdatadir)/build
 dist_build_support_DATA =		\
 	am_include/compile-binding.am	\
 	am_include/dist-changelog.am		\
 	am_include/doc-reference.am		\
-	am_include/generate-binding.am
+	am_include/generate-binding.am \
+  util/build_scripts/dist-build-scripts.sh \
+  util/build_scripts/dist-changelog.sh \
+  util/build_scripts/doc-reference.sh \
+  util/build_scripts/generate-binding.sh
 
 # These are installed so that aclocal can copy them into aclocal.m4
 # at autogen.sh time:
