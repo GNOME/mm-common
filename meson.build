@@ -258,7 +258,6 @@ if not meson.is_subproject()
     'util' / 'meson_aux' / 'extra-dist-cmd.sh',
     meson.current_source_dir(),
     meson.current_build_dir(),
-    'meson-dist' / meson.project_name() + '-' + meson.project_version(),
   )
 endif
 
