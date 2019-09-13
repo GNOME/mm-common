@@ -21,18 +21,19 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 bin_SCRIPTS = util/mm-common-prepare
 man1_MANS = util/mm-common-prepare.1
 
-# These are installed so that mm-common-prepare can copy them
-# into projects at autogen.sh time, or at meson setup or configure time:
+# These are installed so that mm-common-prepare can copy the .am files
+# into projects at autogen.sh time, and mm-common-get can copy the .py files
+# at Meson setup or configure time:
 build_supportdir = $(pkgdatadir)/build
 dist_build_support_DATA =		\
 	am_include/compile-binding.am	\
 	am_include/dist-changelog.am		\
 	am_include/doc-reference.am		\
 	am_include/generate-binding.am \
-  util/build_scripts/dist-build-scripts.sh \
-  util/build_scripts/dist-changelog.sh \
-  util/build_scripts/doc-reference.sh \
-  util/build_scripts/generate-binding.sh
+  util/build_scripts/dist-build-scripts.py \
+  util/build_scripts/dist-changelog.py \
+  util/build_scripts/doc-reference.py \
+  util/build_scripts/generate-binding.py
 
 # These are installed so that aclocal can copy them into aclocal.m4
 # at autogen.sh time:
@@ -51,6 +52,7 @@ dist_aclocal_macro_DATA =		\
 # at autogen.sh time if a directory path is given to MM_CONFIG_DOCTOOL_DIR(),
 # or they can be found via pkg-config --variable=doctooldir mm-common-util,
 # which is preferrable.
+# mm-common-get can copy them at Meson setup or configure time.
 doctooldir = $(pkgdatadir)/doctool
 dist_doctool_DATA =			\
 	util/doc-install.pl		\

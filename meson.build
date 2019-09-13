@@ -27,6 +27,8 @@ install_man1dir = install_mandir / 'man1'
 #   doctags/mm-common-libstdc++.pc.in -> mm-common-libstdc++.pc
 #   doctags/mm-common-libstdc++-uninstalled.pc.in -> mm-common-libstdc++-uninstalled.pc
 #   macros/mm-common.m4.in -> mm-common.m4
+#   util/mm-common-get.1.in -> mm-common-get.1
+#   util/mm-common-get.in -> mm-common-get
 #   util/mm-common-prepare.1.in -> mm-common-prepare.1
 #   util/mm-common-prepare.in -> mm-common-prepare
 #   util/mm-common-util.pc.in -> mm-common-util.pc
@@ -54,13 +56,13 @@ foreach file : autotools_build_support_basefiles
   build_support_files += 'am_include' / file
 endforeach
 
-# These are installed so that mm-common-prepare can copy them
+# These are installed so that mm-common-get can copy them
 # into projects at Meson setup or configure time.
 meson_build_support_basefiles = [
-  'dist-build-scripts.sh',
-  'dist-changelog.sh',
-  'doc-reference.sh',
-  'generate-binding.sh',
+  'dist-build-scripts.py',
+  'dist-changelog.py',
+  'doc-reference.py',
+  'generate-binding.py',
 ]
 foreach file : meson_build_support_basefiles
   build_support_files += 'util' / 'build_scripts' / file
@@ -105,7 +107,7 @@ endif
 # These are installed so that mm-common-prepare can copy them into projects
 # at autogen.sh time, if a directory path is given to MM_CONFIG_DOCTOOL_DIR(),
 # or they can be found via pkg-config --variable=doctooldir mm-common-util.
-# They are also installed so that mm-common-prepare can copy them
+# They are also installed so that mm-common-get can copy them
 # into projects at Meson setup or configure time.
 doctool_basefiles = [
   'doc-install.pl',
@@ -147,14 +149,35 @@ configure_file(
   configuration: conf_data,
 )
 
-# mm-common-prepare command.
+# mm-common-get command.
 conf_data3 = configuration_data()
 conf_data3.merge_from(conf_data)
-conf_data3.set('configure_input', 'mm-common-prepare.  Generated from util/mm-common-prepare.in')
+conf_data3.set('configure_input', 'mm-common-get.  Generated from util/mm-common-get.in')
+conf_data3.set('datadir_py', install_prefix / install_datadir)
+configure_file(
+  input: 'util' / 'mm-common-get.in',
+  output: '@BASENAME@',
+  configuration: conf_data3,
+  install_dir: install_bindir,
+  install_mode: 'rwxr-xr-x'
+)
+
+# mm-common-get.1 manual page.
+configure_file(
+  input: 'util' / 'mm-common-get.1.in',
+  output: '@BASENAME@',
+  configuration: conf_data,
+  install_dir: install_man1dir
+)
+
+# mm-common-prepare command.
+conf_data4 = configuration_data()
+conf_data4.merge_from(conf_data)
+conf_data4.set('configure_input', 'mm-common-prepare.  Generated from util/mm-common-prepare.in')
 configure_file(
   input: 'util' / 'mm-common-prepare.in',
   output: '@BASENAME@',
-  configuration: conf_data3,
+  configuration: conf_data4,
   install_dir: install_bindir,
   install_mode: 'rwxr-xr-x'
 )
@@ -273,7 +296,6 @@ if not meson.is_subproject()
     'util' / 'meson_aux' / 'extra-dist-cmd.sh',
     meson.current_source_dir(),
     meson.current_build_dir(),
-    'meson-dist' / meson.project_name() + '-' + meson.project_version(),
   )
 endif
 

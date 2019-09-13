@@ -17,9 +17,10 @@ Autotools or Meson?
 mm-common can be built with Autotools or Meson. Building with Autotools
 may be phased out in the future.
 
-The files that mm-common installs and mm-common-prepare copies to
-other modules are useful both in modules that are built with Autotools and
-in modules that are built with Meson.
+The files that mm-common installs and mm-common-prepare copies to other
+modules are useful in modules that are built with Autotools.
+The files that mm-common installs and mm-common-get copies to other
+modules are useful in modules that are built with Meson.
 
 The files in the skeletonmm directory show the start of a project that will
 use Autotools.
@@ -72,25 +73,33 @@ Also note that mm-common-prepare inspects the project's configure.ac file
 for the AC_CONFIG_AUX_DIR([...]) argument.  This is explained in further
 detail below in the section on Automake include files.
 
-mm-common-prepare and Meson
----------------------------
+mm-common-get and Meson
+-----------------------
 
-The mm-common-prepare shell script is installed in ${bindir} and must be
+The mm-common-get shell script is installed in ${bindir} and must be
 invoked with run_command() early in a meson.build file. The meson.build file
 should contain code similar to
 
-  is_git_build = run_command('test', '-d', project_source_root / '.git').returncode() == 0
+  python = import('python').find_installation('python3')
+  cmd_py = 'import os, sys\n' \
+         + 'sys.exit(0 if os.path.isdir("' + (project_source_root/'.git') + '") else 1)\n'
+  is_git_build = run_command(python, '-c', cmd_py).returncode() == 0
   maintainer_mode_opt = get_option('maintainer-mode')
   maintainer_mode = maintainer_mode_opt == 'true' or \
                    (maintainer_mode_opt == 'if-git-build' and is_git_build)
-  mm_common_prepare = find_program('mm-common-prepare', required: maintainer_mode)
+  mm_common_get = find_program('mm-common-get', required: maintainer_mode)
 
-  if maintainer_mode and mm_common_prepare.found()
-    # Copy files to untracked/docs and untracked/build_scripts.
-    run_command(mm_common_prepare, '--force', '--copy',
-      '--doctooldir=' + project_source_root / 'untracked' / 'docs',
-      '--buildscriptdir=' + project_source_root / 'untracked' / 'build_scripts')
+  if maintainer_mode and mm_common_get.found()
+    # Copy files to untracked/build_scripts and untracked/docs.
+    run_command(mm_common_get, '--force',
+      project_source_root / 'untracked' / 'build_scripts',
+      project_source_root / 'untracked' / 'docs')
   endif
+
+In a Unix-like system the first few lines can be replaced with
+
+  is_git_build = run_command('test', '-d', project_source_root/'.git').returncode() == 0
+
 
 Autoconf M4 macros (Autotools)
 ------------------------------
@@ -188,26 +197,26 @@ These scripts can be called from meson.build files with run_command(),
 custom_target(), meson.add_postconf_script(), meson.add_install_script()
 and meson.add_dist_script().
 
-util/build_scripts/generate-binding.sh:
+util/build_scripts/generate-binding.py:
   Commands for running the gmmproc code generator to produce
   the source code files for a C++ binding module.
 
-util/build_scripts/doc-reference.sh:
+util/build_scripts/doc-reference.py:
   Commands for building the API reference documentation using
-  Doxygen, and to create a Devhelp book for the library.  The installation
+  Doxygen, and to create a Devhelp book for the library. The installation
   rules also take care of translating references to external documentation
   in the generated hypertext documents.
 
-util/build_scripts/dist-changelog.sh:
+util/build_scripts/dist-changelog.py:
   A git command to generate a ChangeLog file when making a release,
   intended to be used by modules which use the version control
   log exclusively to document changes.
 
-util/build_scripts/dist-build-scripts.sh:
+util/build_scripts/dist-build-scripts.py:
   Commands that trim the distribution directory before a tarball is made.
-  The scripts copied by mm-common-prepare are distributed, although they are
+  The scripts copied by mm-common-get are distributed, although they are
   not checked into the git repository. All .gitignore files and an empty build/
-  diretory are removed
+  directory are removed
 
 Documentation utilities (Meson and Autotools)
 ---------------------------------------------
