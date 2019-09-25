@@ -2,9 +2,23 @@
 
 project('mm-common',
   version: '0.9.12',
-  meson_version: '>= 0.49.0',
+  meson_version: '>= 0.50.0', # required for python3.path()
   license: 'GPLv2+'
 )
+
+python3 = import('python').find_installation('python3')
+python_version = python3.language_version()
+python_version_req = '>= 3.5'
+if not python_version.version_compare(python_version_req)
+  error('Requires Python @0@, found @1@.'.format(python_version_req, python_version))
+endif
+
+# Use these instead of meson.source_root() and meson.build_root().
+# source_root() and build_root() are not useful, if this is a subproject.
+project_source_root = meson.current_source_dir()
+project_build_root = meson.current_build_dir()
+
+script_dir = project_source_root / 'util' / 'meson_aux'
 
 # Install directories are relative to {prefix}.
 install_prefix = get_option('prefix')
@@ -84,7 +98,8 @@ configure_file(
 
 if find_program('aclocal', required: false).found()
   meson.add_install_script(
-    'util' / 'meson_aux' / 'extra-install-cmd.sh',
+    python3.path(),
+    script_dir / 'extra-install-cmd.py',
     install_prefix / install_aclocal_macrodir
   )
 endif
@@ -201,22 +216,18 @@ foreach file : skeletonmm_basefiles
   skeletonmm_files += 'skeletonmm' / file
 endforeach
 
-# tar and either xz or gzip are required for the skeletonmm.tar.[xz|gz] file.
-tar = find_program('tar', required: true)
-xz = find_program('xz', required: false)
-if not xz.found()
-  gzip = find_program('gzip', required: true)
-endif
-
 # Create tar archive of skeletonmm for installation.
-tarball_filename = xz.found() ? 'skeletonmm.tar.xz' : 'skeletonmm.tar.gz'
+skeletonmm_tarball_script = script_dir / 'skeletonmm-tarball.py'
+tarball_filetype = run_command(python3, skeletonmm_tarball_script, 'check')
+tarball_filename = 'skeletonmm' + tarball_filetype.stdout()
 custom_target(tarball_filename,
   input: skeletonmm_files,
   output: tarball_filename,
   command: [
-    files('util' / 'meson_aux' / 'skeletonmm-tarball.sh'),
-    meson.current_source_dir(),
+    python3,
+    skeletonmm_tarball_script,
     '@OUTPUT@',
+    project_source_root,
     skeletonmm_files,
   ],
   build_by_default: true,
@@ -241,9 +252,10 @@ endif
 custom_target('libstdc++.tag',
   output: 'libstdc++.tag',
   command: [
-    files('util' / 'meson_aux' / 'libstdcxx-tag.sh'),
+    python3,
+    script_dir / 'libstdcxx-tag.py',
     download_cmd,
-    meson.current_source_dir() / 'doctags',
+    project_source_root / 'doctags',
     '@OUTPUT@',
   ],
   build_by_default: true,
@@ -255,9 +267,10 @@ custom_target('libstdc++.tag',
 if not meson.is_subproject()
   # Modify the contents of the distribution directory. (not allowed in a subproject)
   meson.add_dist_script(
-    'util' / 'meson_aux' / 'extra-dist-cmd.sh',
-    meson.current_source_dir(),
-    meson.current_build_dir(),
+    python3.path(),
+    script_dir / 'extra-dist-cmd.py',
+    project_source_root,
+    project_build_root,
   )
 endif
 

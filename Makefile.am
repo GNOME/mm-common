@@ -128,10 +128,10 @@ MAINTAINERCLEANFILES = $(dist_doctags_DATA)
 EXTRA_DIST = \
   meson.build \
   meson_options.txt \
-  util/meson_aux/extra-dist-cmd.sh \
-  util/meson_aux/extra-install-cmd.sh \
-  util/meson_aux/libstdcxx-tag.sh \
-  util/meson_aux/skeletonmm-tarball.sh
+  util/meson_aux/extra-dist-cmd.py \
+  util/meson_aux/extra-install-cmd.py \
+  util/meson_aux/libstdcxx-tag.py \
+  util/meson_aux/skeletonmm-tarball.py
 
 # Remote location of the GNU libstdc++ Doxygen tag file.
 libstdcxx_tag_url = http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/libstdc++.tag
