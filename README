@@ -14,13 +14,16 @@ is available at <http://gcc.gnu.org/onlinedocs/libstdc++/>.
 Autotools or Meson?
 ===================
 
-mm-common can be built with autotools or meson. Building with autotools
+mm-common can be built with Autotools or Meson. Building with Autotools
 may be phased out in the future.
 
-Most of the files that mm-common installs and mm-common-prepare copies to
-other modules are useful only if those modules are built with autotools.
+The files that mm-common installs and mm-common-prepare copies to other
+modules are useful in modules that are built with Autotools.
+The files that mm-common installs and mm-common-get copies to other
+modules are useful in modules that are built with Meson.
+
 The files in the skeletonmm directory show the start of a project that will
-use autotools.
+use Autotools.
 
 Skeleton C++ binding module
 ===========================
@@ -28,7 +31,7 @@ Skeleton C++ binding module
 When creating a new C++ binding module based on mm-common, the easiest way
 to get started is to copy the skeletonmm directory shipped with mm-common.
 It contains the build support files required for a C++ binding module using
-gmmproc and glibmm.
+Autotools, gmmproc and glibmm.
 
 In order to create a new binding project from the copied skeleton directory,
 any files which have "skeleton" in the filename must be renamed.  References
@@ -42,8 +45,8 @@ The following sections provide an overview of the various files shipped
 with mm-common, and briefly explain their purpose.  Detailed documentation
 and usage instructions can be found in the files themselves.
 
-mm-common-prepare
------------------
+mm-common-prepare and Autotools
+-------------------------------
 
 The mm-common-prepare shell script is installed in ${bindir} and must be
 invoked from the bootstrap script of a binding module in order to set up
@@ -70,8 +73,36 @@ Also note that mm-common-prepare inspects the project's configure.ac file
 for the AC_CONFIG_AUX_DIR([...]) argument.  This is explained in further
 detail below in the section on Automake include files.
 
-Autoconf M4 macros
-------------------
+mm-common-get and Meson
+-----------------------
+
+The mm-common-get shell script is installed in ${bindir} and must be
+invoked with run_command() early in a meson.build file. The meson.build file
+should contain code similar to
+
+  python = import('python').find_installation('python3')
+  cmd_py = 'import os, sys\n' \
+         + 'sys.exit(0 if os.path.isdir("' + (project_source_root/'.git') + '") else 1)\n'
+  is_git_build = run_command(python, '-c', cmd_py).returncode() == 0
+  maintainer_mode_opt = get_option('maintainer-mode')
+  maintainer_mode = maintainer_mode_opt == 'true' or \
+                   (maintainer_mode_opt == 'if-git-build' and is_git_build)
+  mm_common_get = find_program('mm-common-get', required: maintainer_mode)
+
+  if maintainer_mode and mm_common_get.found()
+    # Copy files to untracked/build_scripts and untracked/docs.
+    run_command(mm_common_get, '--force',
+      project_source_root / 'untracked' / 'build_scripts',
+      project_source_root / 'untracked' / 'docs')
+  endif
+
+In a Unix-like system the first few lines can be replaced with
+
+  is_git_build = run_command('test', '-d', project_source_root/'.git').returncode() == 0
+
+
+Autoconf M4 macros (Autotools)
+------------------------------
 
 The Autoconf M4 macros are installed into the system-wide macro repository
 in the ${datadir}/aclocal directory.  Since all used M4 macros are copied
@@ -131,8 +162,8 @@ macros/mm-ax_cxx_compile_stdcxx.m4:
   http://www.gnu.org/software/autoconf-archive/ax_cxx_compile_stdcxx.html,
   except for the MM_ prefix.
 
-Automake include files
-----------------------
+Automake include files (Autotools)
+----------------------------------
 
 The Automake include files are located in the am_include/ directory.
 The installed mm-common-prepare program copies all of the .am files into
@@ -159,14 +190,43 @@ am_include/dist-changelog.am:
   a release, intended to be used by modules which use the version control
   log exclusively to document changes.
 
-Documentation utilities
------------------------
+Python build scripts (Meson)
+----------------------------
+
+These scripts can be called from meson.build files with run_command(),
+custom_target(), meson.add_postconf_script(), meson.add_install_script()
+and meson.add_dist_script().
+
+util/build_scripts/generate-binding.py:
+  Commands for running the gmmproc code generator to produce
+  the source code files for a C++ binding module.
+
+util/build_scripts/doc-reference.py:
+  Commands for building the API reference documentation using
+  Doxygen, and to create a Devhelp book for the library. The installation
+  rules also take care of translating references to external documentation
+  in the generated hypertext documents.
+
+util/build_scripts/dist-changelog.py:
+  A git command to generate a ChangeLog file when making a release,
+  intended to be used by modules which use the version control
+  log exclusively to document changes.
+
+util/build_scripts/dist-build-scripts.py:
+  Commands that trim the distribution directory before a tarball is made.
+  The scripts copied by mm-common-get are distributed, although they are
+  not checked into the git repository. All .gitignore files and an empty build/
+  directory are removed
+
+Documentation utilities (Meson and Autotools)
+---------------------------------------------
 
 These are two Perl scripts, a style sheet, and one XSL transformation
 which assist with the task of generating and installing the Doxygen
 reference documentation.  At least doc-install.pl is also required for
 tarball builds.
-To avoid copying these files into all binding modules, they are
+
+Autotools: To avoid copying these files into all binding modules, they are
 distributed and installed with the mm-common module.  Those binding modules
 which shall depend on mm-common only in maintainer-mode must call
 MM_CONFIG_DOCTOOL_DIR([...]) in configure.ac to indicate to mm-common-prepare
@@ -219,9 +279,9 @@ doctags/libstdc++.tag:
   The Doxygen tag file for the GNU libstdc++ reference documentation
   hosted at <http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/>.
   This file is distributed with release archives of mm-common, but not
-  checked into version control on gnome.org.  If mm-common is built in
-  maintainer-mode, the file will be downloaded automatically from the
-  gcc.gnu.org web server.
+  checked into version control on gnome.org.  If mm-common is built with
+  Autotools in maintainer-mode or with Meson and use-network=true,
+  the file will be downloaded automatically from the gcc.gnu.org web server.
   The file libstdc++.tag is installed into the package data directory
   of mm-common.  The mm-common-libstdc++ pkg-config module defines the
   variables ${doxytagfile} and ${htmlrefpub}, which can be queried for

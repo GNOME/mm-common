@@ -18,17 +18,22 @@
 # Pick up aclocal flags from the environment.
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 
-bin_SCRIPTS = util/mm-common-prepare
-man1_MANS = util/mm-common-prepare.1
+bin_SCRIPTS = util/mm-common-prepare util/mm-common-get
+man1_MANS = util/mm-common-prepare.1 util/mm-common-get.1
 
-# These are installed so that mm-common-prepare can copy them
-# into projects at autogen.sh time:
+# These are installed so that mm-common-prepare can copy the .am files
+# into projects at autogen.sh time, and mm-common-get can copy the .py files
+# at Meson setup or configure time:
 build_supportdir = $(pkgdatadir)/build
 dist_build_support_DATA =		\
 	am_include/compile-binding.am	\
 	am_include/dist-changelog.am		\
 	am_include/doc-reference.am		\
-	am_include/generate-binding.am
+	am_include/generate-binding.am \
+  util/build_scripts/dist-build-scripts.py \
+  util/build_scripts/dist-changelog.py \
+  util/build_scripts/doc-reference.py \
+  util/build_scripts/generate-binding.py
 
 # These are installed so that aclocal can copy them into aclocal.m4
 # at autogen.sh time:
@@ -47,6 +52,7 @@ dist_aclocal_macro_DATA =		\
 # at autogen.sh time if a directory path is given to MM_CONFIG_DOCTOOL_DIR(),
 # or they can be found via pkg-config --variable=doctooldir mm-common-util,
 # which is preferrable.
+# mm-common-get can copy them at Meson setup or configure time.
 doctooldir = $(pkgdatadir)/doctool
 dist_doctool_DATA =			\
 	util/doc-install.pl		\
@@ -118,7 +124,7 @@ skeletonmm_script_files = \
 
 skeletonmm_files = $(skeletonmm_script_files) $(skeletonmm_data_files)
 
-dist_noinst_DATA = util/mm-common-prepare.1.in $(skeletonmm_data_files)
+dist_noinst_DATA = util/mm-common-prepare.1.in util/mm-common-get.1.in $(skeletonmm_data_files)
 dist_noinst_SCRIPTS = autogen.sh $(skeletonmm_script_files)
 
 CLEANFILES = $(man1_MANS) $(doc_DATA)
@@ -169,6 +175,10 @@ doctags/libstdc++.tag:
 # Build the mm-common-prepare(1) manual page.
 util/mm-common-prepare.1: $(srcdir)/util/mm-common-prepare.1.in Makefile
 	$(AM_V_GEN)$(subst_manpage) $(srcdir)/util/mm-common-prepare.1.in >$@
+
+# Build the mm-common-get(1) manual page.
+util/mm-common-get.1: $(srcdir)/util/mm-common-get.1.in Makefile
+	$(AM_V_GEN)$(subst_manpage) $(srcdir)/util/mm-common-get.1.in >$@
 
 # Create tar archive of skeletonmm for installation.
 skeletonmm.tar.gz: $(skeletonmm_files)

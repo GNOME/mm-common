@@ -1,0 +1,64 @@
+.TH MM-COMMON-GET 1 2019-09-12 GNOME "@PACKAGE_STRING@"
+.SH NAME
+mm-common-get \- Copy files from mm-common to a C++ binding module that uses Meson
+.SH SYNOPSIS
+.B mm-common-get
+.RI [ OPTION "]... " "BUILDSCRIPT-DIR DOCTOOL-DIR"
+.SH DESCRIPTION
+Run
+.B mm-common-get
+to copy the
+.I mm-common
+build support files into the source tree of a C++ binding module.
+.SH OPTIONS
+.TP
+.BR \-f ", " \-\-force
+forcefully replace existing files
+.TP
+.B \-\-help
+display a help message and exit
+.TP
+.B \-\-version
+show version information and exit
+.SH "EXIT STATUS"
+The exit status is 0 if OK, or 1 if an error occurred.
+.SH FILES
+The build support files currently copied by
+.B mm-common-get
+are listed below.
+.TP
+.BI "Meson build scripts copied to " BUILDSCRIPT-DIR :
+.PD 0
+.IP
+.I dist-build-scripts.py
+.IP
+.I dist-changelog.py
+.IP
+.I doc-reference.py
+.IP
+.I generate-binding.py
+.PD
+.TP
+.BI "Documentation utilities copied to " DOCTOOL-DIR :
+.PD 0
+.IP
+.I doc-install.pl
+.IP
+.I doc-postprocess.pl
+.IP
+.I doxygen.css
+.IP
+.I doxygen-extra.css
+.IP
+.I tagfile-to-devhelp2.xsl
+.PD
+.SH "SEE ALSO"
+.PD 0
+.BR mm-common-prepare (1)
+.PP
+.I @docdir@/README
+.PP
+.I @docdir@/skeletonmm.tar.xz or
+.PP
+.I @docdir@/skeletonmm.tar.gz
+.PD
