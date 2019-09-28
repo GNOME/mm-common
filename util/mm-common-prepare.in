@@ -35,7 +35,7 @@ do
     cat <<EOF
 Usage: $progname [OPTION]... [DIRECTORY | CONFIGURE-FILE]
 
-Prepare a C++ binding module to use mm-common.
+Prepare a C++ binding module to use mm-common and Autotools.
 
  -c, --copy          copy files rather than symlinking them
  -f, --force         replace existing files

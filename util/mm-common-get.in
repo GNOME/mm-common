@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+
+# Copyright (C) 2019 The gtkmm Development Team
+#
+# @configure_input@
+#
+# mm-common is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published
+# by the Free Software Foundation, either version 2 of the License,
+# or (at your option) any later version.
+#
+# mm-common is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with mm-common.  If not, see <http://www.gnu.org/licenses/>.
+
+import sys
+import os
+import argparse
+import shutil
+import filecmp
+
+pkgdatadir = os.path.join('@datadir_py@', '@PACKAGE_TARNAME@')
+progname = os.path.basename(sys.argv[0])
+
+parser = argparse.ArgumentParser(
+  description='Copy files from mm-common to a C++ binding module that uses Meson')
+parser.add_argument('--version', action='version', version='%(prog)s @PACKAGE_VERSION@')
+parser.add_argument('-f', '--force', help='replace existing files', action='store_true')
+parser.add_argument('buildscript_dir', help='where to store build scripts')
+parser.add_argument('doctool_dir', help='where to store doc tool files')
+args = parser.parse_args()
+
+forceflag = args.force
+buildscriptdir = args.buildscript_dir
+doctooldir = args.doctool_dir
+
+print(progname + ': putting Meson build scripts in ' + buildscriptdir)
+# Create the destination directory, if it does not exist.
+os.makedirs(buildscriptdir, exist_ok=True)
+for file in ['dist-build-scripts.py', 'dist-changelog.py', 'doc-reference.py', 'generate-binding.py']:
+  src_file = os.path.join(pkgdatadir, 'build', file)
+  dest_file = os.path.join(buildscriptdir, file)
+  # Don't update the timestamp of dest_file, if it's equal to src_file.
+  # if file-does-not-exist or (force and files-are-not-equal)
+  if (not os.path.isfile(dest_file)) or (forceflag and (not filecmp.cmp(src_file, dest_file))):
+    print(progname + ': copying file ' + file)
+    # shutil.copy() does not copy timestamps.
+    shutil.copy(src_file, dest_file)
+
+print(progname + ': putting documentation utilities in ' + doctooldir)
+os.makedirs(doctooldir, exist_ok=True)
+for file in ['doc-install.pl', 'doc-postprocess.pl',
+             'doxygen.css', 'doxygen-extra.css', 'tagfile-to-devhelp2.xsl']:
+  src_file = os.path.join(pkgdatadir, 'doctool', file)
+  dest_file = os.path.join(doctooldir, file)
+  if (not os.path.isfile(dest_file)) or (forceflag and (not filecmp.cmp(src_file, dest_file))):
+    print(progname + ': copying file ' + file)
+    shutil.copy(src_file, dest_file)
