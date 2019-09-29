@@ -17,7 +17,7 @@ dist_script_dir = os.path.join(os.getenv('MESON_DIST_ROOT'), sys.argv[2])
 # Create the distribution script directory, if it does not exist.
 os.makedirs(dist_script_dir, exist_ok=True)
 
-# Distribute files that mm-common-prepare has copied to src_script_dir.
+# Distribute files that mm-common-get has copied to src_script_dir.
 files = [
   'dist-build-scripts.py',
   'dist-changelog.py',

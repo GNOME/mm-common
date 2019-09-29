@@ -81,8 +81,11 @@ invoked with run_command() early in a meson.build file. The meson.build file
 should contain code similar to
 
   python = import('python').find_installation('python3')
-  cmd_py = 'import os, sys\n' \
-         + 'sys.exit(0 if os.path.isdir("' + (project_source_root/'.git') + '") else 1)\n'
+  cmd_py = '''
+  import os
+  import sys
+  sys.exit(0 if os.path.isdir("@0@") else 1)
+  '''.format(project_source_root / '.git')
   is_git_build = run_command(python, '-c', cmd_py).returncode() == 0
   maintainer_mode_opt = get_option('maintainer-mode')
   maintainer_mode = maintainer_mode_opt == 'true' or \

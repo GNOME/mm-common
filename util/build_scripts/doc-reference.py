@@ -147,7 +147,7 @@ def dist_doc():
   # Create the distribution directory, if it does not exist.
   os.makedirs(os.path.join(doctool_dist_dir, 'reference'), exist_ok=True)
 
-  # Distribute files that mm-common-prepare has copied to MMDOCTOOLDIR.
+  # Distribute files that mm-common-get has copied to MMDOCTOOLDIR.
   # shutil.copy() does not copy timestamps.
   for file in ['doc-install.pl', 'doc-postprocess.pl', 'doxygen-extra.css', 'tagfile-to-devhelp2.xsl']:
     shutil.copy(os.path.join(MMDOCTOOLDIR, file), doctool_dist_dir)
