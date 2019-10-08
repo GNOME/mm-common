@@ -38,14 +38,16 @@ def doxygen():
   # Relative paths in Doxyfile assume that Doxygen is run from the
   # build directory one level above Doxyfile.
   doxygen_cwd = os.path.join(doc_outdir, '..')
-  DOXYGEN = 'doxygen'
-  if ('DOXYGEN' in child_env) and child_env['DOXYGEN']:
-    DOXYGEN = child_env['DOXYGEN']
 
+  DOXYGEN = child_env.get('DOXYGEN', None)
+  if not DOXYGEN:
+    DOXYGEN = 'doxygen'
   doxygen_input = '@INCLUDE = ' + os.path.join('reference', 'Doxyfile') + '\n' \
                 + 'INPUT = "' + '" "'.join(sys.argv[4:]) + '"\n'
-  result = subprocess.run([DOXYGEN, '-'],
-    input=doxygen_input, text=True, env=child_env, cwd=doxygen_cwd)
+  # (Starting with Python 3.7 text=True is a more understandable equivalent to
+  # universal_newlines=True. Let's use only features in Python 3.5.)
+  result = subprocess.run([DOXYGEN, '-'], input=doxygen_input,
+    universal_newlines=True, env=child_env, cwd=doxygen_cwd)
   if result.returncode:
     return result.returncode
 
