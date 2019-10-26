@@ -1,10 +1,19 @@
 /* This file is part of skeletonmm. */
+#ifndef SKELETONMMCONFIG_H_INCLUDED
+#define SKELETONMMCONFIG_H_INCLUDED
+
+#include <glibmmconfig.h>
+
+/* Define to omit deprecated API from the library. */
+#mesondefine SKELETONMM_DISABLE_DEPRECATED
 
 /* Major version number of skeletonmm. */
-#undef SKELETONMM_MAJOR_VERSION
-
-/* Micro version number of skeletonmm. */
-#undef SKELETONMM_MICRO_VERSION
+#mesondefine SKELETONMM_MAJOR_VERSION
 
 /* Minor version number of skeletonmm. */
-#undef SKELETONMM_MINOR_VERSION
+#mesondefine SKELETONMM_MINOR_VERSION
+
+/* Micro version number of skeletonmm. */
+#mesondefine SKELETONMM_MICRO_VERSION
+
+#endif /* !SKELETONMMCONFIG_H_INCLUDED */

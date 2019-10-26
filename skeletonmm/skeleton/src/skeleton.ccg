@@ -1,4 +1,4 @@
-/* Copyright (c) 2010  Joe Hacker <joe@example.com>
+/* Copyright (c) 2019  Joe Hacker <joe@example.com>
  *
  * This file is part of skeletonmm.
  *

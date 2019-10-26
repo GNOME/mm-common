@@ -3,7 +3,7 @@ htmlrefpub=http://library.gnome.org/devel/@PACKAGE_TARNAME@/unstable/
 
 Name: skeletonmm
 Description: C++ binding for skeleton, not installed
-Version: @SKELETONMM_VERSION@
+Version: @PACKAGE_VERSION@
 URL: http://www.gtkmm.org/
 Requires: @SKELETONMM_MODULES@
 Libs: ${pc_top_builddir}/${pcfiledir}/skeletonmm/libskeletonmm-@SKELETONMM_API_VERSION@.la

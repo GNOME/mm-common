@@ -1,4 +1,4 @@
-/* Copyright (c) 2010  Joe Hacker <joe@example.com>
+/* Copyright (c) 2019  Joe Hacker <joe@example.com>
  *
  * This file is part of skeletonmm.
  *
@@ -19,6 +19,9 @@
 #ifndef SKELETONMM_WRAP_INIT_H_INCLUDED
 #define SKELETONMM_WRAP_INIT_H_INCLUDED
 
-namespace Skeleton { void wrap_init(); }
+namespace Skeleton
+{
+  void wrap_init();
+}
 
 #endif /* !SKELETONMM_WRAP_INIT_H_INCLUDED */

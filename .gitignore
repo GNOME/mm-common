@@ -3,7 +3,6 @@
 /Makefile.in
 /aclocal.m4
 /autom4te.cache/
-/config*.lineno
 /config.log
 /config.status
 /configure
@@ -14,6 +13,8 @@
 /doctags/libstdc++.tag
 /doctags/mm-common*.pc
 /macros/mm-common.m4
+/util/mm-common-get
+/util/mm-common-get.1
 /util/mm-common-prepare
 /util/mm-common-prepare.1
 /util/mm-common*.pc

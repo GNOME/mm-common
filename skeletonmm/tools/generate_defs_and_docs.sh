@@ -16,9 +16,9 @@
 
 # Generated files:
 #   skeletonmm/skeleton/src/skeleton_docs.xml
-#   skeletonmm/skeleton/src/skeleton_enum.defs
-#   skeletonmm/skeleton/src/skeleton_method.defs
-#   skeletonmm/skeleton/src/skeleton_signal.defs
+#   skeletonmm/skeleton/src/skeleton_enums.defs
+#   skeletonmm/skeleton/src/skeleton_methods.defs
+#   skeletonmm/skeleton/src/skeleton_signals.defs
 
 # Root directory of skeletonmm source files.
 root_dir="$(dirname "$0")/.."
@@ -39,12 +39,12 @@ gen_methods="$GMMPROC_GEN_SOURCE_DIR/glibmm/tools/defs_gen/h2def.py"
 gen_enums="$GMMPROC_GEN_SOURCE_DIR/glibmm/tools/enum.pl"
 
 # Where to find the executable that generates extra defs (signals and properties).
-extra_defs_gen_dir="$GMMPROC_GEN_BUILD_DIR/skeletonmm/codegen/extradefs"
+extra_defs_gen_dir="$GMMPROC_GEN_BUILD_DIR/skeletonmm/tools/extra_defs_gen"
 ### If skeletonmm is built with meson:
 if [ "$GMMPROC_GEN_SOURCE_DIR" == "$GMMPROC_GEN_BUILD_DIR" ]; then
   # skeletonmm is built with meson, which requires non-source-dir builds.
-  # This is what jhbuild does, if neccesary, to force non-source-dir builds.
-  extra_defs_gen_dir="$GMMPROC_GEN_BUILD_DIR/skeletonmm/build/codegen/extradefs"
+  # This is what jhbuild does, if necesary, to force non-source-dir builds.
+  extra_defs_gen_dir="$GMMPROC_GEN_BUILD_DIR/skeletonmm/build/tools/extra_defs_gen"
 fi
 ### If skeletonmm is built with autotools:
 # skeletonmm is built with autotools.
@@ -77,13 +77,13 @@ shopt -s nullglob # Skip a filename pattern that matches no file
 
 # Enums
 echo === skeleton_enum.defs ===
-"$gen_enums" "$source_prefix"/skeleton/*.h "$build_prefix"/skeleton/*.h  > "$out_dir/skeleton_enum.defs"
+"$gen_enums" "$source_prefix"/skeleton/*.h "$build_prefix"/skeleton/*.h  > "$out_dir/skeleton_enums.defs"
 
 # Functions and methods
 echo === skeleton_method.defs ===
-"$gen_methods" "$source_prefix"/skeleton/*.h "$build_prefix"/skeleton/*.h  > "$out_dir/skeleton_method.defs"
+"$gen_methods" "$source_prefix"/skeleton/*.h "$build_prefix"/skeleton/*.h  > "$out_dir/skeleton_methods.defs"
 
 # Properties and signals
 echo === skeleton_signal.defs ===
-"$extra_defs_gen_dir"/generate_extra_defs > "$out_dir/skeleton_signal.defs"
+"$extra_defs_gen_dir"/generate_defs_skeleton > "$out_dir/skeleton_signals.defs"
 

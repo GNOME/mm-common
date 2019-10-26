@@ -16,24 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-_DEFS(skeletonmm,skeleton)
-_CONFIGINCLUDE(skeletonmmconfig.h)
-_PINCLUDE(glibmm/private/object_p.h)
+#include <skeletonmm.h>
+#include <cstdlib>
 
-#include <glibmm.h>
-
-namespace Skeleton
+namespace
 {
 
-class SomeType : public Glib::Object
+} // anonymous namespace
+
+int main(int, char**)
 {
-  _CLASS_GOBJECT(SomeType, SkeletonSomeType, SKELETON_SOME_TYPE, Glib::Object, GObject)
-
-protected:
-  _CTOR_DEFAULT
-
-public:
-  _WRAP_CREATE()
-};
-
-} // namespace Skeleton
+  return EXIT_FAILURE;
+}

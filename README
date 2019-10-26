@@ -23,7 +23,7 @@ The files that mm-common installs and mm-common-get copies to other
 modules are useful in modules that are built with Meson.
 
 The files in the skeletonmm directory show the start of a project that will
-use Autotools.
+use Meson.
 
 Skeleton C++ binding module
 ===========================
@@ -31,7 +31,7 @@ Skeleton C++ binding module
 When creating a new C++ binding module based on mm-common, the easiest way
 to get started is to copy the skeletonmm directory shipped with mm-common.
 It contains the build support files required for a C++ binding module using
-Autotools, gmmproc and glibmm.
+Meson, gmmproc and glibmm.
 
 In order to create a new binding project from the copied skeleton directory,
 any files which have "skeleton" in the filename must be renamed.  References

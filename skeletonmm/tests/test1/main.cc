@@ -1,4 +1,4 @@
-/* Copyright (c) 2010  Joe Hacker <joe@example.com>
+/* Copyright (c) 2019  Joe Hacker <joe@example.com>
  *
  * This file is part of skeletonmm.
  *
@@ -17,6 +17,7 @@
  */
 
 #include <skeletonmm.h>
+#include <cstdlib>
 
 namespace
 {
@@ -25,5 +26,5 @@ namespace
 
 int main(int, char**)
 {
-  return 0;
+  return EXIT_SUCCESS;
 }

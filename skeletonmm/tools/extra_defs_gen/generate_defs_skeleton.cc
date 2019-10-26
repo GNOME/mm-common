@@ -16,24 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-_DEFS(skeletonmm,skeleton)
-_CONFIGINCLUDE(skeletonmmconfig.h)
-_PINCLUDE(glibmm/private/object_p.h)
+// We always need to generate the .defs for all types because the code
+// using deprecated API is generated unconditionally and only disabled
+// at compile time.
+#undef SKELETON_DISABLE_DEPRECATED
 
-#include <glibmm.h>
+#include <glibmm_generate_extra_defs/generate_extra_defs.h>
+#include <skeleton/skeleton.h>
+#include <iostream>
 
-namespace Skeleton
+int main(int, char**)
 {
+  skeleton_init();
 
-class SomeType : public Glib::Object
-{
-  _CLASS_GOBJECT(SomeType, SkeletonSomeType, SKELETON_SOME_TYPE, Glib::Object, GObject)
+  std::cout << get_defs(SKELETON_TYPE_SOME_TYPE);
 
-protected:
-  _CTOR_DEFAULT
-
-public:
-  _WRAP_CREATE()
-};
-
-} // namespace Skeleton
+  return 0;
+}

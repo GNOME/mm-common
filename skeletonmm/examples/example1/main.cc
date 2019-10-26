@@ -1,4 +1,4 @@
-/* Copyright (c) 2010  Joe Hacker <joe@example.com>
+/* Copyright (c) 2019  Joe Hacker <joe@example.com>
  *
  * This file is part of skeletonmm.
  *
@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <glibmm_generate_extra_defs/generate_extra_defs.h>
-#include <skeleton/skeleton.h>
-#include <iostream>
+#include <skeletonmm.h>
+
+namespace
+{
+
+} // anonymous namespace
 
 int main(int, char**)
 {
-  skeleton_init();
-
-  std::cout << get_defs(SKELETON_TYPE_SOME_TYPE);
-
   return 0;
 }

@@ -82,45 +82,41 @@ skeletonmm_data_files =							\
 	skeletonmm/AUTHORS						\
 	skeletonmm/COPYING						\
 	skeletonmm/ChangeLog						\
-	skeletonmm/Makefile.am						\
+	skeletonmm/meson.build					\
+	skeletonmm/meson_options.txt		\
 	skeletonmm/README						\
-	skeletonmm/configure.ac						\
 	skeletonmm/skeletonmm.doap					\
-	skeletonmm/build/.gitignore					\
-	skeletonmm/codegen/Makefile.am					\
-	skeletonmm/codegen/extradefs/generate_extra_defs_skeleton.cc	\
-	skeletonmm/codegen/m4/convert.m4				\
-	skeletonmm/codegen/m4/convert_skeleton.m4			\
-	skeletonmm/codegen/m4/filelist.am				\
-	skeletonmm/doc/Makefile.am					\
-	skeletonmm/doc/reference/.gitignore				\
-	skeletonmm/doc/reference/Doxyfile.in				\
-	skeletonmm/examples/.gitignore					\
-	skeletonmm/examples/Makefile.am					\
-	skeletonmm/examples/example/example.cc				\
-	skeletonmm/skeleton/.gitignore					\
-	skeletonmm/skeleton/skeletonmm-uninstalled.pc.in		\
+	skeletonmm/doc/reference/Doxyfile.in		\
+	skeletonmm/doc/reference/meson.build		\
+	skeletonmm/examples/meson.build					\
+	skeletonmm/examples/example1/main.cc		\
+	skeletonmm/skeleton/meson.build					\
+	skeletonmm/skeleton/skeletonmm-uninstalled.pc.in \
 	skeletonmm/skeleton/skeletonmm.h				\
 	skeletonmm/skeleton/skeletonmm.pc.in				\
 	skeletonmm/skeleton/skeletonmmconfig.h.in			\
-	skeletonmm/skeleton/skeletonmm/Makefile.am			\
-	skeletonmm/skeleton/skeletonmm/filelist.am			\
+	skeletonmm/skeleton/skeletonmm/meson.build			\
 	skeletonmm/skeleton/skeletonmm/wrap_init.h			\
-	skeletonmm/skeleton/skeletonmm/private/.gitignore		\
-	skeletonmm/skeleton/src/Makefile.am				\
-	skeletonmm/skeleton/src/filelist.am				\
 	skeletonmm/skeleton/src/skeleton.ccg				\
 	skeletonmm/skeleton/src/skeleton.defs				\
 	skeletonmm/skeleton/src/skeleton.hg				\
 	skeletonmm/skeleton/src/skeleton_docs.xml			\
-	skeletonmm/skeleton/src/skeleton_enum.defs			\
-	skeletonmm/skeleton/src/skeleton_method.defs \
-	skeletonmm/skeleton/src/skeleton_signal.defs \
-	skeletonmm/skeleton/src/skeleton_vfunc.defs
+	skeletonmm/skeleton/src/skeleton_enums.defs		\
+	skeletonmm/skeleton/src/skeleton_methods.defs \
+	skeletonmm/skeleton/src/skeleton_signals.defs \
+	skeletonmm/skeleton/src/skeleton_vfuncs.defs \
+	skeletonmm/tests/meson.build \
+	skeletonmm/tests/test1/main.cc \
+	skeletonmm/tests/test2/main.cc \
+	skeletonmm/tools/extra_defs_gen/generate_defs_skeleton.cc \
+	skeletonmm/tools/extra_defs_gen/meson.build	\
+	skeletonmm/tools/m4/convert.m4				\
+	skeletonmm/tools/m4/convert_skeleton.m4			\
+	skeletonmm/untracked/README
 
 skeletonmm_script_files = \
-  skeletonmm/autogen.sh \
-  skeletonmm/codegen/generate_defs_and_docs.sh
+  skeletonmm/tools/dist-cmd.py \
+  skeletonmm/tools/generate_defs_and_docs.sh
 
 skeletonmm_files = $(skeletonmm_script_files) $(skeletonmm_data_files)
 
