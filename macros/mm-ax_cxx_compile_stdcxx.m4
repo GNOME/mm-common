@@ -53,6 +53,7 @@ AC_DEFUN([MM_AX_CXX_COMPILE_STDCXX], [dnl
   m4_if([$1], [11], [ax_cxx_compile_alternatives="11 0x"],
         [$1], [14], [ax_cxx_compile_alternatives="14 1y"],
         [$1], [17], [ax_cxx_compile_alternatives="17 1z"],
+        [$1], [20], [ax_cxx_compile_alternatives="20 2a"],
         [m4_fatal([invalid first argument `$1' to MM_AX_CXX_COMPILE_STDCXX])])dnl
   m4_if([$2], [], [],
         [$2], [ext], [],
@@ -155,6 +156,11 @@ m4_define([_MM_AX_CXX_COMPILE_STDCXX_testbody_17],
   _MM_AX_CXX_COMPILE_STDCXX_testbody_new_in_11
   _MM_AX_CXX_COMPILE_STDCXX_testbody_new_in_14
   _MM_AX_CXX_COMPILE_STDCXX_testbody_new_in_17
+)
+
+m4_define([_MM_AX_CXX_COMPILE_STDCXX_testbody_20],
+  _MM_AX_CXX_COMPILE_STDCXX_testbody_new_in_17
+  // TODO
 )
 
 dnl  Tests for new features in C++11
