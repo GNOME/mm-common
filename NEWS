@@ -1,3 +1,19 @@
+mm-common 1.0.0 (2019-10-29)
+
+* Rename directory build/ to am_include/
+  (Kjell Ahlstedt)
+* Add support for building mm-common with Meson.
+  (Kjell Ahlstedt)
+* Support modules that are built with Meson.
+  Add the mm-common-get command.
+  (Kjell Ahlstedt) Merge request !2
+* skeletonmm: Use Meson instead of Autotools.
+  (Kjell Ahlstedt) Issue #1 (Tomasz Kłoczko)
+* MM_AX_CXX_COMPILE_STDCXX():
+  Update based on the upstream AX_CXX_COMPILE_STDCXX() macro.
+  (Murray Cumming)
+
+
 mm-common 0.9.12 (2018-04-07)
 
 * MM_AX_CXX_COMPILE_STDCXX():

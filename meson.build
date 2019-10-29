@@ -1,7 +1,7 @@
 # This file is part of mm-common.
 
 project('mm-common',
-  version: '0.9.12',
+  version: '1.0.0',
   meson_version: '>= 0.50.0', # required for python3.path()
   license: 'GPLv2+'
 )
