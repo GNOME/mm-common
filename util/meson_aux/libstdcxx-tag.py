@@ -22,7 +22,7 @@ libstdcxx_tag_url = 'http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/' + 
 
 def curl():
   cmd = [
-    'curl',
+    subcommand,
     '--compressed',
     '--connect-timeout', '300',
     '--globoff',
@@ -43,7 +43,7 @@ def curl():
 
 def wget():
   cmd = [
-    'wget',
+    subcommand,
     '--timestamping',
     '--no-directories',
     '--timeout=300',
@@ -70,8 +70,9 @@ def dont_download_tag_file():
   return 0
 
 # ----- Main -----
-if subcommand == 'curl':
+subcommand_base = os.path.splitext(os.path.basename(os.path.normpath(subcommand)))[0]
+if subcommand_base == 'curl':
   sys.exit(curl())
-if subcommand == 'wget':
+if subcommand_base == 'wget':
   sys.exit(wget())
 sys.exit(dont_download_tag_file())

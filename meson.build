@@ -274,10 +274,11 @@ install_data('README', install_dir: install_docdir)
 download_cmd = 'none'
 if get_option('use-network')
   curl = find_program('curl', required: false)
-  download_cmd = 'curl'
-  if not curl.found()
+  if curl.found()
+    download_cmd = curl.path()
+  else
     wget = find_program('wget', required: true)
-    download_cmd = 'wget'
+    download_cmd = wget.path()
   endif
 endif
 
