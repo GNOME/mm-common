@@ -44,7 +44,7 @@ doc_conf_data.set('abs_top_builddir', built_files_root)
 doc_conf_data.set('abs_top_srcdir', project_source_root)
 doc_conf_data.set('SKELETONMM_MODULE_NAME', book_name)
 doc_conf_data.set('DOXYGEN_TAGFILES', doxygen_tagfiles)
-doc_conf_data.set('PERL', perl.path())
+doc_conf_data.set('PERL', perl.found() ? perl.path() : '')
 
 configure_file(
   input: 'Doxyfile.in',
