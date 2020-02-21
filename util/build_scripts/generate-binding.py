@@ -111,28 +111,38 @@ def install_built_h_files():
   return 0
 
 # Invoked from meson.add_dist_script().
-def dist_built_files():
+def dist_built_files(is_msvc_build_file=False):
   #     argv[2]        argv[3]     argv[4:]
-  # <built_h_cc_dir> <dist_dir> <basefilenames>...
+  #  <built_srcdir>  <dist_dir> <basefilenames>...
 
-  # <built_h_cc_dir> is an absolute path in the build directory or source directory.
+  # <built_srcdir> is an absolute path in the build directory or source directory.
   # <dist_dir> is a distribution directory, relative to MESON_DIST_ROOT.
-  built_h_cc_dir = sys.argv[2]
+  built_srcdir = sys.argv[2]
   dist_dir = os.path.join(os.getenv('MESON_DIST_ROOT'), sys.argv[3])
 
-  # Create the distribution directory, if it does not exist.
-  os.makedirs(os.path.join(dist_dir, 'private'), exist_ok=True)
+  if not is_msvc_build_file:
+    # Create the distribution directory, if it does not exist.
+    os.makedirs(os.path.join(dist_dir, 'private'), exist_ok=True)
 
-  # Distribute wrap_init.cc.
-  # shutil.copy() does not copy timestamps.
-  shutil.copy(os.path.join(built_h_cc_dir, 'wrap_init.cc'), dist_dir)
+    # Distribute wrap_init.cc.
+    # shutil.copy() does not copy timestamps.
+    shutil.copy(os.path.join(built_srcdir, 'wrap_init.cc'), dist_dir)
 
-  # Distribute .h/.cc/_p.h files built from .hg/.ccg files.
-  for file in sys.argv[4:]:
-    shutil.copy(os.path.join(built_h_cc_dir, file+'.h'), dist_dir)
-    shutil.copy(os.path.join(built_h_cc_dir, file+'.cc'), dist_dir)
-    shutil.copy(os.path.join(built_h_cc_dir, 'private', file+'_p.h'),
-                os.path.join(dist_dir, 'private'))
+    # Distribute .h/.cc/_p.h files built from .hg/.ccg files.
+    for file in sys.argv[4:]:
+      shutil.copy(os.path.join(built_srcdir, file+'.h'), dist_dir)
+      shutil.copy(os.path.join(built_srcdir, file+'.cc'), dist_dir)
+      shutil.copy(os.path.join(built_srcdir, 'private', file+'_p.h'),
+                  os.path.join(dist_dir, 'private'))
+
+  else:
+    # Create the distribution directory, if it does not exist.
+    os.makedirs(os.path.join(dist_dir), exist_ok=True)
+
+    # Distribute the generated msvc build files
+    for file in sys.argv[4:]:
+      shutil.copy(os.path.join(built_srcdir, file), dist_dir)
+
   return 0
 
 # Invoked from run_command() in meson.build.
@@ -181,5 +191,7 @@ if subcommand == 'dist_built_files':
   sys.exit(dist_built_files())
 if subcommand == 'copy_built_files':
   sys.exit(copy_built_files())
+if subcommand == 'dist_msvc_built_files':
+  sys.exit(dist_built_files(True))
 print(sys.argv[0], ': illegal subcommand,', subcommand)
 sys.exit(1)
