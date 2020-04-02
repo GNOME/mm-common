@@ -19,7 +19,8 @@ untracked/doc/doc-install.pl
               doc-postprocess.pl
               doxygen-extra.css
               tagfile-to-devhelp2.xsl
-untracked/build_scripts/dist-build-scripts.py
+untracked/build_scripts/check-dllexport-usage.py
+                        dist-build-scripts.py
                         dist-changelog.py
                         doc-reference.py
                         generate-binding.py
