@@ -73,6 +73,7 @@ endforeach
 # These are installed so that mm-common-get can copy them
 # into projects at Meson setup or configure time.
 meson_build_support_basefiles = [
+  'check-dllexport-usage.py',
   'dist-build-scripts.py',
   'dist-changelog.py',
   'doc-reference.py',

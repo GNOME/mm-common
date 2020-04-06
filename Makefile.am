@@ -30,6 +30,7 @@ dist_build_support_DATA =		\
 	am_include/dist-changelog.am		\
 	am_include/doc-reference.am		\
 	am_include/generate-binding.am \
+  util/build_scripts/check-dllexport-usage.py \
   util/build_scripts/dist-build-scripts.py \
   util/build_scripts/dist-changelog.py \
   util/build_scripts/doc-reference.py \

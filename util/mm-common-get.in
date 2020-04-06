@@ -41,7 +41,7 @@ doctooldir = args.doctool_dir
 print(progname + ': putting Meson build scripts in ' + buildscriptdir)
 # Create the destination directory, if it does not exist.
 os.makedirs(buildscriptdir, exist_ok=True)
-for file in ['dist-build-scripts.py', 'dist-changelog.py', 'doc-reference.py', 'generate-binding.py']:
+for file in ['check-dllexport-usage.py', 'dist-build-scripts.py', 'dist-changelog.py', 'doc-reference.py', 'generate-binding.py']:
   src_file = os.path.join(pkgdatadir, 'build', file)
   dest_file = os.path.join(buildscriptdir, file)
   # Don't update the timestamp of dest_file, if it's equal to src_file.

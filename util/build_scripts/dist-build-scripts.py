@@ -19,6 +19,7 @@ os.makedirs(dist_script_dir, exist_ok=True)
 
 # Distribute files that mm-common-get has copied to src_script_dir.
 files = [
+  'check-dllexport-usage.py',
   'dist-build-scripts.py',
   'dist-changelog.py',
   'doc-reference.py',

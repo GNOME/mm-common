@@ -221,6 +221,11 @@ util/build_scripts/dist-build-scripts.py:
   not checked into the git repository. All .gitignore files and an empty build/
   directory are removed
 
+util/build_scripts/check-dllexport-usage.py:
+  Command that checks on the gmmproc version that is to be used or been used
+  to generate the sources, to check whether to use compiler directives to
+  export symbols.  Only used for Visual Studio or clang-cl builds.
+
 Documentation utilities (Meson and Autotools)
 ---------------------------------------------
 

@@ -30,6 +30,8 @@ are listed below.
 .BI "Meson build scripts copied to " BUILDSCRIPT-DIR :
 .PD 0
 .IP
+.I check-dllexport-usage.py
+.IP
 .I dist-build-scripts.py
 .IP
 .I dist-changelog.py

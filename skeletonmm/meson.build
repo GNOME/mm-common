@@ -102,6 +102,7 @@ generate_binding = script_dir / 'generate-binding.py'
 doc_reference = script_dir / 'doc-reference.py'
 dist_changelog = script_dir / 'dist-changelog.py'
 dist_build_scripts = script_dir / 'dist-build-scripts.py'
+check_dllexport_usage = script_dir / 'check-dllexport-usage.py'
 dist_cmd = project_source_root / 'tools' / 'dist-cmd.py' # Must be committed to git.
 
 if maintainer_mode and mm_common_get.found()
