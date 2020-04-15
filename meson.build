@@ -237,7 +237,6 @@ skeletonmm_basefiles = [
   'tests/meson.build',
   'tests/test1/main.cc',
   'tests/test2/main.cc',
-  'tools/dist-cmd.py',
   'tools/generate_defs_and_docs.sh',
   'tools/extra_defs_gen/generate_defs_skeleton.cc',
   'tools/extra_defs_gen/meson.build',

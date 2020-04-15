@@ -2,7 +2,7 @@
 
 # Input: built_files_root, project_source_root, skeletonmm_pcname, perl,
 #        hg_ccg_basenames, extra_h_files, built_h_file_targets, install_datadir,
-#        dist_cmd, python3
+#        python3
 # Output: install_docdir, install_devhelpdir
 
 tag_file_modules = [
@@ -137,7 +137,6 @@ if not meson.is_subproject()
   # Distribute built files and files copied by mm-common-prepare.
   # (add_dist_script() is not allowed in a subproject)
   meson.add_dist_script(
-    python3.path(), dist_cmd,
     python3.path(), doc_reference, 'dist_doc',
     doctool_dir,
     doctool_dist_dir,
