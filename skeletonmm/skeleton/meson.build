@@ -9,7 +9,7 @@
 pkg_conf_data = configuration_data()
 pkg_conf_data.set('prefix', install_prefix)
 pkg_conf_data.set('exec_prefix', '${prefix}')
-pkg_conf_data.set('libdir', '${prefix}' / install_libdir)
+pkg_conf_data.set('libdir', '${exec_prefix}' / install_libdir)
 pkg_conf_data.set('datarootdir', '${prefix}' / install_datadir)
 pkg_conf_data.set('datadir', '${datarootdir}')
 pkg_conf_data.set('includedir', '${prefix}' / install_includedir)
