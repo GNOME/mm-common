@@ -1,8 +1,8 @@
 # doc/reference
 
-# Input: built_files_root, project_source_root, skeletonmm_pcname, perl,
+# Input: built_files_root, project_source_root, skeletonmm_pcname, python3,
 #        hg_ccg_basenames, extra_h_files, built_h_file_targets, install_datadir,
-#        python3
+#        doc_reference
 # Output: install_docdir, install_devhelpdir
 
 tag_file_modules = [
@@ -44,7 +44,6 @@ doc_conf_data.set('abs_top_builddir', built_files_root)
 doc_conf_data.set('abs_top_srcdir', project_source_root)
 doc_conf_data.set('SKELETONMM_MODULE_NAME', book_name)
 doc_conf_data.set('DOXYGEN_TAGFILES', doxygen_tagfiles)
-doc_conf_data.set('PERL', perl.found() ? perl.path() : '')
 
 configure_file(
   input: 'Doxyfile.in',
