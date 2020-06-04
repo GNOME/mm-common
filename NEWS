@@ -1,3 +1,15 @@
+mm-common 1.0.1 (2020-06-04)
+
+* Make libstdc++.tag retrieval work for Windows
+  (Chun-wei Fan) Merge request !3
+* skeletonmm/meson.build: Check if .git is a directory or a file
+  (Kjell Ahlstedt) Merge request pangomm!8 (Ting-Wei Lan)
+* util: Add check-dllexport-usage.py to check gmmproc version
+  (Chun-wei Fan) Merge request !5
+* skeletonmm: Improve the Meson build system
+  (Kjell Ahlstedt)
+
+
 mm-common 1.0.0 (2019-10-29)
 
 * Rename directory build/ to am_include/
