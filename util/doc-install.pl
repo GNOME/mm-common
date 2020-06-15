@@ -27,6 +27,7 @@ use Getopt::Long qw(:config no_getopt_compat no_ignore_case require_order bundli
 # Globals
 my $message_prefix;
 my %tags_hash;
+my %subst_hash;
 my $book_base;
 my $perm_mode;
 my $target_dir;
@@ -57,7 +58,8 @@ external documentation.
 
 Mandatory arguments to long options are mandatory for short options, too.
       --book-base=BASEPATH          use reference BASEPATH for Devhelp book
-  -l, --tag-base=TAGFILE\@BASEPATH   use BASEPATH for references from TAGFILE
+  -l, --tag-base=TAGFILE\@BASEPATH   use BASEPATH for references from TAGFILE (Doxygen <= 1.8.15)
+  -l, --tag-base=s\@BASEPUB\@BASEPATH substitute BASEPATH for BASEPUB (Doxygen >= 1.8.16)
   -m, --mode=MODE                   override file permission MODE (octal)
   -t, --target-directory=DIRECTORY  copy all SOURCE arguments into DIRECTORY
   -T, --no-target-directory         treat DEST as normal file
@@ -84,6 +86,23 @@ sub error (@)
   exit 1;
 }
 
+sub substitute_pub($$)
+{
+  my ($pubpath, $ref_count) = @_;
+  foreach my $key (keys %subst_hash)
+  {
+    # Don't use m// or s/// here. $key may contain characters
+    # that are special in regular expressions.
+    if (substr($pubpath, 0, length($key)) eq $key)
+    {
+      substr($pubpath, 0, length($key)) = $subst_hash{$key};
+      $$ref_count++;
+      last;
+    }
+  }
+  return $pubpath;
+}
+
 # Copy file to destination while translating references on the fly.
 # Sniff the content for the file type, as it is always read in anyway.
 sub install_file ($$$)
@@ -97,16 +116,27 @@ sub install_file ($$$)
       or error('Failed to read ', $basename, ': ', $!);
   }
 
-  if (%tags_hash and $buf =~ m/\A(?> \s*)(?> (?> <[?!][^<]+ )* )<html[>\s]/sx)
+  if ((%tags_hash or %subst_hash) and $buf =~ m/\A(?> \s*)(?> (?> <[?!][^<]+ )* )<html[>\s]/sx)
   {
+    # Doxygen 1.8.15 and earlier stores the tag file name and BASEPATH in the html files.
     my $count = 0;
     my $total = $buf =~
       s!(?<= \s) doxygen="((?> [^:"]+)):((?> [^"]*))" # doxygen="(TAGFILE):(BASEPATH)"
         (?> \s+) ((?> href|src) =") \2 ((?> [^"]*)")  # (href|src=")BASEPATH(RELPATH")
        ! $3 . ((exists $tags_hash{$1}) ? (++$count, $tags_hash{$1}) : $2) . $4
        !egsx;
-    my $change = $total ? "rewrote $count of $total"
-                        : 'no';
+    my $change = $total ? "rewrote $count of $total" : 'no';
+
+    if ($total == 0 and %subst_hash)
+    {
+      # Doxygen 1.8.16 and later does not store the tag file name and BASEPATH in the html files.
+      # The previous s!!! expression won't find anything to substitute.
+      $total = $buf =~
+        s!(\s (?:href|src) = ") ([^"]+") # (href|src=")(BASEPUB RELPATH")
+         ! $1 . substitute_pub($2, \$count)
+         !egsx;
+      $change = $total ? "rewrote $count" : 'no';
+    }
     notice('Translating ', $basename, ' (', $change, ' references)');
   }
   elsif (defined($book_base) and $buf =~ m/\A(?> \s*)(?> (?> <[?!][^<]+ )* )<book\s/sx)
@@ -132,23 +162,43 @@ sub install_file ($$$)
     or warning('Failed to set ', $basename, ' permissions: ', $!);
 }
 
-# Split TAGFILE@BASEPATH argument into key/value pair
+# Split TAGFILE@BASEPATH or s@BASEPUB@BASEPATH argument into key/value pair
 sub split_key_value ($)
 {
   my ($mapping) = @_;
   my ($name, $path) = split(m'@', $mapping, 2);
 
-  error('Invalid base path mapping: ', $mapping) unless (defined($name) and $name ne '');
-
-  if (defined $path)
+  if ($name ne 's') # Doxygen 1.8.15 and earlier
   {
-    notice('Using base path ', $path, ' for tag file ', $name);
-    return ($name, $path);
+    error('Invalid base path mapping: ', $mapping) unless (defined($name) and $name ne '');
+
+    if (defined $path)
+    {
+      notice('Using base path ', $path, ' for tag file ', $name);
+      return ($name, $path, 0);
+    }
+    notice('Not changing base path for tag file ', $name);
+    return ();
   }
-  notice('Not changing base path for tag file ', $name);
-  return ();
+  else # Doxygen 1.8.16 and later
+  {
+    ($name, $path) = split(m'@', $path, 2);
+
+    error('Invalid base path mapping: ', $mapping) unless (defined($name) and $name ne '');
+
+    if (defined $path)
+    {
+      notice('Using base path ', $path, ' for ', $name);
+      return ($name, $path, 1);
+    }
+    notice('Not changing base path for ', $name);
+    return ();
+  }
 }
 
+# ======
+# main()
+# ======
 # Define line leader of log messages
 $message_prefix = path_basename($0);
 $message_prefix =~ s/\.[^.]*$//s if (defined $message_prefix);
@@ -170,10 +220,25 @@ $message_prefix = ($message_prefix || 'doc-install') . ': ';
     or exit 2;
 
   error('Invalid permission mode: ', $mode) unless ($mode =~ m/^[0-7]+$/s);
-
   $perm_mode = oct($mode);
-  %tags_hash = map(split_key_value($_), @tags);
+
+  foreach my $tag (@tags)
+  {
+    my ($key, $value, $subst) = split_key_value($tag);
+    if (defined($subst))
+    {
+      if (!$subst)
+      {
+        $tags_hash{$key} = $value;
+      }
+      else
+      {
+        $subst_hash{$key} = $value;
+      }
+    }
+  }
 }
+
 notice('Using base path ', $book_base, ' for Devhelp book') if (defined $book_base);
 
 if ($target_nodir)
