@@ -174,7 +174,6 @@ sub split_key_value ($)
 
     if (defined $path)
     {
-      notice('Using base path ', $path, ' for tag file ', $name);
       return ($name, $path, 0);
     }
     notice('Not changing base path for tag file ', $name);
@@ -188,7 +187,6 @@ sub split_key_value ($)
 
     if (defined $path)
     {
-      notice('Using base path ', $path, ' for ', $name);
       return ($name, $path, 1);
     }
     notice('Not changing base path for ', $name);
@@ -224,16 +222,32 @@ $message_prefix = ($message_prefix || 'doc-install') . ': ';
 
   foreach my $tag (@tags)
   {
-    my ($key, $value, $subst) = split_key_value($tag);
+    my ($name, $path, $subst) = split_key_value($tag);
     if (defined($subst))
     {
+      # Translate a local absolute path to URI.
+      # (If Autotools (not Meson) is used, this translation is
+      # also done in mm-doc.m4 (MM_ARG_WITH_TAGFILE_DOC).
+      # $path will not be changed, if these substitutions have been
+      # performed before.)
+      $path =~ s!\\!/!g;
+      $path =~ s! !%20!g;
+      $path =~ s!^/!file:///!;
+      $path =~ s!^([A-Za-z]:/)!file:///$1!; # Windows: C:/path
+      if ($path !~ m!/$!)
+      {
+        $path .= '/';
+      }
+
       if (!$subst)
       {
-        $tags_hash{$key} = $value;
+        notice('Using base path ', $path, ' for tag file ', $name);
+        $tags_hash{$name} = $path;
       }
       else
       {
-        $subst_hash{$key} = $value;
+        notice('Using base path ', $path, ' for ', $name);
+        $subst_hash{$name} = $path;
       }
     }
   }
