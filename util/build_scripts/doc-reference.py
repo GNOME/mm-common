@@ -91,13 +91,14 @@ def install_doc():
   # <devhelpfile> is a relative or absolute path in the build directory.
   # <htmlrefdir> and <devhelpdir> are installation directories, relative to {prefix}.
   devhelpfile = sys.argv[3]
-  devhelpdir = os.path.join(os.getenv('MESON_INSTALL_DESTDIR_PREFIX'), sys.argv[4])
-  htmlrefdir = os.path.join(os.getenv('MESON_INSTALL_DESTDIR_PREFIX'), sys.argv[5])
+  destdir_devhelpdir = os.path.join(os.getenv('MESON_INSTALL_DESTDIR_PREFIX'), sys.argv[4])
+  destdir_htmlrefdir = os.path.join(os.getenv('MESON_INSTALL_DESTDIR_PREFIX'), sys.argv[5])
+  prefix_htmlrefdir = os.path.join(os.getenv('MESON_INSTALL_PREFIX'), sys.argv[5])
   build_dir = os.path.dirname(devhelpfile)
 
   # Create the installation directories, if they do not exist.
-  os.makedirs(htmlrefdir, exist_ok=True)
-  os.makedirs(devhelpdir, exist_ok=True)
+  os.makedirs(destdir_htmlrefdir, exist_ok=True)
+  os.makedirs(destdir_devhelpdir, exist_ok=True)
 
   # Install html files.
   cmd = [
@@ -107,7 +108,7 @@ def install_doc():
     '--verbose',
     '--mode=0644',
   ] + sys.argv[6:] + [
-    '-t', htmlrefdir,
+    '-t', destdir_htmlrefdir,
     '--glob',
     '--',
     os.path.join(build_dir, 'html', '*'),
@@ -122,8 +123,8 @@ def install_doc():
     os.path.join(MMDOCTOOLDIR, 'doc-install.pl'),
     '--verbose',
     '--mode=0644',
-    '--book-base=' + htmlrefdir.rstrip('/'),
-    '-t', devhelpdir,
+    '--book-base=' + prefix_htmlrefdir.rstrip('/'),
+    '-t', destdir_devhelpdir,
     '--',
     devhelpfile,
   ]
