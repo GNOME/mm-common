@@ -27,9 +27,8 @@ cmd = [
   '--max-count=200',
   '--pretty=tformat:%cd  %an  <%ae>%n%n  %s%n%w(0,0,2)%+b',
 ]
-logfile = open(os.path.join(os.getenv('MESON_DIST_ROOT'), 'ChangeLog'), mode='w')
-result = subprocess.run(cmd, stdout=logfile)
-logfile.close()
+with open(os.path.join(os.getenv('MESON_DIST_ROOT'), 'ChangeLog'), mode='w') as logfile:
+  result = subprocess.run(cmd, stdout=logfile)
 
 # Distribute the libstdc++.tag file in addition to the files in the local git clone.
 # shutil.copy2() copies timestamps and some other file metadata.

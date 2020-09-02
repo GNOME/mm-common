@@ -33,10 +33,8 @@ def generate_wrap_init():
     '--namespace=' + namespace,
     '--parent_dir=' + parent_dir,
   ] + sys.argv[5:]
-  output_file_obj = open(output_file, mode='w')
-  result = subprocess.run(cmd, stdout=output_file_obj)
-  output_file_obj.close()
-  return result.returncode
+  with open(output_file, mode='w') as output_file_obj:
+    return subprocess.run(cmd, stdout=output_file_obj).returncode
 
 # Invoked from custom_target() in meson.build.
 def gmmproc():

@@ -39,11 +39,10 @@ elif output_file.endswith('.gz'):
 else:
   mode = 'w'
 
-tar_file = tarfile.open(output_file, mode=mode)
-os.chdir(source_dir) # Input filenames are relative to source_dir.
-for file in sys.argv[3:]:
-  tar_file.add(file)
-tar_file.close()
+with tarfile.open(output_file, mode=mode) as tar_file:
+  os.chdir(source_dir) # Input filenames are relative to source_dir.
+  for file in sys.argv[3:]:
+    tar_file.add(file)
 # Errors raise exceptions. If an exception is raised, Meson+ninja will notice
 # that the command failed, despite exit(0).
 sys.exit(0)

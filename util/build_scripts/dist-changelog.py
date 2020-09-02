@@ -2,7 +2,7 @@
 
 # External command, intended to be called with meson.add_dist_script() in meson.build
 
-#                      sys.argv[1]
+#                       argv[1]
 # dist-changelog.py <root_source_dir>
 
 import os
@@ -20,7 +20,5 @@ cmd = [
   '--max-count=200',
   '--pretty=tformat:%cd  %an  <%ae>%n%n  %s%n%w(0,0,2)%+b',
 ]
-logfile = open(os.path.join(os.getenv('MESON_DIST_ROOT'), 'ChangeLog'), mode='w')
-result = subprocess.run(cmd, stdout=logfile)
-logfile.close()
-sys.exit(result.returncode)
+with open(os.path.join(os.getenv('MESON_DIST_ROOT'), 'ChangeLog'), mode='w') as logfile:
+  sys.exit(subprocess.run(cmd, stdout=logfile).returncode)
