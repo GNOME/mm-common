@@ -116,7 +116,6 @@ skeletonmm_data_files =							\
 	skeletonmm/untracked/README
 
 skeletonmm_script_files = \
-  skeletonmm/tools/dist-cmd.py \
   skeletonmm/tools/generate_defs_and_docs.sh
 
 skeletonmm_files = $(skeletonmm_script_files) $(skeletonmm_data_files)
