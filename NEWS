@@ -1,3 +1,13 @@
+mm-common 1.0.2 (2020-09-25)
+
+* util/doc-install.pl: Update for Doxygen >= 1.8.16
+  (Kjell Ahlstedt)
+* doc-reference.py: Don't include DESTDIR in the DevHelp base path
+  (Kjell Ahlstedt) Issue #2 (Mart Raudsepp)
+* dist-build-scripts.py: Remove files from distribution, if requested
+  (Kjell Ahlstedt)
+
+
 mm-common 1.0.1 (2020-06-04)
 
 * Make libstdc++.tag retrieval work for Windows
