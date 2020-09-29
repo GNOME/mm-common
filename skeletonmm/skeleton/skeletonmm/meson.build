@@ -2,7 +2,7 @@
 
 # Input: skeletonmm_build_dep, skeletonmm_pcname, maintainer_mode, project_source_root,
 #        generate_binding, m4_files, skeletonmm_libversion, install_includedir,
-#        python3
+#        macos_darwin_versions, python3
 # Output: hg_ccg_basenames, extra_h_files, built_h_file_targets, built_files_root,
 #         skeletonmm_dep
 
@@ -96,6 +96,7 @@ if maintainer_mode
   skeletonmm_library = library(skeletonmm_pcname,
     built_cc_file_targets, built_h_file_targets, extra_cc_files,
     version: skeletonmm_libversion,
+    darwin_versions: macos_darwin_versions,
     include_directories: extra_include_dirs,
     dependencies: skeletonmm_build_dep,
     install: true,
@@ -137,6 +138,7 @@ else # not maintainer_mode
   skeletonmm_library = library(skeletonmm_pcname,
     built_cc_files, extra_cc_files,
     version: skeletonmm_libversion,
+    darwin_versions: macos_darwin_versions,
     include_directories: extra_include_dirs,
     dependencies: skeletonmm_build_dep,
     install: true,
