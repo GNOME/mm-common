@@ -35,6 +35,7 @@ install_headers('..' / 'skeletonmm.h', subdir: skeletonmm_pcname)
 install_headers(extra_h_files, subdir: skeletonmm_pcname / 'skeletonmm')
 
 untracked_skeletonmm = 'untracked' / 'skeleton' / 'skeletonmm'
+rel_untracked_skeletonmm = '..' / '..' / untracked_skeletonmm
 src_untracked_skeletonmm = project_source_root / untracked_skeletonmm
 
 if maintainer_mode
@@ -129,9 +130,9 @@ else # not maintainer_mode
     hg_ccg_basenames,
   )
 
-  built_cc_files = [ src_untracked_skeletonmm / 'wrap_init.cc' ]
+  built_cc_files = [ rel_untracked_skeletonmm / 'wrap_init.cc' ]
   foreach file : hg_ccg_basenames
-    built_cc_files += src_untracked_skeletonmm / file + '.cc'
+    built_cc_files += rel_untracked_skeletonmm / file + '.cc'
   endforeach
 
   extra_include_dirs = [ '..', '..' / '..' / 'untracked' / 'skeleton' ]
