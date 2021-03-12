@@ -130,6 +130,7 @@ MAINTAINERCLEANFILES = $(dist_doctags_DATA)
 EXTRA_DIST = \
   meson.build \
   meson_options.txt \
+  util/meson_aux/copy-files.py \
   util/meson_aux/extra-dist-cmd.py \
   util/meson_aux/extra-install-cmd.py \
   util/meson_aux/libstdcxx-tag.py \
