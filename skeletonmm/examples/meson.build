@@ -28,6 +28,7 @@ foreach ex : examples
 
   exe_file = executable(ex_name, ex_sources, resources,
     dependencies: skeletonmm_dep,
+    implicit_include_directories: false,
     gui_app: true,
     build_by_default: build_examples
   )

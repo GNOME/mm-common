@@ -4,11 +4,13 @@
 # Output: m4_files, install_m4dir
 
 glibmm_generate_extra_defs_dep = cpp_compiler.find_library(
-  'glibmm_generate_extra_defs-2.4',
+  'glibmm_generate_extra_defs-2.68',
+# or:  'glibmm_generate_extra_defs-2.4',
 )
 
 executable('generate_defs_skeleton', 'generate_defs_skeleton.cc',
   dependencies: [skeletonmm_build_dep, glibmm_generate_extra_defs_dep],
+  implicit_include_directories: false,
   install: false,
 )
 

@@ -7,17 +7,21 @@
 
 tag_file_modules = [
   'mm-common-libstdc++',
-  'sigc++-2.0',
-  'glibmm-2.4',
+  'sigc++-3.0',
+  'glibmm-2.68',
+# or:
+#  'mm-common-libstdc++',
+#  'sigc++-2.0',
+#  'glibmm-2.4',
 ]
 doxygen_tagfiles = ''
 docinstall_flags = []
 foreach module : tag_file_modules
   depmod = dependency(module, required: false)
   if depmod.found()
-    doxytagfile = depmod.get_pkgconfig_variable('doxytagfile')
-    htmlrefpub = depmod.get_pkgconfig_variable('htmlrefpub', default: '')
-    htmlrefdir = depmod.get_pkgconfig_variable('htmlrefdir', default: '')
+    doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile')
+    htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', default_value: '')
+    htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', default_value: '')
     if htmlrefpub == ''
       htmlrefpub = htmlrefdir
     elif htmlrefdir == ''

@@ -6,7 +6,7 @@ project('skeletonmm', 'cpp',
   default_options: [
     'cpp_std=c++17'
   ],
-  meson_version: '>= 0.50.0', # required for python3.path()
+  meson_version: '>= 0.51.0', # required for dep.get_variable()
 )
 
 skeletonmm_api_version = '1.0'
@@ -89,13 +89,15 @@ install_pkgconfigdir = install_libdir / 'pkgconfig'
 # skeletonmm_build_dep: Dependencies when building the skeletonmm library.
 # skeletonmm_dep (created in skeleton/skeletonmm/meson.build):
 #   Dependencies when using the skeletonmm library.
-glibmm_req = '>= 2.62.0'
+glibmm_req = '>= 2.68.0' # E.g. >= 2.66.0 if the dependency is glibmm-2.4
 skeleton_req = '>= 1.0.0'
-glibmm_dep = dependency('glibmm-2.4', version: glibmm_req)
+glibmm_dep = dependency('glibmm-2.68', version: glibmm_req)
+# or: glibmm_dep = dependency('glibmm-2.4', version: glibmm_req)
 skeleton_dep = dependency('skeleton-1.0', version: skeleton_req)
 skeletonmm_build_dep = [glibmm_dep, skeleton_dep]
 skeletonmm_requires = ' '.join([
-  'glibmm-2.4', glibmm_req,
+  'glibmm-2.68', glibmm_req,
+# or:  'glibmm-2.4', glibmm_req,
   'skeleton-1.0', skeleton_req,
 ])
 gnome = import('gnome')
@@ -113,7 +115,7 @@ dot = find_program('dot', required: build_documentation) # Used by Doxygen
 xsltproc = find_program('xsltproc', required: build_documentation)
 
 # Where to find gmmproc and generate_wrap_init.pl.
-gmmproc_dir = glibmm_dep.get_pkgconfig_variable('gmmprocdir')
+gmmproc_dir = glibmm_dep.get_variable(pkgconfig: 'gmmprocdir')
 
 # Script files copied to 'untracked' by mm-common-get.
 script_dir = project_source_root / 'untracked' / 'build_scripts'
