@@ -100,14 +100,17 @@ def install_doc():
   os.makedirs(destdir_htmlrefdir, exist_ok=True)
   os.makedirs(destdir_devhelpdir, exist_ok=True)
 
+  verbose = []
+  if not os.getenv('MESON_INSTALL_QUIET'):
+    verbose = ['--verbose']
+
   # Install html files.
   cmd = [
     'perl',
     '--',
     os.path.join(MMDOCTOOLDIR, 'doc-install.pl'),
-    '--verbose',
     '--mode=0644',
-  ] + sys.argv[6:] + [
+  ] + verbose + sys.argv[6:] + [
     '-t', destdir_htmlrefdir,
     '--glob',
     '--',
@@ -121,8 +124,8 @@ def install_doc():
     'perl',
     '--',
     os.path.join(MMDOCTOOLDIR, 'doc-install.pl'),
-    '--verbose',
     '--mode=0644',
+  ] + verbose + [
     '--book-base=' + prefix_htmlrefdir.rstrip('/'),
     '-t', destdir_devhelpdir,
     '--',

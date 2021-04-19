@@ -96,15 +96,18 @@ def install_built_h_files():
   # Create the installation directory, if it does not exist.
   os.makedirs(os.path.join(install_dir, 'private'), exist_ok=True)
 
+  quiet = bool(os.getenv('MESON_INSTALL_QUIET'))
   for file in sys.argv[4:]:
     path_h = os.path.join(built_h_dir, file+'.h')
-    print('Installing ', path_h, ' to ', install_dir)
+    if not quiet:
+      print('Installing ', path_h, ' to ', install_dir)
     # shutil.copy2() copies timestamps and some other file metadata.
     shutil.copy2(path_h, install_dir)
 
     path_h = os.path.join(built_h_dir, 'private', file+'_p.h')
     install_priv_dir = os.path.join(install_dir, 'private')
-    print('Installing ', path_h, ' to ', install_priv_dir)
+    if not quiet:
+      print('Installing ', path_h, ' to ', install_priv_dir)
     shutil.copy2(path_h, install_priv_dir)
   return 0
 

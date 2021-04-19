@@ -9,7 +9,7 @@ import os
 import sys
 import subprocess
 
-if not os.getenv('DESTDIR'):
+if not (os.getenv('DESTDIR') or os.getenv('MESON_INSTALL_QUIET')):
   # Inform the installer that M4 macro files installed in a directory
   # not known to aclocal will not be picked up automatically.
   # (Starting with Python 3.7 text=True is a more understandable equivalent to
