@@ -2,7 +2,7 @@
 
 # Input: skeletonmm_build_dep, skeletonmm_pcname, maintainer_mode, project_source_root,
 #        generate_binding, m4_files, skeletonmm_libversion, install_includedir,
-#        macos_darwin_versions, python3
+#        macos_darwin_versions, python3, can_add_dist_script
 # Output: hg_ccg_basenames, extra_h_files, built_h_file_targets, built_files_root,
 #         skeletonmm_dep
 
@@ -159,9 +159,8 @@ meson.add_install_script(
   hg_ccg_basenames
 )
 
-if not meson.is_subproject()
+if can_add_dist_script
   # Distribute built files.
-  # (add_dist_script() is not allowed in a subproject)
   meson.add_dist_script(
     python3.path(), generate_binding, 'dist_built_files',
     built_h_cc_dir,

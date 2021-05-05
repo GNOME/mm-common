@@ -20,5 +20,7 @@ cmd = [
   '--max-count=200',
   '--pretty=tformat:%cd  %an  <%ae>%n%n  %s%n%w(0,0,2)%+b',
 ]
-with open(os.path.join(os.getenv('MESON_DIST_ROOT'), 'ChangeLog'), mode='w') as logfile:
+# MESON_PROJECT_DIST_ROOT is set only if meson.version() >= 0.58.0.
+project_dist_root = os.getenv('MESON_PROJECT_DIST_ROOT', os.getenv('MESON_DIST_ROOT'))
+with open(os.path.join(project_dist_root, 'ChangeLog'), mode='w') as logfile:
   sys.exit(subprocess.run(cmd, stdout=logfile).returncode)

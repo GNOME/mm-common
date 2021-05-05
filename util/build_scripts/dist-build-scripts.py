@@ -6,16 +6,17 @@
 # dist-build-scripts.py <root_src_dir> <script_dir> <no_dist>...
 
 # <script_dir> The directory with the build scripts, relative to <root_source_dir>.
-# <no_dist> Zero or more names (relative to MESON_DIST_ROOT) of files and
-#           directories that shall not be distributed.
+# <no_dist> Zero or more names (relative to MESON_PROJECT_DIST_ROOT)
+#           of files and directories that shall not be distributed.
 
 import os
 import sys
 import shutil
 
-dist_root = os.getenv('MESON_DIST_ROOT')
+# MESON_PROJECT_DIST_ROOT is set only if meson.version() >= 0.58.0.
+project_dist_root = os.getenv('MESON_PROJECT_DIST_ROOT', os.getenv('MESON_DIST_ROOT'))
 src_script_dir = os.path.join(sys.argv[1], sys.argv[2])
-dist_script_dir = os.path.join(dist_root, sys.argv[2])
+dist_script_dir = os.path.join(project_dist_root, sys.argv[2])
 
 # Create the distribution script directory, if it does not exist.
 os.makedirs(dist_script_dir, exist_ok=True)
@@ -32,12 +33,12 @@ for file in files:
   shutil.copy(os.path.join(src_script_dir, file), dist_script_dir)
 
 # Don't distribute .gitignore files.
-for dirpath, dirnames, filenames in os.walk(dist_root):
+for dirpath, dirnames, filenames in os.walk(project_dist_root):
   if '.gitignore' in filenames:
     os.remove(os.path.join(dirpath, '.gitignore'))
 
-# Remove an empty MESON_DIST_ROOT/build directory.
-dist_build_dir = os.path.join(dist_root, 'build')
+# Remove an empty MESON_PROJECT_DIST_ROOT/build directory.
+dist_build_dir = os.path.join(project_dist_root, 'build')
 if os.path.isdir(dist_build_dir):
   try:
     os.rmdir(dist_build_dir)
@@ -45,9 +46,9 @@ if os.path.isdir(dist_build_dir):
     # Ignore the error, if not empty.
     pass
 
-# Remove specified files and directories from the MESON_DIST_ROOT directory.
+# Remove specified files and directories from the MESON_PROJECT_DIST_ROOT directory.
 for rel_path in sys.argv[3:]:
-  abs_path = os.path.join(dist_root, rel_path)
+  abs_path = os.path.join(project_dist_root, rel_path)
   if os.path.isfile(abs_path):
     os.remove(abs_path)
   elif os.path.isdir(abs_path):

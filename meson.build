@@ -343,8 +343,9 @@ custom_target('libstdc++.tag',
   install: true
 )
 
-if not meson.is_subproject()
-  # Modify the contents of the distribution directory. (not allowed in a subproject)
+if not meson.is_subproject() or meson.version().version_compare('>= 0.58.0')
+  # Modify the contents of the distribution directory.
+  # (not allowed in a subproject if meson.version() < 0.58.0)
   meson.add_dist_script(
     python3.path(),
     script_dir / 'extra-dist-cmd.py',

@@ -142,10 +142,13 @@ def dist_doc():
   #      argv[3]              argv[4]       argv[5]     argv[6]
   # <doctool_dist_dir> <doc_ref_build_dir> <tagfile> <devhelpfile>
 
-  # <doctool_dist_dir> is a distribution directory, relative to MESON_DIST_ROOT.
+  # <doctool_dist_dir> is a distribution directory, relative to MESON_PROJECT_DIST_ROOT.
   # <doc_ref_build_dir> is a relative or absolute path in the build directory.
   # <tagfile> and <devhelpfile> are relative or absolute paths in the build directory.
-  doctool_dist_dir = os.path.join(os.getenv('MESON_DIST_ROOT'), sys.argv[3])
+
+  # MESON_PROJECT_DIST_ROOT is set only if meson.version() >= 0.58.0.
+  project_dist_root = os.getenv('MESON_PROJECT_DIST_ROOT', os.getenv('MESON_DIST_ROOT'))
+  doctool_dist_dir = os.path.join(project_dist_root, sys.argv[3])
   doc_ref_build_dir = sys.argv[4]
   tagfile = sys.argv[5]
   devhelpfile = sys.argv[6]

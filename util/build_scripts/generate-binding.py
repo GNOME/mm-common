@@ -117,9 +117,12 @@ def dist_built_files():
   # <built_h_cc_dir> <dist_dir> <basefilenames>...
 
   # <built_h_cc_dir> is an absolute path in the build directory or source directory.
-  # <dist_dir> is a distribution directory, relative to MESON_DIST_ROOT.
+  # <dist_dir> is a distribution directory, relative to MESON_PROJECT_DIST_ROOT.
+
+  # MESON_PROJECT_DIST_ROOT is set only if meson.version() >= 0.58.0.
+  project_dist_root = os.getenv('MESON_PROJECT_DIST_ROOT', os.getenv('MESON_DIST_ROOT'))
   built_h_cc_dir = sys.argv[2]
-  dist_dir = os.path.join(os.getenv('MESON_DIST_ROOT'), sys.argv[3])
+  dist_dir = os.path.join(project_dist_root, sys.argv[3])
 
   # Create the distribution directory, if it does not exist.
   os.makedirs(os.path.join(dist_dir, 'private'), exist_ok=True)
