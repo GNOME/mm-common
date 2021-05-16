@@ -6,7 +6,8 @@ project('skeletonmm', 'cpp',
   default_options: [
     'cpp_std=c++17'
   ],
-  meson_version: '>= 0.51.0', # required for dep.get_variable()
+  meson_version: '>= 0.54.0', # required for meson.override_dependency()
+                              # and dep.get_variable(internal:)
 )
 
 skeletonmm_api_version = '1.0'
@@ -87,7 +88,7 @@ install_pkgconfigdir = install_libdir / 'pkgconfig'
 
 # Dependencies.
 # skeletonmm_build_dep: Dependencies when building the skeletonmm library.
-# skeletonmm_dep (created in skeleton/skeletonmm/meson.build):
+# skeletonmm_own_dep (created in skeleton/skeletonmm/meson.build):
 #   Dependencies when using the skeletonmm library.
 glibmm_req = '>= 2.68.0' # E.g. >= 2.66.0 if the dependency is glibmm-2.4
 skeleton_req = '>= 1.0.0'
@@ -106,7 +107,11 @@ gnome = import('gnome')
 # reference documentation shall be built.
 mm_common_get = find_program('mm-common-get', required: false)
 if maintainer_mode and not mm_common_get.found()
-  error('mm-common-get not found. mm-common >= 1.0.0 is required.')
+  message('Maintainer mode requires the \'mm-common-get\' command. If it is not found,\n' +
+          'install the \'mm-common\' package, version 1.0.0 or higher.')
+  # If meson --wrap-mode != forcefallback, Meson falls back to the mm-common
+  # subproject only if mm-common-get is required.
+  mm_common_get = find_program('mm-common-get', required: true)
 endif
 m4 = find_program('m4', required: maintainer_mode) # Used by gmmproc (in glibmm)
 perl = find_program('perl', required: maintainer_mode or build_documentation)
@@ -115,7 +120,7 @@ dot = find_program('dot', required: build_documentation) # Used by Doxygen
 xsltproc = find_program('xsltproc', required: build_documentation)
 
 # Where to find gmmproc and generate_wrap_init.pl.
-gmmproc_dir = glibmm_dep.get_variable(pkgconfig: 'gmmprocdir')
+gmmproc_dir = glibmm_dep.get_variable(pkgconfig: 'gmmprocdir', internal: 'gmmprocdir')
 
 # Script files copied to 'untracked' by mm-common-get.
 script_dir = project_source_root / 'untracked' / 'build_scripts'
@@ -184,6 +189,25 @@ if can_add_dist_script
     'untracked' / 'build_scripts',
   )
 endif
+
+if meson.is_subproject()
+  pkgconfig_vars = {
+    'gmmprocm4dir': project_source_root / 'tools' / 'm4',
+    'htmlrefdir': install_prefix / install_docdir / 'reference' / 'html',
+    'htmlrefpub': 'http://library.gnome.org/devel/' + pkg_conf_data.get_unquoted('PACKAGE_TARNAME') + '/unstable/'
+  }
+  if build_documentation
+    pkgconfig_vars += {'doxytagfile': tag_file.full_path()}
+  endif
+  skeletonmm_dep = declare_dependency(
+    dependencies: skeletonmm_own_dep,
+    variables: pkgconfig_vars,
+  )
+
+  # A main project that looks for skeletonmm_pcname.pc shall find skeletonmm_dep.
+  meson.override_dependency(skeletonmm_pcname, skeletonmm_dep)
+endif
+
 
 # Print a summary.
 real_maintainer_mode = ''

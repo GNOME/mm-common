@@ -1,6 +1,6 @@
 # tests
 
-# input: gnome, skeletonmm_dep
+# input: gnome, skeletonmm_own_dep
 
 tests = [
 # [[dir-name], exe-name, [sources]]
@@ -28,7 +28,7 @@ foreach ex : tests
   endforeach
 
   exe_file = executable(ex_name, ex_sources, resources,
-    dependencies: skeletonmm_dep,
+    dependencies: skeletonmm_own_dep,
     implicit_include_directories: false,
     gui_app: false,
     build_by_default: true

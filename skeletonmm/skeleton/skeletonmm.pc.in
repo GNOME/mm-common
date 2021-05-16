@@ -5,6 +5,8 @@ datarootdir=@datarootdir@
 datadir=@datadir@
 includedir=@includedir@
 
+gmmprocm4dir=${libdir}/@SKELETONMM_MODULE_NAME@/proc/m4
+
 docdir=${datarootdir}/doc/@SKELETONMM_MODULE_NAME@
 doxytagfile=${docdir}/reference/@SKELETONMM_MODULE_NAME@.tag
 htmlrefdir=${docdir}/reference/html

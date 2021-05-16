@@ -1,0 +1,8 @@
+[wrap-git]
+directory=skeleton
+url=https://gitlab.gnome.org/GNOME/skeleton.git
+revision=master
+depth=1
+
+[provide]
+skeleton-1.0 = libskeleton_dep

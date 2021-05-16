@@ -4,7 +4,7 @@
 #        generate_binding, m4_files, skeletonmm_libversion, install_includedir,
 #        macos_darwin_versions, python3, can_add_dist_script
 # Output: hg_ccg_basenames, extra_h_files, built_h_file_targets, built_files_root,
-#         skeletonmm_dep
+#         skeletonmm_own_dep
 
 defs_basefiles = [
   'skeleton.defs',
@@ -169,9 +169,9 @@ if can_add_dist_script
   )
 endif
 
-# This is useful in the main project when skeletonmm is used as a subproject.
-# It's also used when building example programs and test programs.
-skeletonmm_dep = declare_dependency(
+# This is used when building example programs and test programs.
+# It's also a part of skeletonmm_dep, when skeletonmm is a subproject.
+skeletonmm_own_dep = declare_dependency(
   sources: built_h_file_targets,
   link_with: skeletonmm_library,
   include_directories: extra_include_dirs,

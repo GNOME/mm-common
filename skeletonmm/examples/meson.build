@@ -1,6 +1,6 @@
 # examples
 
-# input: gnome, skeletonmm_dep, build_examples
+# input: gnome, skeletonmm_own_dep, build_examples
 
 examples = [
 # [[dir-name], exe-name, [sources]]
@@ -27,7 +27,7 @@ foreach ex : examples
   endforeach
 
   exe_file = executable(ex_name, ex_sources, resources,
-    dependencies: skeletonmm_dep,
+    dependencies: skeletonmm_own_dep,
     implicit_include_directories: false,
     gui_app: true,
     build_by_default: build_examples
