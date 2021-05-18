@@ -205,51 +205,6 @@ configure_file(
   install_dir: install_man1dir
 )
 
-if meson.is_subproject()
-  # A version of mm-common-get that can be executed uninstalled.
-  conf_data_subproj = configuration_data()
-  conf_data_subproj.merge_from(conf_data)
-  conf_data_subproj.set('configure_input', 'mm-common-get2 (for execution uninstalled).  Generated from util/mm-common-get.in')
-  conf_data_subproj.set('datadir_py', project_build_root)
-  mm_common_get2 = configure_file(
-    input: 'util' / 'mm-common-get.in',
-    output: 'mm-common-get2',
-    configuration: conf_data_subproj,
-    install: false,
-  )
-  # Make the uninstalled mm-common-get2 executable.
-  cmd_py = '''
-import os
-import sys
-os.chmod(sys.argv[1], 0o755)'''
-  run_command(python3, '-c', cmd_py, project_build_root / 'mm-common-get2')
-
-  # A main project that looks for mm-common-get shall find mm_common_get2.
-  meson.override_find_program('mm-common-get', mm_common_get2)
-
-  # Copy files needed by mm-common-get2 from source dir to build dir.
-  # The directory structure must be the same as in the installation directory.
-  run_command(python3, script_dir / 'copy-files.py',
-    project_source_root / 'util' / 'build_scripts',
-    project_build_root / meson.project_name() / 'build',
-    meson_build_support_basefiles,
-  )
-  run_command(python3, script_dir / 'copy-files.py',
-    project_source_root / 'util',
-    project_build_root / meson.project_name() / 'doctool',
-    doctool_basefiles,
-  )
-
-  mm_common_libstdc_dep = declare_dependency(
-    variables: {
-      'doxytagfile': project_build_root / 'libstdc++.tag',
-      'htmlrefpub': 'http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/'
-    }
-  )
-  # A main project that looks for mm-common-libstdc++.pc shall find mm_common_libstdc_dep.
-  meson.override_dependency('mm-common-libstdc++', mm_common_libstdc_dep)
-endif
-
 # Skeleton project.
 skeletonmm_basefiles = [
   '.gitignore',
@@ -328,7 +283,7 @@ if get_option('use-network')
 endif
 
 # Download libstdc++.tag if it does not exist or if it's out of date.
-custom_target('libstdc++.tag',
+tag_file = custom_target('libstdc++.tag',
   output: 'libstdc++.tag',
   command: [
     python3,
@@ -352,6 +307,54 @@ if not meson.is_subproject() or meson.version().version_compare('>= 0.58.0')
     project_source_root,
     project_build_root,
   )
+endif
+
+if meson.is_subproject()
+  # A version of mm-common-get that can be executed uninstalled.
+  conf_data_subproj = configuration_data()
+  conf_data_subproj.merge_from(conf_data)
+  conf_data_subproj.set('configure_input', 'mm-common-get2 (for execution uninstalled).  Generated from util/mm-common-get.in')
+  conf_data_subproj.set('datadir_py', project_build_root)
+  mm_common_get2 = configure_file(
+    input: 'util' / 'mm-common-get.in',
+    output: 'mm-common-get2',
+    configuration: conf_data_subproj,
+    install: false,
+  )
+  # Make the uninstalled mm-common-get2 executable.
+  cmd_py = '''
+import os
+import sys
+os.chmod(sys.argv[1], 0o755)'''
+  run_command(python3, '-c', cmd_py, project_build_root / 'mm-common-get2')
+
+  # A main project that looks for mm-common-get shall find mm_common_get2.
+  meson.override_find_program('mm-common-get', mm_common_get2)
+
+  # Copy files needed by mm-common-get2 from source dir to build dir.
+  # The directory structure must be the same as in the installation directory.
+  run_command(python3, script_dir / 'copy-files.py',
+    project_source_root / 'util' / 'build_scripts',
+    project_build_root / meson.project_name() / 'build',
+    meson_build_support_basefiles,
+  )
+  run_command(python3, script_dir / 'copy-files.py',
+    project_source_root / 'util',
+    project_build_root / meson.project_name() / 'doctool',
+    doctool_basefiles,
+  )
+
+  mm_common_libstdc_dep = declare_dependency(
+    variables: {
+      'doxytagfile': project_build_root / 'libstdc++.tag',
+      'htmlrefpub': 'http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/'
+    }
+  )
+  # A main project that looks for mm-common-libstdc++.pc shall find mm_common_libstdc_dep.
+  meson.override_dependency('mm-common-libstdc++', mm_common_libstdc_dep)
+
+  # May be used in a main project.
+  global_tag_file_target = tag_file
 endif
 
 # Print a summary.
