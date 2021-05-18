@@ -198,6 +198,8 @@ if meson.is_subproject()
   }
   if build_documentation
     pkgconfig_vars += {'doxytagfile': tag_file.full_path()}
+    # May be used in a main project.
+    global_tag_file_target = tag_file
   endif
   skeletonmm_dep = declare_dependency(
     dependencies: skeletonmm_own_dep,
