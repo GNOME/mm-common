@@ -1,3 +1,25 @@
+mm-common 1.0.3 (2021-05-20)
+
+Meson build:
+* Make it possible to use mm-common as a subproject
+  (Kjell Ahlstedt)
+* extra-install-cmd.py: Ignore FileNotFoundError
+  (Kjell Ahlstedt)
+* Make quiet installations possible
+  (Kjell Ahlstedt)
+
+Skeletonmm:
+* Fix versioning on macOS
+  (Kjell Ahlstedt) Pull request sigc++!65 (Tom Schoonjans)
+* Use relative paths to untracked/
+  (Kjell Ahlstedt) Merge request gtkmm!61 (Mingli Yu)
+* Update dependencies in Meson build files:
+  glibmm-2.4 -> glibmm-2.68, sigc++-2.0 -> sigc++-3.0
+  (Kjell Ahlstedt)
+* Make it possible to use skeletonmm as a subproject
+  (Kjell Ahlstedt)
+
+
 mm-common 1.0.2 (2020-09-25)
 
 * util/doc-install.pl: Update for Doxygen >= 1.8.16

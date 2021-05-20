@@ -1,7 +1,7 @@
 # This file is part of mm-common.
 
 project('mm-common',
-  version: '1.0.2',
+  version: '1.0.3',
   meson_version: '>= 0.54.0', # required for meson.override_dependency()
   license: 'GPLv2+'
 )
