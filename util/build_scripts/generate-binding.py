@@ -33,7 +33,7 @@ def generate_wrap_init():
     '--namespace=' + namespace,
     '--parent_dir=' + parent_dir,
   ] + sys.argv[5:]
-  with open(output_file, mode='w') as output_file_obj:
+  with open(output_file, mode='w', encoding='utf-8') as output_file_obj:
     return subprocess.run(cmd, stdout=output_file_obj).returncode
 
 # Invoked from custom_target() in meson.build.

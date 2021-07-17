@@ -29,7 +29,8 @@ cmd = [
 ]
 # MESON_PROJECT_DIST_ROOT is set only if meson.version() >= 0.58.0.
 project_dist_root = os.getenv('MESON_PROJECT_DIST_ROOT', os.getenv('MESON_DIST_ROOT'))
-with open(os.path.join(project_dist_root, 'ChangeLog'), mode='w') as logfile:
+logfilename = os.path.join(project_dist_root, 'ChangeLog')
+with open(logfilename, mode='w', encoding='utf-8') as logfile:
   result = subprocess.run(cmd, stdout=logfile)
 
 # Distribute the libstdc++.tag file in addition to the files in the local git clone.
