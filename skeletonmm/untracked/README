@@ -15,8 +15,8 @@ or the tarball is created with Meson.
 
 1. Files copied by mm-common-get
 --------------------------------
-untracked/doc/doc-install.pl
-              doc-postprocess.pl
+untracked/doc/doc_install.py
+              doc_postprocess.py
               doxygen-extra.css
               tagfile-to-devhelp2.xsl
 untracked/build_scripts/check-dllexport-usage.py

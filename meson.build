@@ -126,7 +126,9 @@ endif
 # into projects at Meson setup or configure time.
 doctool_basefiles = [
   'doc-install.pl',
+  'doc_install.py',
   'doc-postprocess.pl',
+  'doc_postprocess.py',
   'doxygen.css',
   'doxygen-extra.css',
   'tagfile-to-devhelp2.xsl',

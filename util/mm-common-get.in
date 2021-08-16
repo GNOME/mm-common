@@ -53,7 +53,7 @@ for file in ['check-dllexport-usage.py', 'dist-build-scripts.py', 'dist-changelo
 
 print(progname + ': putting documentation utilities in ' + doctooldir)
 os.makedirs(doctooldir, exist_ok=True)
-for file in ['doc-install.pl', 'doc-postprocess.pl',
+for file in ['doc_install.py', 'doc_postprocess.py',
              'doxygen.css', 'doxygen-extra.css', 'tagfile-to-devhelp2.xsl']:
   src_file = os.path.join(pkgdatadir, 'doctool', file)
   dest_file = os.path.join(doctooldir, file)

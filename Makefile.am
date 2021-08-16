@@ -57,7 +57,9 @@ dist_aclocal_macro_DATA =		\
 doctooldir = $(pkgdatadir)/doctool
 dist_doctool_DATA =			\
 	util/doc-install.pl		\
+	util/doc_install.py		\
 	util/doc-postprocess.pl		\
+	util/doc_postprocess.py		\
 	util/doxygen.css		\
 	util/doxygen-extra.css		\
 	util/tagfile-to-devhelp2.xsl

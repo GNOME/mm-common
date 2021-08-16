@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# External command, intended to be called with custom_target(),
+# External command, intended to be called with run_command(), custom_target(),
 # meson.add_install_script() or meson.add_dist_script() in meson.build.
 
 #                     argv[1]      argv[2]     argv[3:]
@@ -25,6 +25,10 @@ def doxygen():
   # <doc_input_files> are absolute paths in the source or build directory.
   doxytagfile = sys.argv[3]
   doc_outdir = os.path.dirname(doxytagfile)
+
+  # Search for doc_postprocess.py first in MMDOCTOOLDIR.
+  sys.path.insert(0, MMDOCTOOLDIR)
+  from doc_postprocess import doc_postprocess
 
   # Export this variable for use in the Doxygen configuration file.
   child_env = os.environ.copy()
@@ -51,13 +55,7 @@ def doxygen():
   if result.returncode:
     return result.returncode
 
-  cmd = [
-    'perl',
-    '--',
-    os.path.join(MMDOCTOOLDIR, 'doc-postprocess.pl'),
-    os.path.join(doc_outdir, 'html', '*.html'),
-  ]
-  return subprocess.run(cmd).returncode
+  return doc_postprocess(os.path.join(doc_outdir, 'html', '*.html'))
 
 # Invoked from custom_target() in meson.build.
 def devhelp():
@@ -96,6 +94,10 @@ def install_doc():
   prefix_htmlrefdir = os.path.join(os.getenv('MESON_INSTALL_PREFIX'), sys.argv[5])
   build_dir = os.path.dirname(devhelpfile)
 
+  # Search for doc_install.py first in MMDOCTOOLDIR.
+  sys.path.insert(0, MMDOCTOOLDIR)
+  from doc_install import doc_install_cmdargs, doc_install_funcargs
+
   # Create the installation directories, if they do not exist.
   os.makedirs(destdir_htmlrefdir, exist_ok=True)
   os.makedirs(destdir_devhelpdir, exist_ok=True)
@@ -105,37 +107,28 @@ def install_doc():
     verbose = ['--verbose']
 
   # Install html files.
-  cmd = [
-    'perl',
-    '--',
-    os.path.join(MMDOCTOOLDIR, 'doc-install.pl'),
-    '--mode=0644',
+  cmdargs = [
+    '--mode=0o644',
   ] + verbose + sys.argv[6:] + [
     '-t', destdir_htmlrefdir,
     '--glob',
     '--',
     os.path.join(build_dir, 'html', '*'),
   ]
-  result1 = subprocess.run(cmd)
+  result1 = doc_install_cmdargs(cmdargs)
 
   # Install the Devhelp file.
   # rstrip('/') means remove trailing /, if any.
-  cmd = [
-    'perl',
-    '--',
-    os.path.join(MMDOCTOOLDIR, 'doc-install.pl'),
-    '--mode=0644',
-  ] + verbose + [
-    '--book-base=' + prefix_htmlrefdir.rstrip('/'),
-    '-t', destdir_devhelpdir,
-    '--',
-    devhelpfile,
-  ]
-  result2 = subprocess.run(cmd)
+  result2 = doc_install_funcargs(
+    sources=[devhelpfile],
+    target=destdir_devhelpdir,
+    target_is_dir=True,
+    mode=0o644,
+    verbose=bool(verbose),
+    book_base=prefix_htmlrefdir.rstrip('/'),
+  )
 
-  if result1.returncode:
-    return result1.returncode
-  return result2.returncode
+  return max(result1, result2)
 
 # Invoked from meson.add_dist_script().
 def dist_doc():
@@ -158,7 +151,7 @@ def dist_doc():
 
   # Distribute files that mm-common-get has copied to MMDOCTOOLDIR.
   # shutil.copy() does not copy timestamps.
-  for file in ['doc-install.pl', 'doc-postprocess.pl', 'doxygen-extra.css', 'tagfile-to-devhelp2.xsl']:
+  for file in ['doc_install.py', 'doc_postprocess.py', 'doxygen-extra.css', 'tagfile-to-devhelp2.xsl']:
     shutil.copy(os.path.join(MMDOCTOOLDIR, file), doctool_dist_dir)
 
   # Distribute built files: tag file, devhelp file, html files.
@@ -169,6 +162,18 @@ def dist_doc():
                   copy_function=shutil.copy)
   return 0
 
+# Invoked from run_command() in meson.build.
+def get_script_property():
+  #  argv[3]
+  # <property>
+  # argv[2] (MMDOCTOOLDIR) is not used.
+  prop = sys.argv[3]
+  if prop == 'requires_perl':
+    print('false', end='') # stdout can be read in the meson.build file.
+    return 0
+  print(sys.argv[0], ': unknown property,', prop)
+  return 1
+
 # ----- Main -----
 if subcommand == 'doxygen':
   sys.exit(doxygen())
@@ -178,5 +183,7 @@ if subcommand == 'install_doc':
   sys.exit(install_doc())
 if subcommand == 'dist_doc':
   sys.exit(dist_doc())
+if subcommand == 'get_script_property':
+  sys.exit(get_script_property())
 print(sys.argv[0], ': illegal subcommand,', subcommand)
 sys.exit(1)

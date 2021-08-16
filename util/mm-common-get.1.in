@@ -44,9 +44,9 @@ are listed below.
 .BI "Documentation utilities copied to " DOCTOOL-DIR :
 .PD 0
 .IP
-.I doc-install.pl
+.I doc_install.py
 .IP
-.I doc-postprocess.pl
+.I doc_postprocess.py
 .IP
 .I doxygen.css
 .IP
