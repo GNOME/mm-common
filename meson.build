@@ -2,11 +2,12 @@
 
 project('mm-common',
   version: '1.0.3',
-  meson_version: '>= 0.54.0', # required for meson.override_dependency()
-  license: 'GPLv2+'
+  license: 'GPLv2+',
+  meson_version: '>= 0.55.0', # required for meson.add_dist_script(python3, ...)
+                              # and meson.add_install_script(python3, ...)
 )
 
-python3 = import('python').find_installation('python3')
+python3 = import('python').find_installation()
 python_version = python3.language_version()
 python_version_req = '>= 3.5'
 if not python_version.version_compare(python_version_req)
@@ -113,8 +114,7 @@ configure_file(
 
 if find_program('aclocal', required: false).found()
   meson.add_install_script(
-    python3.path(),
-    script_dir / 'extra-install-cmd.py',
+    python3, script_dir / 'extra-install-cmd.py',
     install_prefix / install_aclocal_macrodir
   )
 endif
@@ -253,7 +253,10 @@ endforeach
 
 # Create tar archive of skeletonmm for installation.
 skeletonmm_tarball_script = script_dir / 'skeletonmm-tarball.py'
-tarball_filetype = run_command(python3, skeletonmm_tarball_script, 'check')
+tarball_filetype = run_command(python3,
+  skeletonmm_tarball_script, 'check',
+  check: true,
+)
 tarball_filename = 'skeletonmm' + tarball_filetype.stdout()
 custom_target(tarball_filename,
   input: skeletonmm_files,
@@ -304,8 +307,7 @@ if not meson.is_subproject() or meson.version().version_compare('>= 0.58.0')
   # Modify the contents of the distribution directory.
   # (not allowed in a subproject if meson.version() < 0.58.0)
   meson.add_dist_script(
-    python3.path(),
-    script_dir / 'extra-dist-cmd.py',
+    python3, script_dir / 'extra-dist-cmd.py',
     project_source_root,
     project_build_root,
   )
@@ -328,7 +330,10 @@ if meson.is_subproject()
 import os
 import sys
 os.chmod(sys.argv[1], 0o755)'''
-  run_command(python3, '-c', cmd_py, project_build_root / 'mm-common-get2')
+  run_command(python3, '-c', cmd_py,
+    project_build_root / 'mm-common-get2',
+    check: true,
+  )
 
   # A main project that looks for mm-common-get shall find mm_common_get2.
   meson.override_find_program('mm-common-get', mm_common_get2)
@@ -339,11 +344,13 @@ os.chmod(sys.argv[1], 0o755)'''
     project_source_root / 'util' / 'build_scripts',
     project_build_root / meson.project_name() / 'build',
     meson_build_support_basefiles,
+    check: true,
   )
   run_command(python3, script_dir / 'copy-files.py',
     project_source_root / 'util',
     project_build_root / meson.project_name() / 'doctool',
     doctool_basefiles,
+    check: true,
   )
 
   mm_common_libstdc_dep = declare_dependency(

@@ -29,7 +29,7 @@ foreach ex : examples
   exe_file = executable(ex_name, ex_sources, resources,
     dependencies: skeletonmm_own_dep,
     implicit_include_directories: false,
-    gui_app: true,
+    win_subsystem: 'windows',
     build_by_default: build_examples
   )
 endforeach

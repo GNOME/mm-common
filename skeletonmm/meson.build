@@ -6,8 +6,7 @@ project('skeletonmm', 'cpp',
   default_options: [
     'cpp_std=c++17'
   ],
-  meson_version: '>= 0.54.0', # required for meson.override_dependency()
-                              # and dep.get_variable(internal:)
+  meson_version: '>= 0.56.0', # required for executable(..., win_subsystem: ...)
 )
 
 skeletonmm_api_version = '1.0'
@@ -42,7 +41,7 @@ macos_darwin_versions = [
 project_source_root = meson.current_source_dir()
 project_build_root = meson.current_build_dir()
 
-python3 = import('python').find_installation('python3')
+python3 = import('python').find_installation()
 python_version = python3.language_version()
 python_version_req = '>= 3.5'
 if not python_version.version_compare(python_version_req)
@@ -56,7 +55,7 @@ import os
 import sys
 sys.exit(os.path.isdir("@0@") or os.path.isfile("@0@"))
 '''.format(project_source_root / '.git')
-is_git_build = run_command(python3, '-c', cmd_py).returncode() != 0
+is_git_build = run_command(python3, '-c', cmd_py, check: false).returncode() != 0
 
 # Are we testing a dist tarball while it's being built?
 is_dist_check = project_source_root.contains('dist-unpack') and \
@@ -132,25 +131,28 @@ check_dllexport_usage = script_dir / 'check-dllexport-usage.py'
 if maintainer_mode
   # Copy files to untracked/build_scripts and untracked/doc.
   run_command(mm_common_get, '--force', script_dir,
-    project_source_root / 'untracked' / 'doc')
+    project_source_root / 'untracked' / 'doc',
+    check: true,
+  )
 else
   cmd_py = '''
 import os
 import sys
 sys.exit(os.path.isfile("@0@"))
 '''.format(generate_binding)
-  file_exists = run_command(python3, '-c', cmd_py).returncode() != 0
+  file_exists = run_command(python3, '-c', cmd_py, check: false).returncode() != 0
   if not file_exists
     error('Missing files in untracked/. You must enable maintainer-mode.')
   endif
 endif
 
 # Check if perl is required and available.
-# Done now, when the doc_reference script is available.
 doc_perl_prop = run_command(
   python3, doc_reference, 'get_script_property',
   '', # MMDOCTOOLDIR is not used
-  'requires_perl')
+  'requires_perl',
+  check: false,
+)
 doc_requires_perl = true
 if doc_perl_prop.returncode() == 0 and doc_perl_prop.stdout() == 'false'
   doc_requires_perl = false
@@ -191,13 +193,13 @@ subdir('doc/reference')
 if can_add_dist_script
   # Add a ChangeLog file to the distribution directory.
   meson.add_dist_script(
-    python3.path(), dist_changelog,
+    python3, dist_changelog,
     project_source_root,
   )
   # Add build scripts to the distribution directory, and delete .gitignore
   # files and an empty $MESON_PROJECT_DIST_ROOT/build/ directory.
   meson.add_dist_script(
-    python3.path(), dist_build_scripts,
+    python3, dist_build_scripts,
     project_source_root,
     'untracked' / 'build_scripts',
   )
