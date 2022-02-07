@@ -280,10 +280,10 @@ download_cmd = 'none'
 if get_option('use-network')
   curl = find_program('curl', required: false)
   if curl.found()
-    download_cmd = curl.path()
+    download_cmd = curl.full_path()
   else
     wget = find_program('wget', required: true)
-    download_cmd = wget.path()
+    download_cmd = wget.full_path()
   endif
 endif
 
