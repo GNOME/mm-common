@@ -1,7 +1,7 @@
 # This file is part of mm-common.
 
 project('mm-common',
-  version: '1.0.3',
+  version: '1.0.4',
   license: 'GPLv2+',
   meson_version: '>= 0.55.0', # required for meson.add_dist_script(python3, ...)
                               # and meson.add_install_script(python3, ...)

@@ -1,3 +1,16 @@
+mm-common 1.0.4 (2022-02-11)
+
+* Add util/doc_postprocess.py and util/doc_install.py.
+  Generating documentation in modules that use mm-common
+  does not require Perl in Meson builds.
+  (Kjell Ahlstedt)
+
+Meson build and skeletonmm:
+* Specify 'check' option in run_command().
+  The default value will change in future Meson releases.
+  (Kjell Ahlstedt)
+
+
 mm-common 1.0.3 (2021-05-20)
 
 Meson build:
