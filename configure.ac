@@ -20,7 +20,7 @@ AC_INIT([mm-common], [1.0.4], [https://gitlab.gnome.org/GNOME/mm-common/issues/]
 AC_PREREQ([2.59])
 AC_CONFIG_SRCDIR([util/mm-common-prepare.in])
 
-AM_INIT_AUTOMAKE([1.9 -Wno-portability check-news no-dist-gzip dist-xz no-define std-options])
+AM_INIT_AUTOMAKE([1.9 -Wno-portability check-news no-dist-gzip dist-xz no-define std-options foreign])
 # Support silent build rules.
 # Disable by either passing --disable-silent-rules to configure or passing V=1 to make.
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])

@@ -77,7 +77,7 @@ noinst_DATA = \
 	doctags/mm-common-libstdc++-uninstalled.pc \
 	util/mm-common-util-uninstalled.pc
 
-dist_doc_DATA = README
+dist_doc_DATA = README.md OVERVIEW.md
 doc_DATA = skeletonmm.tar.gz
 
 skeletonmm_data_files =							\

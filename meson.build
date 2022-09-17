@@ -272,7 +272,7 @@ custom_target(tarball_filename,
   install_dir: install_docdir,
   install: true
 )
-install_data('README', install_dir: install_docdir)
+install_data('OVERVIEW.md', 'README.md', install_dir: install_docdir)
 
 # Either curl or wget is required for downloading libstdc++.tag,
 # used by Doxygen.
