@@ -7,12 +7,7 @@ project('mm-common',
                               # and meson.add_install_script(python3, ...)
 )
 
-python3 = import('python').find_installation()
-python_version = python3.language_version()
-python_version_req = '>= 3.5'
-if not python_version.version_compare(python_version_req)
-  error('Requires Python @0@, found @1@.'.format(python_version_req, python_version))
-endif
+python3 = find_program('python3', version: '>= 3.5')
 
 # Use these instead of meson.source_root() and meson.build_root().
 # source_root() and build_root() are not useful, if this is a subproject.
