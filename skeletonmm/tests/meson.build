@@ -1,6 +1,6 @@
 # tests
 
-# input: gnome, skeletonmm_own_dep
+# input: gnome, skeletonmm_own_dep, build_tests
 
 tests = [
 # [[dir-name], exe-name, [sources]]
@@ -30,8 +30,11 @@ foreach ex : tests
   exe_file = executable(ex_name, ex_sources, resources,
     dependencies: skeletonmm_own_dep,
     implicit_include_directories: false,
-    build_by_default: true
+    build_by_default: build_tests
   )
 
-  test(dir.underscorify(), exe_file)
+  # If exe_file is a test program, it is built by default unconditionally.
+  if build_tests
+    test(ex_name, exe_file)
+  endif
 endforeach

@@ -10,3 +10,5 @@ option('build-documentation', type: 'combo', choices: ['false', 'if-maintainer-m
   value: 'if-maintainer-mode', description: 'Build and install the documentation')
 option('build-examples', type: 'boolean', value: true,
   description: 'Build example programs')
+option('build-tests', type: 'boolean', value: true,
+  description: 'Build test programs')

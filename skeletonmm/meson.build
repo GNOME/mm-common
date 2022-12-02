@@ -42,12 +42,7 @@ macos_darwin_versions = [
 project_source_root = meson.current_source_dir()
 project_build_root = meson.current_build_dir()
 
-python3 = import('python').find_installation()
-python_version = python3.language_version()
-python_version_req = '>= 3.5'
-if not python_version.version_compare(python_version_req)
-  error('Requires Python @0@, found @1@.'.format(python_version_req, python_version))
-endif
+python3 = find_program('python3', version: '>= 3.5')
 
 # Do we build from a git repository?
 # Suppose we do if and only if the meson.build file is tracked by git.
@@ -82,6 +77,7 @@ build_documentation_opt = get_option('build-documentation')
 build_documentation = build_documentation_opt == 'true' or \
                      (build_documentation_opt == 'if-maintainer-mode' and maintainer_mode)
 build_examples = get_option('build-examples')
+build_tests = get_option('build-tests')
 
 # Installation directories are relative to {prefix}.
 install_prefix = get_option('prefix')
@@ -264,6 +260,7 @@ summary = [
   '    Build deprecated API: @0@'.format(build_deprecated_api),
   'Build HTML documentation: @0@@1@'.format(build_documentation_opt, real_build_documentation),
   '  Build example programs: @0@'.format(build_examples),
+  '     Build test programs: @0@'.format(build_tests),
   'Directories:',
   '                  prefix: @0@'.format(install_prefix),
   '              includedir: @0@'.format(install_prefix / install_includedir),
