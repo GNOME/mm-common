@@ -1,3 +1,25 @@
+mm-common 1.0.5 (2022-12-02)
+
+* Convert README to README.md and OVERVIEW.md.
+  (Kjell Ahlstedt)
+
+Meson build:
+* util/meson_aux: Make tarball reproducible.
+  (Jelle van der Waa) Merge request 6
+* Simplify lookup of python command.
+  (Kjell Ahlstedt) Pull request libsigcplusplus#83 (wael)
+
+Skeletonmm:
+* Avoid configuration warnings.
+  (Kjell Ahlstedt)
+* Detect if we build from a git subtree.
+  (Kjell Ahlstedt) Merge request gtkmm!72 (William Roy)
+* Simplify lookup of python command.
+  (Kjell Ahlstedt) Pull request libsigcplusplus#83 (wael)
+* Add build-tests option.
+  (Kjell Ahlstedt) Pull request libsigcplusplus#84 (Fabrice Fontaine)
+
+
 mm-common 1.0.4 (2022-02-11)
 
 * Add util/doc_postprocess.py and util/doc_install.py.
