@@ -37,10 +37,9 @@ macos_darwin_versions = [
   '@0@.@1@'.format(libtool_soversion[0] + 1, libtool_soversion[1])
 ]
 
-# Use these instead of meson.source_root() and meson.build_root() in subdirectories.
-# source_root() and build_root() are not useful, if this is a subproject.
-project_source_root = meson.current_source_dir()
-project_build_root = meson.current_build_dir()
+# Source and build root directories of the current (sub)project.
+project_source_root = meson.project_source_root()
+project_build_root = meson.project_build_root()
 
 python3 = find_program('python3', version: '>= 3.5')
 
@@ -48,12 +47,17 @@ python3 = find_program('python3', version: '>= 3.5')
 # Suppose we do if and only if the meson.build file is tracked by git.
 cmd_py = '''
 import shutil, subprocess, sys
-if not shutil.which('git'):
+git_exe = shutil.which('git')
+if not git_exe:
   sys.exit(1)
-cmd = [ 'git', 'ls-files', '--error-unmatch', 'meson.build' ]
-sys.exit(subprocess.run(cmd, cwd="@0@", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode)
-'''.format(project_source_root)
-is_git_build = run_command(python3, '-c', cmd_py, check: false).returncode() == 0
+cmd = [ git_exe, 'ls-files', '--error-unmatch', 'meson.build' ]
+sys.exit(subprocess.run(cmd, cwd=sys.argv[1], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode)
+'''
+is_git_build = run_command(
+  python3, '-c', cmd_py,
+  project_source_root,
+  check: false,
+).returncode() == 0
 
 # Are we testing a dist tarball while it's being built?
 is_dist_check = project_source_root.contains('dist-unpack') and \
