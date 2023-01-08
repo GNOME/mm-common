@@ -139,16 +139,8 @@ if maintainer_mode
     project_source_root / 'untracked' / 'doc',
     check: true,
   )
-else
-  cmd_py = '''
-import os
-import sys
-sys.exit(os.path.isfile("@0@"))
-'''.format(generate_binding)
-  file_exists = run_command(python3, '-c', cmd_py, check: false).returncode() != 0
-  if not file_exists
-    error('Missing files in untracked/. You must enable maintainer-mode.')
-  endif
+elif not import('fs').is_file(generate_binding)
+  error('Missing files in untracked/. You must enable maintainer-mode.')
 endif
 
 # Check if perl is required and available.
