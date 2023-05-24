@@ -313,7 +313,7 @@ if meson.is_subproject()
   conf_data_subproj = configuration_data()
   conf_data_subproj.merge_from(conf_data)
   conf_data_subproj.set('configure_input', 'mm-common-get2 (for execution uninstalled).  Generated from util/mm-common-get.in')
-  conf_data_subproj.set('datadir_py', project_build_root)
+  conf_data_subproj.set('datadir_py', import('fs').as_posix(project_build_root))
   mm_common_get2 = configure_file(
     input: 'util' / 'mm-common-get.in',
     output: 'mm-common-get2',
