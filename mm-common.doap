@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
@@ -6,18 +7,29 @@
 
   <name xml:lang="en">mm-common</name>
   <shortdesc xml:lang="en">Common build files of the C++ bindings</shortdesc>
-  <description>The mm-common module provides the build infrastructure and utilities
+  <description xml:lang="en">
+The mm-common module provides the build infrastructure and utilities
 shared among the GNOME C++ binding libraries. It is only a required
 dependency for building the C++ bindings from the gnome.org version
 control repository. An installation of mm-common is not required for
-building tarball releases, unless configured to use maintainer-mode.</description>
-  <homepage rdf:resource="http://www.gtkmm.org/" />
-  <mailing-list rdf:resource="mailto:gtkmm-list@gnome.org" />
-  <download-page rdf:resource="http://download.gnome.org/sources/mm-common/" />
+building tarball releases, unless configured to use maintainer-mode.
+  </description>
+  <homepage rdf:resource="https://www.gtkmm.org/" />
+  <developer-forum rdf:resource="https://discourse.gnome.org/tag/cplusplus/" />
+  <download-page rdf:resource="https://download.gnome.org/sources/mm-common/" />
   <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/mm-common/issues/" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
   <programming-language>C++</programming-language>
 
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Kjell Ahlstedt</foaf:name>
+      <foaf:mbox rdf:resource="mailto:kjellahlstedt@gmail.com" />
+      <gnome:userid>kjellahl</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+  <!-- daniel and murrayc are not members of the gnomecvs group
+       Rejected by https://gitlab.gnome.org/Infrastructure/sysadmin-bin/-/blob/master/git/validate-doap
   <maintainer>
     <foaf:Person>
       <foaf:name>Daniel Elstner</foaf:name>
@@ -32,4 +44,5 @@ building tarball releases, unless configured to use maintainer-mode.</descriptio
       <gnome:userid>murrayc</gnome:userid>
     </foaf:Person>
   </maintainer>
+  -->
 </Project>
