@@ -2,6 +2,8 @@
 
 This module is part of the GNOME C++ bindings effort <http://www.gtkmm.org/>.
 
+# General information
+
 The mm-common module provides the build infrastructure and utilities
 shared among the GNOME C++ binding libraries.  It is only a required
 dependency for building the C++ bindings from the gnome.org version
@@ -12,6 +14,25 @@ Release archives of mm-common include the Doxygen tag file for the
 GNU C++ Library reference documentation.  It is covered by the same
 licence as the source code it was extracted from.  More information
 is available at <http://gcc.gnu.org/onlinedocs/libstdc++/>.
+
+Web site
+ - https://www.gtkmm.org
+
+Download location
+ - https://download.gnome.org/sources/mm-common
+
+Discussion on GNOME's discourse forum
+ - https://discourse.gnome.org/tag/cplusplus
+ - https://discourse.gnome.org/c/platform
+
+Git repository
+ - https://gitlab.gnome.org/GNOME/mm-common
+
+Bugs can be reported to
+ - https://gitlab.gnome.org/GNOME/mm-common/issues
+
+Patches can be submitted to
+ - https://gitlab.gnome.org/GNOME/mm-common/merge_requests
 
 # Autotools or Meson?
 
