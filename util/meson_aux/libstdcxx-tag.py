@@ -21,24 +21,32 @@ if not output_dirname:
 libstdcxx_tag_url = 'http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/' + output_filename
 
 def curl():
-  cmd = [
-    subcommand,
-    '--compressed',
+  options = [
     '--connect-timeout', '300',
     '--globoff',
     '--location',
-    '--max-time', '3600',
+    '--max-time', '300',
     '--remote-time',
     '--retry', '5',
   ]
   if os.path.isfile(output_path):
     # Don't download the tag file unless it's newer than the local file.
-    cmd += ['--time-cond', output_path]
+    options += ['--time-cond', output_path]
 
-  cmd += [
+  options += [
     '--output', output_path,
     libstdcxx_tag_url,
   ]
+  cmd = [
+    subcommand,
+    '--compressed',
+  ] + options
+  returncode = subprocess.run(cmd).returncode
+  if returncode == 0:
+    return returncode
+
+  print('Trying curl without compression.', flush=True)
+  cmd = [subcommand] + options
   return subprocess.run(cmd).returncode
 
 def wget():
