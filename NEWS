@@ -1,3 +1,29 @@
+mm-common 1.0.6 (2024-01-07)
+
+* MM_AX_CXX_COMPILE_STDCXX(): Support C++20
+  (Murray Cumming) Issue #3
+* util/meson_aux/libstdcxx-tag.py: Try curl without compression
+  (Kjell Ahlstedt) Issue libsigcplusplus#98
+
+Meson build:
+* Fix use as subproject on Windows
+  Issue libsigcplusplus#89 (Dan Liebault)
+  (Chun-wei Fan) Merge request !7
+* Don't fail if warning_level=everything
+* Meson: Donʼt fail if warning_level=everything
+  (Daniel Boles, Kjell Ahlstedt) Merge request gtkmm!87
+
+Skeletonmm:
+* Fix the evaluation of is_git_build on Windows
+  (Kjell Ahlstedt) Issue gtkmm#131 (William Roy)
+* Simplify if-file-exists test
+  (Kjell Ahlstedt)
+
+Documentation:
+* Remove AUTHORS and add info to README.md
+  (Kjell Ahlstedt) Issue gtkmm#140
+
+
 mm-common 1.0.5 (2022-12-02)
 
 * Convert README to README.md and OVERVIEW.md.
@@ -5,7 +31,7 @@ mm-common 1.0.5 (2022-12-02)
 
 Meson build:
 * util/meson_aux: Make tarball reproducible.
-  (Jelle van der Waa) Merge request 6
+  (Jelle van der Waa) Merge request !6
 * Simplify lookup of python command.
   (Kjell Ahlstedt) Pull request libsigcplusplus#83 (wael)
 
