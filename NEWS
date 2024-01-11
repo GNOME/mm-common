@@ -10,7 +10,6 @@ Meson build:
   Issue libsigcplusplus#89 (Dan Liebault)
   (Chun-wei Fan) Merge request !7
 * Don't fail if warning_level=everything
-* Meson: Donʼt fail if warning_level=everything
   (Daniel Boles, Kjell Ahlstedt) Merge request gtkmm!87
 
 Skeletonmm:
