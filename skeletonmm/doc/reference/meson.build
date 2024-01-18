@@ -2,7 +2,7 @@
 
 # Input: built_files_root, project_source_root, skeletonmm_pcname, python3,
 #        hg_ccg_basenames, extra_h_files, built_h_file_targets, install_datadir,
-#        doc_reference, can_add_dist_script
+#        doc_reference, can_add_dist_script, dot
 # Output: install_docdir, install_devhelpdir, if build_documentation: tag_file
 
 tag_file_modules = [
@@ -62,6 +62,7 @@ doc_conf_data.set('abs_top_builddir', built_files_root)
 doc_conf_data.set('abs_top_srcdir', project_source_root)
 doc_conf_data.set('SKELETONMM_MODULE_NAME', book_name)
 doc_conf_data.set('DOXYGEN_TAGFILES', doxygen_tagfiles)
+doc_conf_data.set('DOXYGEN_HAVE_DOT', dot.found() ? 'YES' : 'NO')
 
 doxyfile = configure_file(
   input: 'Doxyfile.in',
