@@ -37,13 +37,18 @@ The mm-common-get shell script is installed in ${bindir} and must be
 invoked with run_command() early in a meson.build file. The meson.build file
 should contain code similar to
 ```
-  python3 = import('python').find_installation()
+  python3 = find_program('python3', version: '>= 3.7')
+  # Do we build from a git repository?
+  # Suppose we do if and only if the meson.build file is tracked by git.
   cmd_py = '''
-  import os
-  import sys
-  sys.exit(os.path.isdir("@0@") or os.path.isfile("@0@"))
-  '''.format(project_source_root / '.git')
-  is_git_build = run_command(python3, '-c', cmd_py, check: false).returncode() != 0
+  import shutil, subprocess, sys
+  git_exe = shutil.which('git')
+  if not git_exe:
+    sys.exit(1)
+  cmd = [ git_exe, 'ls-files', '--error-unmatch', 'meson.build' ]
+  sys.exit(subprocess.run(cmd, cwd=sys.argv[1], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode)
+  '''
+  is_git_build = run_command(python3, '-c', cmd_py, project_source_root, check: false).returncode() == 0
   maintainer_mode_opt = get_option('maintainer-mode')
   maintainer_mode = maintainer_mode_opt == 'true' or \
                    (maintainer_mode_opt == 'if-git-build' and is_git_build)
