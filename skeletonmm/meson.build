@@ -7,7 +7,7 @@ project('skeletonmm', 'cpp',
     'cpp_std=c++17',
     'warning_level=1',
   ],
-  meson_version: '>= 0.56.0', # required for executable(..., win_subsystem: ...)
+  meson_version: '>= 0.62.0', # required for variables in pkgconfig.generate()
 )
 
 skeletonmm_api_version = '1.0'
@@ -41,7 +41,7 @@ macos_darwin_versions = [
 project_source_root = meson.project_source_root()
 project_build_root = meson.project_build_root()
 
-python3 = find_program('python3', version: '>= 3.5')
+python3 = find_program('python3', version: '>= 3.7')
 
 # Do we build from a git repository?
 # Suppose we do if and only if the meson.build file is tracked by git.
@@ -105,11 +105,11 @@ glibmm_dep = dependency('glibmm-2.68', version: glibmm_req)
 # or: glibmm_dep = dependency('glibmm-2.4', version: glibmm_req)
 skeleton_dep = dependency('skeleton-1.0', version: skeleton_req)
 skeletonmm_build_dep = [glibmm_dep, skeleton_dep]
-skeletonmm_requires = ' '.join([
-  'glibmm-2.68', glibmm_req,
-# or:  'glibmm-2.4', glibmm_req,
-  'skeleton-1.0', skeleton_req,
-])
+skeletonmm_requires = [
+  'glibmm-2.68 ' + glibmm_req,
+  # or:  'glibmm-2.4 ' + glibmm_req,
+  'skeleton-1.0 ' + skeleton_req,
+]
 gnome = import('gnome')
 
 # Some dependencies are required only in maintainer mode and/or if
@@ -227,7 +227,7 @@ if meson.is_subproject()
   pkgconfig_vars = {
     'gmmprocm4dir': project_source_root / 'tools' / 'm4',
     'htmlrefdir': install_prefix / install_docdir / 'reference' / 'html',
-    'htmlrefpub': 'http://library.gnome.org/devel/' + pkg_conf_data.get_unquoted('PACKAGE_TARNAME') + '/unstable/'
+    'htmlrefpub': 'https://gnome.pages.gitlab.gnome.org' / meson.project_name(),
   }
   if build_documentation
     pkgconfig_vars += {'doxytagfile': tag_file.full_path()}

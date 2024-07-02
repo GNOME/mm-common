@@ -7,7 +7,7 @@ project('mm-common',
                               # and meson.add_install_script(python3, ...)
 )
 
-python3 = find_program('python3', version: '>= 3.5')
+python3 = find_program('python3', version: '>= 3.7')
 
 # Use these instead of meson.source_root() and meson.build_root().
 # source_root() and build_root() are not useful, if this is a subproject.
@@ -217,9 +217,7 @@ skeletonmm_basefiles = [
   'examples/meson.build',
   'examples/example1/main.cc',
   'skeleton/meson.build',
-  'skeleton/skeletonmm-uninstalled.pc.in',
   'skeleton/skeletonmm.h',
-  'skeleton/skeletonmm.pc.in',
   'skeleton/skeletonmmconfig.h.in',
   'skeleton/skeletonmm/meson.build',
   'skeleton/skeletonmm/wrap_init.h',

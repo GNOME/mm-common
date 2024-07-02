@@ -94,9 +94,7 @@ skeletonmm_data_files =							\
 	skeletonmm/examples/meson.build					\
 	skeletonmm/examples/example1/main.cc		\
 	skeletonmm/skeleton/meson.build					\
-	skeletonmm/skeleton/skeletonmm-uninstalled.pc.in \
 	skeletonmm/skeleton/skeletonmm.h				\
-	skeletonmm/skeleton/skeletonmm.pc.in				\
 	skeletonmm/skeleton/skeletonmmconfig.h.in			\
 	skeletonmm/skeleton/skeletonmm/meson.build			\
 	skeletonmm/skeleton/skeletonmm/wrap_init.h			\
