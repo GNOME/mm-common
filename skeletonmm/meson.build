@@ -105,11 +105,7 @@ glibmm_dep = dependency('glibmm-2.68', version: glibmm_req)
 # or: glibmm_dep = dependency('glibmm-2.4', version: glibmm_req)
 skeleton_dep = dependency('skeleton-1.0', version: skeleton_req)
 skeletonmm_build_dep = [glibmm_dep, skeleton_dep]
-skeletonmm_requires = [
-  'glibmm-2.68 ' + glibmm_req,
-  # or:  'glibmm-2.4 ' + glibmm_req,
-  'skeleton-1.0 ' + skeleton_req,
-]
+
 gnome = import('gnome')
 
 # Some dependencies are required only in maintainer mode and/or if

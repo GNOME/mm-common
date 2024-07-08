@@ -152,6 +152,33 @@ else # not maintainer_mode
 
 endif
 
+# Generate .pc files, used by pkg-config.
+pkg_config = import('pkgconfig')
+pc_common_variables = [
+  'doxytagfile=${docdir}/reference/' + skeletonmm_pcname + '.tag',
+  'htmlrefdir=${docdir}/reference/html',
+  'htmlrefpub=https://gnome.pages.gitlab.gnome.org/' + meson.project_name(),
+]
+pc_variables = [
+  'gmmprocm4dir=${libdir}/' + skeletonmm_pcname + '/proc/m4',
+  'docdir=${datadir}/doc/' + skeletonmm_pcname,
+] + pc_common_variables
+pc_uninstalled_variables = [
+  'gmmprocm4dir=${srcdir}/tools/m4',
+  'docdir=${prefix}/doc',
+] + pc_common_variables
+
+pkg_config.generate(skeletonmm_library,
+  filebase: skeletonmm_pcname,
+  variables: pc_variables,
+  uninstalled_variables: pc_uninstalled_variables,
+  name: meson.project_name(),
+  description: 'C++ binding for skeleton',
+  url: 'https://www.gtkmm.org/',
+  subdirs: [skeletonmm_pcname],
+  extra_cflags: ['-I${libdir}/' + skeletonmm_pcname + '/include'],
+)
+
 # Install built .h and _p.h files.
 meson.add_install_script(
   python3, generate_binding, 'install_built_h_files',
