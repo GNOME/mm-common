@@ -2,7 +2,7 @@
 
 # Input: skeletonmm_build_dep, skeletonmm_pcname, maintainer_mode, project_source_root,
 #        generate_binding, m4_files, skeletonmm_libversion, install_includedir,
-#        macos_darwin_versions, python3, can_add_dist_script
+#        macos_darwin_versions, python3
 # Output: hg_ccg_basenames, extra_h_files, built_h_file_targets, built_files_root,
 #         skeletonmm_own_dep
 
@@ -187,15 +187,13 @@ meson.add_install_script(
   hg_ccg_basenames
 )
 
-if can_add_dist_script
-  # Distribute built files.
-  meson.add_dist_script(
-    python3, generate_binding, 'dist_built_files',
-    built_h_cc_dir,
-    untracked_skeletonmm,
-    hg_ccg_basenames,
-  )
-endif
+# Distribute built files.
+meson.add_dist_script(
+  python3, generate_binding, 'dist_built_files',
+  built_h_cc_dir,
+  untracked_skeletonmm,
+  hg_ccg_basenames,
+)
 
 # This is used when building example programs and test programs.
 # It's also a part of skeletonmm_dep, when skeletonmm is a subproject.

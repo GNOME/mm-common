@@ -195,29 +195,24 @@ endif
 warning_flags = cpp_compiler.get_supported_arguments(warning_flags)
 add_project_arguments(warning_flags, language: 'cpp')
 
-# add_dist_script() is not allowed in a subproject if meson.version() < 0.58.0.
-can_add_dist_script = not meson.is_subproject() or meson.version().version_compare('>= 0.58.0')
-
 subdir('tools/extra_defs_gen')
 subdir('skeleton')
 subdir('examples')
 subdir('tests')
 subdir('doc/reference')
 
-if can_add_dist_script
-  # Add a ChangeLog file to the distribution directory.
-  meson.add_dist_script(
-    python3, dist_changelog,
-    project_source_root,
-  )
-  # Add build scripts to the distribution directory, and delete .gitignore
-  # files and an empty $MESON_PROJECT_DIST_ROOT/build/ directory.
-  meson.add_dist_script(
-    python3, dist_build_scripts,
-    project_source_root,
-    'untracked' / 'build_scripts',
-  )
-endif
+# Add a ChangeLog file to the distribution directory.
+meson.add_dist_script(
+  python3, dist_changelog,
+  project_source_root,
+)
+# Add build scripts to the distribution directory, and delete .gitignore
+# files and an empty $MESON_PROJECT_DIST_ROOT/build/ directory.
+meson.add_dist_script(
+  python3, dist_build_scripts,
+  project_source_root,
+  'untracked' / 'build_scripts',
+)
 
 if meson.is_subproject()
   pkgconfig_vars = {

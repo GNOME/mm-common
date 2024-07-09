@@ -2,7 +2,7 @@
 
 # Input: built_files_root, project_source_root, skeletonmm_pcname, python3,
 #        hg_ccg_basenames, extra_h_files, built_h_file_targets, install_datadir,
-#        doc_reference, can_add_dist_script, dot
+#        doc_reference, dot
 # Output: install_docdir, install_devhelpdir, if build_documentation: tag_file
 
 tag_file_modules = [
@@ -153,14 +153,12 @@ meson.add_install_script(
   docinstall_flags
 )
 
-if can_add_dist_script
-  # Distribute built files and files copied by mm-common-prepare.
-  meson.add_dist_script(
-    python3, doc_reference, 'dist_doc',
-    doctool_dir,
-    doctool_dist_dir,
-    meson.current_build_dir(),
-    tag_file.full_path(),
-    devhelp_file.full_path(),
-  )
-endif
+# Distribute built files and files copied by mm-common-prepare.
+meson.add_dist_script(
+  python3, doc_reference, 'dist_doc',
+  doctool_dir,
+  doctool_dist_dir,
+  meson.current_build_dir(),
+  tag_file.full_path(),
+  devhelp_file.full_path(),
+)
