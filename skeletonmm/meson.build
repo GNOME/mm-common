@@ -129,7 +129,7 @@ if build_documentation and not dot.found()
 endif
 
 # Where to find gmmproc and generate_wrap_init.pl.
-gmmproc_dir = glibmm_dep.get_variable(pkgconfig: 'gmmprocdir', internal: 'gmmprocdir')
+gmmproc_dir = glibmm_dep.get_variable('gmmprocdir')
 
 # Script files copied to 'untracked' by mm-common-get.
 script_dir = project_source_root / 'untracked' / 'build_scripts'
@@ -218,7 +218,7 @@ if meson.is_subproject()
   pkgconfig_vars = {
     'gmmprocm4dir': project_source_root / 'tools' / 'm4',
     'htmlrefdir': install_prefix / install_docdir / 'reference' / 'html',
-    'htmlrefpub': 'https://gnome.pages.gitlab.gnome.org' / meson.project_name(),
+    'htmlrefpub': 'https://gnome.pages.gitlab.gnome.org/' + meson.project_name(),
   }
   if build_documentation
     pkgconfig_vars += {'doxytagfile': tag_file.full_path()}
