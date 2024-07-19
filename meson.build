@@ -3,8 +3,7 @@
 project('mm-common',
   version: '1.0.6',
   license: 'GPLv2+',
-  meson_version: '>= 0.55.0', # required for meson.add_dist_script(python3, ...)
-                              # and meson.add_install_script(python3, ...)
+  meson_version: '>= 0.62.0', # required for variables in pkgconfig.generate()
 )
 
 python3 = find_program('python3', version: '>= 3.7')
@@ -34,15 +33,11 @@ install_mandir = get_option('mandir')
 install_man1dir = install_mandir / 'man1'
 
 # Configuration data for built files:
-#   doctags/mm-common-libstdc++.pc.in -> mm-common-libstdc++.pc
-#   doctags/mm-common-libstdc++-uninstalled.pc.in -> mm-common-libstdc++-uninstalled.pc
 #   macros/mm-common.m4.in -> mm-common.m4
 #   util/mm-common-get.1.in -> mm-common-get.1
 #   util/mm-common-get.in -> mm-common-get
 #   util/mm-common-prepare.1.in -> mm-common-prepare.1
 #   util/mm-common-prepare.in -> mm-common-prepare
-#   util/mm-common-util.pc.in -> mm-common-util.pc
-#   util/mm-common-util-uninstalled.pc.in -> mm-common-util-uninstalled.pc
 conf_data = configuration_data()
 conf_data.set('prefix', install_prefix)
 conf_data.set('datarootdir', '${prefix}' / install_datadir)
@@ -135,30 +130,49 @@ endforeach
 install_data(doctool_files, install_dir: install_doctooldir)
 
 # Let other modules find the utils with pkg-config.
-configure_file(
-  input: 'doctags' / 'mm-common-libstdc++.pc.in',
-  output: '@BASENAME@',
-  configuration: conf_data,
-  install_dir: install_pkgconfigdir
+
+# mm-common-libstdc++.pc
+pkg_config = import('pkgconfig')
+pc_common_variables = [
+  'htmlrefpub=https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/',
+]
+pc_variables = [
+  'datarootdir=${datadir}',
+  'pkgdatadir=${datadir}/' + meson.project_name(),
+  'doxytagfile=${pkgdatadir}/doctags/libstdc++.tag',
+] + pc_common_variables
+pc_uninstalled_variables = [
+  'doxytagfile=${prefix}/libstdc++.tag',
+] + pc_common_variables
+
+pkg_config.generate(
+  filebase: 'mm-common-libstdc++',
+  variables: pc_variables,
+  uninstalled_variables: pc_uninstalled_variables,
+  name: 'mm-common-libstdc++',
+  description: 'mm-common\'s GNU libstdc++ metadata module',
+  url: 'https://www.gtkmm.org/',
+  install_dir: install_pkgconfigdir,
 )
 
-configure_file(
-  input: 'util' / 'mm-common-util.pc.in',
-  output: '@BASENAME@',
-  configuration: conf_data,
-  install_dir: install_pkgconfigdir
-)
+# mm-common-util.pc
+pc_variables = [
+  'datarootdir=${datadir}',
+  'pkgdatadir=${datadir}/' + meson.project_name(),
+  'doctooldir=${pkgdatadir}/doctool',
+]
+pc_uninstalled_variables = [
+  'doctooldir=${srcdir}/util',
+]
 
-configure_file(
-  input: 'doctags' / 'mm-common-libstdc++-uninstalled.pc.in',
-  output: '@BASENAME@',
-  configuration: conf_data,
-)
-
-configure_file(
-  input: 'util' / 'mm-common-util-uninstalled.pc.in',
-  output: '@BASENAME@',
-  configuration: conf_data,
+pkg_config.generate(
+  filebase: 'mm-common-util',
+  variables: pc_variables,
+  uninstalled_variables: pc_uninstalled_variables,
+  name: 'mm-common-util',
+  description: 'mm-common\'s doctool build utilities for the GNOME C++ bindings',
+  url: 'https://www.gtkmm.org/',
+  install_dir: install_pkgconfigdir,
 )
 
 # mm-common-get command.
@@ -271,13 +285,7 @@ install_data('OVERVIEW.md', 'README.md', install_dir: install_docdir)
 # used by Doxygen.
 download_cmd = 'none'
 if get_option('use-network')
-  curl = find_program('curl', required: false)
-  if curl.found()
-    download_cmd = curl.full_path()
-  else
-    wget = find_program('wget', required: true)
-    download_cmd = wget.full_path()
-  endif
+  download_cmd = find_program('curl', 'wget').full_path()
 endif
 
 # Download libstdc++.tag if it does not exist or if it's out of date.
@@ -296,15 +304,12 @@ tag_file = custom_target('libstdc++.tag',
   install: true
 )
 
-if not meson.is_subproject() or meson.version().version_compare('>= 0.58.0')
-  # Modify the contents of the distribution directory.
-  # (not allowed in a subproject if meson.version() < 0.58.0)
-  meson.add_dist_script(
-    python3, script_dir / 'extra-dist-cmd.py',
-    project_source_root,
-    project_build_root,
-  )
-endif
+# Modify the contents of the distribution directory.
+meson.add_dist_script(
+  python3, script_dir / 'extra-dist-cmd.py',
+  project_source_root,
+  project_build_root,
+)
 
 if meson.is_subproject()
   # A version of mm-common-get that can be executed uninstalled.
