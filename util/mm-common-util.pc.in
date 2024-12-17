@@ -7,4 +7,4 @@ doctooldir=${pkgdatadir}/doctool
 Name: mm-common-util
 Description: mm-common's doctool build utilities for the GNOME C++ bindings
 Version: @PACKAGE_VERSION@
-URL: http://www.gtkmm.org/
+URL: https://gtkmm.gnome.org/

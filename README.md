@@ -1,6 +1,6 @@
 # mm-common
 
-This module is part of the GNOME C++ bindings effort <http://www.gtkmm.org/>.
+This module is part of the GNOME C++ bindings effort <https://gtkmm.gnome.org/>.
 
 # General information
 
@@ -16,7 +16,7 @@ licence as the source code it was extracted from.  More information
 is available at <http://gcc.gnu.org/onlinedocs/libstdc++/>.
 
 Web site
- - https://www.gtkmm.org
+ - https://gtkmm.gnome.org
 
 Download location
  - https://download.gnome.org/sources/mm-common

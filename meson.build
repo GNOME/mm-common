@@ -151,7 +151,7 @@ pkg_config.generate(
   uninstalled_variables: pc_uninstalled_variables,
   name: 'mm-common-libstdc++',
   description: 'mm-common\'s GNU libstdc++ metadata module',
-  url: 'https://www.gtkmm.org/',
+  url: 'https://gtkmm.gnome.org/',
   install_dir: install_pkgconfigdir,
 )
 
@@ -171,7 +171,7 @@ pkg_config.generate(
   uninstalled_variables: pc_uninstalled_variables,
   name: 'mm-common-util',
   description: 'mm-common\'s doctool build utilities for the GNOME C++ bindings',
-  url: 'https://www.gtkmm.org/',
+  url: 'https://gtkmm.gnome.org/',
   install_dir: install_pkgconfigdir,
 )
 

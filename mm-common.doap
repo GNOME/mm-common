@@ -14,7 +14,7 @@ dependency for building the C++ bindings from the gnome.org version
 control repository. An installation of mm-common is not required for
 building tarball releases, unless configured to use maintainer-mode.
   </description>
-  <homepage rdf:resource="https://www.gtkmm.org/" />
+  <homepage rdf:resource="https://gtkmm.gnome.org/" />
   <developer-forum rdf:resource="https://discourse.gnome.org/tag/cplusplus/" />
   <download-page rdf:resource="https://download.gnome.org/sources/mm-common/" />
   <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/mm-common/issues/" />
@@ -30,6 +30,7 @@ building tarball releases, unless configured to use maintainer-mode.
   </maintainer>
   <!-- daniel and murrayc are not members of the gnomecvs group
        Rejected by https://gitlab.gnome.org/Infrastructure/sysadmin-bin/-/blob/master/git/validate-doap
+       Moved to https://gitlab.gnome.org/Infrastructure/gitaly-custom-hooks/-/blob/main/bin/validate-doap
   <maintainer>
     <foaf:Person>
       <foaf:name>Daniel Elstner</foaf:name>

@@ -6,8 +6,8 @@
 
   <name xml:lang="en">skeletonmm</name>
   <shortdesc xml:lang="en">C++ bindings for the skeleton library</shortdesc>
-  <homepage rdf:resource="http://www.gtkmm.org/" />
-  <mailing-list rdf:resource="mailto:gtkmm-list@gnome.org" />
+  <homepage rdf:resource="https://gtkmm.gnome.org/" />
+  <developer-forum rdf:resource="https://discourse.gnome.org/tag/cplusplus/" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#bindings" />
   <programming-language>C++</programming-language>
 

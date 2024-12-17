@@ -174,7 +174,7 @@ pkg_config.generate(skeletonmm_library,
   uninstalled_variables: pc_uninstalled_variables,
   name: meson.project_name(),
   description: 'C++ binding for skeleton',
-  url: 'https://www.gtkmm.org/',
+  url: 'https://gtkmm.gnome.org/',
   subdirs: [skeletonmm_pcname],
   extra_cflags: ['-I${libdir}/' + skeletonmm_pcname + '/include'],
 )
