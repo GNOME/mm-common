@@ -17,6 +17,7 @@ variables:
   MESON_DEPS: git
               python3-pygments
               python3-setuptools
+              curl
               meson
               ninja-build
 
