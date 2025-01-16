@@ -1,0 +1,51 @@
+# 2025-01-15: ubuntu:latest = 24.04, ubuntu:rolling = 24.10, ubuntu:devel = 25.04
+# See https://hub.docker.com/_/ubuntu
+image: ubuntu:rolling
+
+include:
+  - component: "gitlab.gnome.org/GNOME/citemplates/release-service@master"
+    inputs:
+      job-stage: "release"
+      dist-job-name: "build_release_tarball"
+      tarball-artifact-path: "_build/meson-dist/${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.tar.xz"
+
+stages:
+  - build
+  - release
+
+variables:
+  MESON_DEPS: git
+              python3-pygments
+              python3-setuptools
+              curl
+              meson
+              ninja-build
+
+.build_default:
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt update && apt -y upgrade && apt -y install $DEPENDENCIES
+
+build_release_tarball:
+  extends: .build_default
+  stage: build
+  needs: []
+  rules:
+    - if: $CI_COMMIT_TAG  # Run this job when a tag is created
+    - when: manual        # and when manually triggered.
+      allow_failure: true # Don't block the CI pipeline until triggered.
+  variables:
+    DEPENDENCIES: $MESON_DEPS
+  script:
+    - mkdir _build && cd _build
+    - meson setup -Duse-network=true
+    # Must compile before 'meson dist' to fetch libstdc++.tag.
+    - meson compile
+    - meson configure -Duse-network=false
+    - meson dist
+  artifacts:
+    name: "${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/meson-dist/*.tar.xz"
+    expire_in: 1 week
