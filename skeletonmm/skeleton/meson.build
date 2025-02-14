@@ -18,7 +18,9 @@ configure_file(
   input: 'skeletonmmconfig.h.in',
   output: '@BASENAME@',
   configuration: pkg_conf_data,
+  install: true,
   install_dir: install_includeconfigdir,
+  install_tag: 'devel',
 )
 
 subdir('skeletonmm')

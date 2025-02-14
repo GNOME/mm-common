@@ -184,7 +184,8 @@ meson.add_install_script(
   python3, generate_binding, 'install_built_h_files',
   built_h_cc_dir,
   install_includedir / skeletonmm_pcname / 'skeletonmm', # subdir below {prefix}
-  hg_ccg_basenames
+  hg_ccg_basenames,
+  install_tag: 'devel',
 )
 
 # Distribute built files.

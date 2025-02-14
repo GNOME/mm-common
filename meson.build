@@ -8,10 +8,9 @@ project('mm-common',
 
 python3 = find_program('python3', version: '>= 3.7')
 
-# Use these instead of meson.source_root() and meson.build_root().
-# source_root() and build_root() are not useful, if this is a subproject.
-project_source_root = meson.current_source_dir()
-project_build_root = meson.current_build_dir()
+# Source and build root directories of the current (sub)project.
+project_source_root = meson.project_source_root()
+project_build_root = meson.project_build_root()
 
 script_dir = project_source_root / 'util' / 'meson_aux'
 
@@ -73,7 +72,10 @@ meson_build_support_basefiles = [
 foreach file : meson_build_support_basefiles
   build_support_files += 'util' / 'build_scripts' / file
 endforeach
-install_data(build_support_files, install_dir: install_build_supportdir)
+install_data(build_support_files,
+  install_dir: install_build_supportdir,
+  install_tag: 'devel',
+)
 
 # These are installed so that aclocal can copy them into aclocal.m4
 # at autogen.sh time.
@@ -90,7 +92,10 @@ aclocal_macro_files = []
 foreach file : aclocal_macro_basefiles
   aclocal_macro_files += 'macros' / file
 endforeach
-install_data(aclocal_macro_files, install_dir: install_aclocal_macrodir)
+install_data(aclocal_macro_files,
+  install_dir: install_aclocal_macrodir,
+  install_tag: 'devel',
+)
 
 conf_data2 = configuration_data()
 conf_data2.merge_from(conf_data)
@@ -99,13 +104,16 @@ configure_file(
   input: 'macros' / 'mm-common.m4.in',
   output: '@BASENAME@',
   configuration: conf_data2,
-  install_dir: install_aclocal_macrodir
+  install: true,
+  install_dir: install_aclocal_macrodir,
+  install_tag: 'devel',
 )
 
 if find_program('aclocal', required: false).found()
   meson.add_install_script(
     python3, script_dir / 'extra-install-cmd.py',
-    install_prefix / install_aclocal_macrodir
+    install_prefix / install_aclocal_macrodir,
+    install_tag: 'devel',
   )
 endif
 
@@ -127,7 +135,10 @@ doctool_files = []
 foreach file : doctool_basefiles
   doctool_files += 'util' / file
 endforeach
-install_data(doctool_files, install_dir: install_doctooldir)
+install_data(doctool_files,
+  install_dir: install_doctooldir,
+  install_tag: 'devel',
+)
 
 # Let other modules find the utils with pkg-config.
 
@@ -184,8 +195,10 @@ configure_file(
   input: 'util' / 'mm-common-get.in',
   output: '@BASENAME@',
   configuration: conf_data3,
+  install: true,
   install_dir: install_bindir,
-  install_mode: 'rwxr-xr-x'
+  install_mode: 'rwxr-xr-x',
+  install_tag: 'bin-devel',
 )
 
 # mm-common-get.1 manual page.
@@ -193,7 +206,9 @@ configure_file(
   input: 'util' / 'mm-common-get.1.in',
   output: '@BASENAME@',
   configuration: conf_data,
-  install_dir: install_man1dir
+  install: true,
+  install_dir: install_man1dir,
+  install_tag: 'man',
 )
 
 # mm-common-prepare command.
@@ -204,8 +219,10 @@ configure_file(
   input: 'util' / 'mm-common-prepare.in',
   output: '@BASENAME@',
   configuration: conf_data4,
+  install: true,
   install_dir: install_bindir,
-  install_mode: 'rwxr-xr-x'
+  install_mode: 'rwxr-xr-x',
+  install_tag: 'bin-devel',
 )
 
 # mm-common-prepare.1 manual page.
@@ -213,7 +230,9 @@ configure_file(
   input: 'util' / 'mm-common-prepare.1.in',
   output: '@BASENAME@',
   configuration: conf_data,
-  install_dir: install_man1dir
+  install: true,
+  install_dir: install_man1dir,
+  install_tag: 'man',
 )
 
 # Skeleton project.
@@ -276,10 +295,14 @@ custom_target(tarball_filename,
     skeletonmm_files,
   ],
   build_by_default: true,
+  install: true,
   install_dir: install_docdir,
-  install: true
+  install_tag: 'doc',
 )
-install_data('OVERVIEW.md', 'README.md', install_dir: install_docdir)
+install_data('OVERVIEW.md', 'README.md',
+  install_dir: install_docdir,
+  install_tag: 'doc',
+)
 
 # Either curl or wget is required for downloading libstdc++.tag,
 # used by Doxygen.
@@ -300,8 +323,9 @@ tag_file = custom_target('libstdc++.tag',
   ],
   build_by_default: true,
   build_always_stale: true,
+  install: true,
   install_dir: install_doctagsdir,
-  install: true
+  install_tag: 'doc',
 )
 
 # Modify the contents of the distribution directory.
@@ -354,7 +378,7 @@ os.chmod(sys.argv[1], 0o755)'''
   mm_common_libstdc_dep = declare_dependency(
     variables: {
       'doxytagfile': project_build_root / 'libstdc++.tag',
-      'htmlrefpub': 'http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/'
+      'htmlrefpub': 'https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/'
     }
   )
   # A main project that looks for mm-common-libstdc++.pc shall find mm_common_libstdc_dep.
