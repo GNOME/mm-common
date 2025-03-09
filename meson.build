@@ -328,11 +328,19 @@ tag_file = custom_target('libstdc++.tag',
   install_tag: 'doc',
 )
 
+# Don't distribute these files and directories.
+dont_distribute = [
+  'mm-common.doap',
+  '.gitlab-ci.yml',
+  '.gitignore',
+  # Distribute skeletonmm/.gitignore
+]
 # Modify the contents of the distribution directory.
 meson.add_dist_script(
   python3, script_dir / 'extra-dist-cmd.py',
   project_source_root,
   project_build_root,
+  dont_distribute,
 )
 
 if meson.is_subproject()
