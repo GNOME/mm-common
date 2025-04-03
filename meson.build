@@ -6,7 +6,8 @@ project('mm-common',
   meson_version: '>= 0.62.0', # required for variables in pkgconfig.generate()
 )
 
-python3 = find_program('python3', version: '>= 3.7')
+# Use the Python installation that Meson uses. Its version is >= 3.7.
+python3 = import('python').find_installation()
 
 # Source and build root directories of the current (sub)project.
 project_source_root = meson.project_source_root()
