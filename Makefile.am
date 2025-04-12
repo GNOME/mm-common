@@ -84,6 +84,7 @@ skeletonmm_data_files =							\
 	skeletonmm/.gitignore						\
 	skeletonmm/AUTHORS						\
 	skeletonmm/COPYING						\
+	skeletonmm/COPYING.tools			\
 	skeletonmm/ChangeLog						\
 	skeletonmm/meson.build					\
 	skeletonmm/meson_options.txt		\

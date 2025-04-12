@@ -241,6 +241,7 @@ skeletonmm_basefiles = [
   '.gitignore',
   'AUTHORS',
   'COPYING',
+  'COPYING.tools',
   'ChangeLog',
   'meson.build',
   'meson_options.txt',
