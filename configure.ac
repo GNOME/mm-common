@@ -50,6 +50,9 @@ AC_CHECK_PROG([WGET], [wget], [wget])
 AS_IF([test "x$USE_NETWORK$CURL$WGET" = xyes],
       [AC_MSG_ERROR([[Either curl or wget is required to download the libstdc++ tags.]])])
 
+eval "datadir_py=${datarootdir}"
+AC_SUBST([datadir_py])
+
 AC_CONFIG_FILES([
   Makefile
   doctags/mm-common-libstdc++.pc
