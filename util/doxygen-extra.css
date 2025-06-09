@@ -5,8 +5,6 @@
  */
 
 html, body {
-  background: #FFFFFF;
-  color: #222222;
   margin: 0;
 }
 
@@ -65,21 +63,14 @@ p, dl {
 div.qindex {
   width: 100%;
   line-height: 140%;
-  background-color: #E8EEF2;
-  border: 1px solid #84B0C7;
   text-align: center;
   margin: 0.2em;
   padding: 0.2em;
 }
 
 a {
-  color: #153788;
   font-weight: normal;
   text-decoration: none;
-}
-
-.contents a:visited {
-  color: #1B77C5;
 }
 
 a:hover {
@@ -99,8 +90,6 @@ code, .fragment {
 }
 
 pre.fragment, div.fragment {
-  background-color: #EEEEFF;
-  border: 1px solid #AAAAFF;
   padding: 0.5em;
   margin: 0.375em 0.75em 0.375em 0.2em;
 }
@@ -116,52 +105,17 @@ div.line {
 }
 
 div.ah {
-  background-color: #000000;
-  color: #FFFFFF;
   font-weight: bold;
   margin: 0.2em 0;
 }
 
 .indexkey, .indexvalue {
-  background-color: #E8EEF2;
-  border: 1px solid #CCCCCC;
   margin: 0.2em 0;
   padding: 0.2em 0.75em;
 }
 
 .indexkey {
   font-weight: bold;
-}
-.memlist {
-  background-color: #F0F0F0;
-}
-
-span.keyword {
-  color: #008000;
-}
-
-span.keywordtype {
-  color: #604020;
-}
-
-span.keywordflow {
-  color: #E08000;
-}
-
-span.comment {
-  color: #800000;
-}
-
-span.preprocessor {
-  color: #806020;
-}
-
-span.stringliteral {
-  color: #002080;
-}
-
-span.charliteral {
-  color: #008080;
 }
 
 .tiny {
@@ -171,12 +125,10 @@ span.charliteral {
 hr {
   height: 0;
   border: none;
-  border-top: 1px solid #666666;
 }
 
 .mdescLeft, .mdescRight, .memItemLeft, .memItemRight,
 .memTemplItemLeft, .memTemplItemRight, .memTemplParams {
-  background-color: #FAFAFA;
   border: none;
   margin: 0.375em;
   padding: 0.125em 0 0 0.75em;
@@ -184,27 +136,15 @@ hr {
 
 .mdescLeft, .mdescRight {
   padding: 0 0.75em 0.375em;
-  color: #555555;
-}
-
-.memItemLeft, .memItemRight, .memTemplParams {
-  border-top: 1px solid #CCCCCC;
-}
-
-.memTemplParams {
-  color: #606060;
 }
 
 .memtemplate {
-  color: #606060;
   font-size: 90%;
   font-weight: normal;
   margin-left: 0.2em;
 }
 
 .memnav {
-  background-color: #E8EEF2;
-  border: 1px solid #84B0C7;
   text-align: center;
   margin: 0.2em 1em 0.2em 0;
   padding: 0.2em;
@@ -221,13 +161,8 @@ hr {
   line-height: 120%;
 }
 
-.memproto, .memdoc {
-  border: 1px solid #84B0C7;
-}
-
 .memproto {
   padding: 0;
-  background-color: #D5E1E8;
   font-weight: bold;
   -webkit-border-top-left-radius: 1ex;
   -webkit-border-top-right-radius: 1ex;
@@ -237,7 +172,6 @@ hr {
 
 .memdoc {
   padding: 0.2em 0.5em;
-  background-color: #EEF3F5;
   border-top-width: 0;
   -webkit-border-bottom-left-radius: 1ex;
   -webkit-border-bottom-right-radius: 1ex;
@@ -254,7 +188,6 @@ hr {
 }
 
 .paramname {
-  color: #602020;
   white-space: nowrap;
 }
 
