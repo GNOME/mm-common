@@ -1,3 +1,28 @@
+mm-common 1.0.7 (2025-06-11)
+
+* Don't specify colors in util/doxygen-extra.css.
+  (Kjell Ahlstedt) Issue #4 (Stanisław)
+
+Meson build:
+* Use Meson's pkgconfig module to generate .pc files.
+  (Kjell Ahlstedt)
+* Use the Python installation that Meson uses.
+  (Chun-wei Fan) Merge request glibmm!67
+
+Autotools build:
+* configure.ac: subst for mm-common-get.
+  (Philippe Baril Lecavalier) Merge request !8
+
+Skeletonmm:
+* Don't require the 'dot' command.
+* Use Meson's pkgconfig module to generate .pc files.
+  (Kjell Ahlstedt)
+
+Documentation:
+* OVERVIEW.md: Update the meson.build snippet
+  (Kjell Ahlstedt)
+
+
 mm-common 1.0.6 (2024-01-07)
 
 * MM_AX_CXX_COMPILE_STDCXX(): Support C++20

@@ -1,7 +1,7 @@
 # This file is part of mm-common.
 
 project('mm-common',
-  version: '1.0.6',
+  version: '1.0.7',
   license: 'GPLv2+',
   meson_version: '>= 0.62.0', # required for variables in pkgconfig.generate()
 )
