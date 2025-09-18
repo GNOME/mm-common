@@ -2,7 +2,7 @@
 
 project('mm-common',
   version: '1.0.7',
-  license: 'GPLv2-or-later',
+  license: 'GPL-2.0-or-later',
   meson_version: '>= 0.62.0', # required for variables in pkgconfig.generate()
 )
 

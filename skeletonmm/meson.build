@@ -2,7 +2,7 @@
 
 project('skeletonmm', 'cpp',
   version: '0.1.0',
-  license: 'LGPLv2.1-or-later',
+  license: 'LGPL-2.1-or-later',
   default_options: [
     'cpp_std=c++17',
     'warning_level=1',
