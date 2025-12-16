@@ -306,11 +306,17 @@ install_data('OVERVIEW.md', 'README.md',
   install_tag: 'doc',
 )
 
-# Either curl or wget is required for downloading libstdc++.tag,
-# used by Doxygen.
+# Either curl or wget is required for downloading libstdc++.tag, used by Doxygen.
+# If use_network_opt == 'if-no-local-tag-file', the download command is optional.
+# The libstdcxx-tag.py script will decide if it's needed. That's decided when
+# mm-common is built, not when it's configured.
+use_network_opt = get_option('use-network')
 download_cmd = 'none'
-if get_option('use-network')
-  download_cmd = find_program('curl', 'wget').full_path()
+if use_network_opt != 'false'
+  prog = find_program('curl', 'wget', required: use_network_opt == 'true')
+  if prog.found()
+    download_cmd = prog.full_path()
+  endif
 endif
 
 # Download libstdc++.tag if it does not exist or if it's out of date.
@@ -319,6 +325,7 @@ tag_file = custom_target('libstdc++.tag',
   command: [
     python3,
     script_dir / 'libstdcxx-tag.py',
+    use_network_opt,
     download_cmd,
     project_source_root / 'doctags',
     '@OUTPUT@',
@@ -404,7 +411,7 @@ summary = [
   '------',
   meson.project_name() + ' ' + meson.project_version(),
   '',
-  '       Use network: @0@'.format(get_option('use-network')),
+  '       Use network: @0@'.format(use_network_opt),
   'Directories:',
   '            prefix: @0@'.format(install_prefix),
   '            bindir: @0@'.format(install_prefix / install_bindir),

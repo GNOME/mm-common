@@ -1,2 +1,2 @@
-option('use-network', type: 'boolean', value: false,
-  description : 'Download Doxygen tag file from the network')
+option('use-network', type: 'combo', choices: ['false', 'if-no-local-tag-file', 'true'],
+  value: 'if-no-local-tag-file', description : 'Download Doxygen tag file from the network')
