@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# skeletonmm/codegen/generate_defs_and_docs.sh
+# skeletonmm/tools/generate_defs_and_docs.sh
 
 # Global environment variables:
 # GMMPROC_GEN_SOURCE_DIR  Top directory where source files are searched for.
@@ -12,7 +12,7 @@
 # If you use jhbuild, you can set these environment variables equal to jhbuild's
 # configuration variables checkoutroot and buildroot, respectively.
 # Usually you can leave GMMPROC_GEN_SOURCE_DIR undefined.
-# If you have set buildroot=None, GMMPROC_GEN_BUILD_DIR can also be undefined.
+# If you have set buildroot=None, GMMPROC_GEN_BUILD_DIR can be undefined.
 
 # Generated files:
 #   skeletonmm/skeleton/src/skeleton_docs.xml

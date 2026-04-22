@@ -117,7 +117,8 @@ skeletonmm_data_files =							\
 	skeletonmm/untracked/README
 
 skeletonmm_script_files = \
-  skeletonmm/tools/generate_defs_and_docs.sh
+  skeletonmm/tools/generate_defs_and_docs.sh \
+  skeletonmm/tools/generate_from_gir.sh
 
 skeletonmm_files = $(skeletonmm_script_files) $(skeletonmm_data_files)
 

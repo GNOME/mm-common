@@ -268,6 +268,7 @@ skeletonmm_basefiles = [
   'tests/test1/main.cc',
   'tests/test2/main.cc',
   'tools/generate_defs_and_docs.sh',
+  'tools/generate_from_gir.sh',
   'tools/extra_defs_gen/generate_defs_skeleton.cc',
   'tools/extra_defs_gen/meson.build',
   'tools/m4/convert.m4',
